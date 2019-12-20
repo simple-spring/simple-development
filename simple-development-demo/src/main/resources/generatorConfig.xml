@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <context id="context1" targetRuntime="MyBatis3">
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表； 一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+        <property name="autoDelimitKeywords" value="true"/>
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+<!--        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+<!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+        <plugin type="com.manila.generator.plugin.LombokPlugin"/>
+        <!-- 自定义注释生成器 -->
+        <commentGenerator type="com.manila.generator.MySQLCommentGenerator">
+            <property name="author" value="liko"/>
+            <property name="dateFormat" value="yyyy/MM/dd"/>
+        </commentGenerator>
+
+
+        <!-- 配置连接数据信息 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.22.5.49:3306/manilaCollection?characterEncoding=utf8"
+                        userId="root" password="123456">
+        </jdbcConnection>
+
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.chexin.simple.development.demo.model"
+                            targetProject="./src/main/java"/>
+        <sqlMapGenerator targetPackage="collection"
+                         targetProject="src/main/resources/mybatis"/>
+        <javaClientGenerator targetPackage="com.chexin.simple.development.demo.mapper"
+                             targetProject="./src/main/java" type="XMLMAPPER"/>
+
+        <table tableName="t_collection_record" domainObjectName="CollectionRecordDo">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>
