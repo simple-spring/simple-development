@@ -2,6 +2,7 @@ package com.chexin.simple.development.core.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.chexin.simple.development.core.constant.ValueConstant;
+import com.chexin.simple.development.core.properties.PropertyConfigurer;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.log4j.Logger;
@@ -18,7 +19,6 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -29,7 +29,6 @@ import java.util.Properties;
 @Configuration
 //加上这个注解，使得支持事务
 @EnableTransactionManagement
-@MapperScan(basePackages = "com.chexin.simple.development.demo.mapper")
 public class DruidDataSourceConfig {
     private final static Logger LOG = Logger.getLogger(DruidDataSourceConfig.class);
 
@@ -63,7 +62,7 @@ public class DruidDataSourceConfig {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
         sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources("classpath*:mybatis/*/*.xml"));
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.chexin.simple.development.demo.model");//别名，让*Mpper.xml实体类映射可以不加上具体包名
+        sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty("model.package.name"));//别名，让*Mpper.xml实体类映射可以不加上具体包名
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
         return sqlSessionFactoryBean;
     }
@@ -71,7 +70,7 @@ public class DruidDataSourceConfig {
     @Bean
     public MapperScannerConfigurer MapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setBasePackage("com.chexin.simple.development.demo.mapper");
+        mapperScannerConfigurer.setBasePackage(PropertyConfigurer.getProperty("mapper.package.name"));
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
         return mapperScannerConfigurer;
     }

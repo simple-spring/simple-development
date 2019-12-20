@@ -13,12 +13,11 @@
     <packaging>war</packaging>
 
     <dependencies>
-
-        <!-- Spring Start -->
         <dependency>
-            <artifactId>simple-development-core</artifactId>
             <groupId>com.chexin</groupId>
+            <artifactId>simple-development-core</artifactId>
             <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <profiles>
