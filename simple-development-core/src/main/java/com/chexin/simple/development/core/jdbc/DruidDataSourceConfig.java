@@ -60,7 +60,7 @@ public class DruidDataSourceConfig {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
-        sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources("classpath*:mybatis/*/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(PropertyConfigurer.getProperty("mybatis.mapper.path")));
         sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty("model.package.name"));//别名，让*Mpper.xml实体类映射可以不加上具体包名
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
         return sqlSessionFactoryBean;
