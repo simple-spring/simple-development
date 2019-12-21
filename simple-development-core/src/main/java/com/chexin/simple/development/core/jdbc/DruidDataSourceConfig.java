@@ -27,7 +27,6 @@ import java.util.Properties;
  * @Description //TODO
  **/
 @Configuration
-//加上这个注解，使得支持事务
 @EnableTransactionManagement
 public class DruidDataSourceConfig {
     private final static Logger LOG = Logger.getLogger(DruidDataSourceConfig.class);
@@ -102,8 +101,10 @@ public class DruidDataSourceConfig {
         transactionAttributes.setProperty("save*", "PROPAGATION_REQUIRED");
         transactionAttributes.setProperty("del*", "PROPAGATION_REQUIRED");
         transactionAttributes.setProperty("update*", "PROPAGATION_REQUIRED");
+        transactionAttributes.setProperty("modify*", "PROPAGATION_REQUIRED");
         transactionAttributes.setProperty("get*", "PROPAGATION_REQUIRED,readOnly");
         transactionAttributes.setProperty("find*", "PROPAGATION_REQUIRED,readOnly");
+        transactionAttributes.setProperty("query*", "PROPAGATION_REQUIRED,readOnly");
         transactionAttributes.setProperty("*", "PROPAGATION_REQUIRED");
 
         interceptor.setTransactionAttributes(transactionAttributes);
