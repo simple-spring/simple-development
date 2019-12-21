@@ -1,7 +1,5 @@
 package com.chexin.simple.development.core.init;
 
-import com.chexin.simple.development.core.properties.PropertyConfigurer;
-import com.chexin.simple.development.core.utils.JedisPoolUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;

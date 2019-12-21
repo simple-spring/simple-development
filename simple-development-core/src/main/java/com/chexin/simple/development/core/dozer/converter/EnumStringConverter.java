@@ -1,6 +1,6 @@
 package com.chexin.simple.development.core.dozer.converter;
 
-import com.chexin.simple.development.core.utils.DeclaredFieldsUtil;
+import com.chexin.simple.development.support.utils.DeclaredFieldsUtil;
 import org.dozer.CustomConverter;
 
 /**

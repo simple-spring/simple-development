@@ -1,7 +1,7 @@
 package com.chexin.simple.development.core.init;
 
 import com.chexin.simple.development.core.mvc.interceptor.ApiSupportInterceptor;
-import com.chexin.simple.development.core.properties.PropertyConfigurer;
+import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -60,16 +60,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(apiSupportInterceptor());
         try {
-            Class<?> aClass = Class.forName(PropertyConfigurer.getProperty("mvc.interceptor.package.name"));
+            Class<?> aClass = Class.forName(PropertyConfigurer.getBaseProperty("mvc.interceptor.class.name"));
             Object o = aClass.newInstance();
             registry.addInterceptor((HandlerInterceptor) o);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException("mvc 拦截器注册失败",e);
         }
-
     }
 }

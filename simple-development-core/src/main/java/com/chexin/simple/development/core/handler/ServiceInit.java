@@ -1,7 +1,7 @@
 package com.chexin.simple.development.core.handler;
 
 import com.chexin.simple.development.core.annotation.IsApiService;
-import com.chexin.simple.development.core.utils.AopTargetUtils;
+import com.chexin.simple.development.support.utils.AopTargetUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -35,6 +35,7 @@ public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 根容器为Spring容器  
+        System.err.println("=====ServiceInit=====" + event.getSource().getClass().getName());
         if (event.getApplicationContext().getParent() == null) {
             Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(IsApiService.class);
             for (Object bean : beans.values()) {
@@ -45,7 +46,6 @@ public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, 
                     }
                     try {
                         ServerFactory.putService(bean);
-                        System.err.println("=====ServiceInit=====" + event.getSource().getClass().getName());
                     } catch (Exception e) {
                         System.out.println(e);
                         throw new RuntimeException(bean.getClass().getSimpleName() + "服务加载异常");

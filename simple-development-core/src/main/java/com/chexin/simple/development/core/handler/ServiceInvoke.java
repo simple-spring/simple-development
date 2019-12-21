@@ -5,7 +5,7 @@ import com.chexin.simple.development.core.mvc.page.ReqPageDTO;
 import com.chexin.simple.development.core.mvc.req.ReqBody;
 import com.chexin.simple.development.core.mvc.req.RpcRequest;
 import com.chexin.simple.development.core.mvc.res.ResBody;
-import com.chexin.simple.development.core.utils.DateUtils;
+import com.chexin.simple.development.support.utils.DateUtils;
 import com.chexin.simple.development.support.GlobalException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

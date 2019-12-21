@@ -26,7 +26,7 @@
 
         <!-- 配置连接数据信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://172.22.5.49:3306/manilaCollection?characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/demo?characterEncoding=utf8"
                         userId="root" password="123456">
         </jdbcConnection>
 
@@ -37,12 +37,12 @@
 
         <javaModelGenerator targetPackage="com.chexin.simple.development.demo.model"
                             targetProject="./src/main/java"/>
-        <sqlMapGenerator targetPackage="collection"
+        <sqlMapGenerator targetPackage="demo"
                          targetProject="src/main/resources/mybatis"/>
         <javaClientGenerator targetPackage="com.chexin.simple.development.demo.mapper"
                              targetProject="./src/main/java" type="XMLMAPPER"/>
 
-        <table tableName="t_collection_record" domainObjectName="CollectionRecordDo">
+        <table tableName="T_DEME_TABLE" domainObjectName="DemoDo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

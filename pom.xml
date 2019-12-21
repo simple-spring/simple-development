@@ -344,24 +344,6 @@
             <artifactId>javase</artifactId>
             <version>3.1.0</version>
         </dependency>
-        <!--钉钉报警-->
-        <dependency>
-            <groupId>com.dingtalk-chatbot-sdk</groupId>
-            <artifactId>dingtalk-chatbot-sdk</artifactId>
-            <version>0.9.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.dingtalk-chatbot-sdk-sources</groupId>
-            <artifactId>dingtalk-chatbot-sdk-sources</artifactId>
-            <version>0.9.0</version>
-            <classifier>sources</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>taobao-sdk-java-auto</artifactId>
-            <version>20181204</version>
-        </dependency>
         <!--   参数校验     -->
         <dependency>
             <groupId>org.hibernate</groupId>

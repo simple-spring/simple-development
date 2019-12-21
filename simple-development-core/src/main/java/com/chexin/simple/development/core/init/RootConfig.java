@@ -6,36 +6,15 @@ package com.chexin.simple.development.core.init;
  * @Description //TODO
  **/
 
-import com.chexin.simple.development.core.constant.ValueConstant;
-import com.chexin.simple.development.core.jdbc.DruidDataSourceConfig;
-import org.dozer.CustomConverter;
-import org.dozer.DozerBeanMapper;
-import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
-import org.springframework.context.annotation.*;
-import com.chexin.simple.development.core.dozer.converter.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan(basePackages = {"com.chexin.simple.development.core.handler","com.chexin.simple.development.core.jdbc"})
-@Import(DruidDataSourceConfig.class)
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
+@Import({DruidDataSourceConfig.class,BaseConfig.class})
 public class RootConfig {
-    @Bean
-    public BeanNameAutoProxyCreator proxycreate() {
-        BeanNameAutoProxyCreator proxycreate = new BeanNameAutoProxyCreator();
-        proxycreate.setProxyTargetClass(true);
-        proxycreate.setBeanNames("*ServiceImpl");
-        proxycreate.setInterceptorNames("transactionInterceptor");
-        return proxycreate;
-    }
-    @Bean
-    public DozerBeanMapper dozer() {
-        DozerBeanMapper dozerBean = new DozerBeanMapper();
-        Map<String, CustomConverter> customConvertersWithId = new HashMap<>();
-        customConvertersWithId.put("enumIntConverterId", new EnumIntConverter());
-        customConvertersWithId.put("enumStringConverterId", new EnumStringConverter());
-        dozerBean.setCustomConvertersWithId(customConvertersWithId);
-        return dozerBean;
-    }
+
 }

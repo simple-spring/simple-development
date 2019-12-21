@@ -1,7 +1,7 @@
 package com.chexin.simple.development.core.constant;
 
 
-import com.chexin.simple.development.core.properties.PropertyConfigurer;
+import com.chexin.simple.development.support.properties.PropertyConfigurer;
 
 /**
  * @author liko.wang

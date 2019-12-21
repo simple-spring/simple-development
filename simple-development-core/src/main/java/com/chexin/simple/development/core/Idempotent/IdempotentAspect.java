@@ -2,7 +2,7 @@ package com.chexin.simple.development.core.Idempotent;
 
 import com.alibaba.fastjson.JSON;
 import com.chexin.simple.development.core.annotation.Idempotent;
-import com.chexin.simple.development.core.utils.JedisPoolUtils;
+import com.chexin.simple.development.support.utils.JedisPoolUtils;
 import com.chexin.simple.development.support.GlobalException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.aspectj.lang.JoinPoint;

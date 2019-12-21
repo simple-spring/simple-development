@@ -5,7 +5,7 @@ import com.chexin.simple.development.core.mvc.page.ResPageDTO;
 import com.chexin.simple.development.core.mvc.req.ReqBody;
 import com.chexin.simple.development.support.GlobalException;
 import com.github.pagehelper.PageInfo;
-import com.chexin.simple.development.core.utils.PoJoCopyUtils;
+import com.chexin.simple.development.support.utils.PoJoCopyUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dozer.Mapper;

@@ -2,7 +2,7 @@ package com.chexin.simple.development.core.handler;
 
 
 import com.chexin.simple.development.core.annotation.Value;
-import com.chexin.simple.development.core.properties.PropertyConfigurer;
+import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;

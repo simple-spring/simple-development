@@ -62,27 +62,29 @@
             </Policies>
             <DefaultRolloverStrategy max="20"/>
         </RollingFile>
+        <!--用户操作日志-->
         <RollingFile name="userActiveLog" fileName="${logRoot}/userLogger.log"
                      filePattern="${logRoot}/userActiveLog/bak/userLogger.log.%d{yyyy-MM-dd}-%i" append="true">
             <Filters>
-                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
-                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
             <PatternLayout pattern="%msg%xEx%n"/>
             <Policies>
-                <SizeBasedTriggeringPolicy size="10 MB" />
+                <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20"/>
         </RollingFile>
         <!-- 错误日志收集-->
         <RollingFile name="errorLogMessageLog" fileName="${logRoot}/kafka/errorLogMessageLog.log"
-                     filePattern="${logRoot}/kafka/errorLogMessage/bak/errorLogMessageLog.log.%d{yyyy-MM-dd-HH_mm}-%i" append="true">
+                     filePattern="${logRoot}/kafka/errorLogMessage/bak/errorLogMessageLog.log.%d{yyyy-MM-dd-HH_mm}-%i"
+                     append="true">
             <Filters>
-                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
             <PatternLayout pattern="%msg%xEx%n"/>
             <Policies>
-                <SizeBasedTriggeringPolicy size="10 MB" />
+                <SizeBasedTriggeringPolicy size="10 MB"/>
                 <CronTriggeringPolicy schedule="0/2 * * * * ?"/>
             </Policies>
         </RollingFile>
@@ -90,14 +92,14 @@
 
     <Loggers>
         <AsyncLogger name="userLogger" additivity="FALSE" level="ALL">
-            <AppenderRef ref="userActiveLog" level="ALL" />
+            <AppenderRef ref="userActiveLog" level="ALL"/>
         </AsyncLogger>
         <AsyncLogger name="errorLogMessage" additivity="FALSE" level="ALL">
-            <AppenderRef ref="errorLogMessageLog" level="ALL" />
+            <AppenderRef ref="errorLogMessageLog" level="ALL"/>
         </AsyncLogger>
 
         <Root level="INFO">
-<!--            <AppenderRef ref="Console"/>-->
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="ERROR_LOG"/>
             <AppenderRef ref="WARN_LOG"/>
             <AppenderRef ref="INFO_LOG"/>
