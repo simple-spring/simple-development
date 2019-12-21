@@ -70,8 +70,14 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
             servletContext.addListener(new ContextLoaderListener(rootContext));
 
             // 创建SpringMVC的分发器
+            // 修改WebConfig扫描包的路径
+            List<String> mvcPackageNames = new ArrayList<>();
+            packageNames.add("com.chexin.simple.development.core.mvc.controller");
+            packageNames.add(PropertyConfigurer.getProperty("controller.package.name"));
+            Class webConfig = ClassLoadUtil.javassistCompile("com.chexin.simple.development.core.init.WebConfig", "org.springframework.context.annotation.ComponentScan", packageNames, "basePackages");
+
             AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
-            dispatcherContext.register(WebConfig.class);
+            dispatcherContext.register(webConfig);
 
             // 注册请求分发器
             ServletRegistration.Dynamic dispatcher =
