@@ -1,5 +1,6 @@
 package com.chexin.simple.development.core.handler;
 
+import com.chexin.simple.development.core.annotation.SimpleInterceptor;
 import com.chexin.simple.development.core.mvc.page.ReqPageDTO;
 import com.chexin.simple.development.core.mvc.page.ResPageDTO;
 import com.chexin.simple.development.core.mvc.req.ReqBody;

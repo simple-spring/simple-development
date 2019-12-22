@@ -1,9 +1,10 @@
 package com.chexin.simple.development.core.init;
 
+import com.chexin.simple.development.core.annotation.SimpleInterceptor;
 import com.chexin.simple.development.core.constant.PackageNameConstant;
 import com.chexin.simple.development.core.mvc.interceptor.ApiSupportInterceptor;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
-import com.chexin.simple.development.support.utils.PackageUtil;
+import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author liko.wang
@@ -61,14 +62,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 默认拦截器
         registry.addInterceptor(new ApiSupportInterceptor());
         try {
-            List<String> classNames = PackageUtil.getClassName(PropertyConfigurer.getProperty("spring.base.package") + PackageNameConstant.INTERCEPTOR);
-            if (CollectionUtils.isEmpty(classNames)) {
+            Reflections reflections = new Reflections(PropertyConfigurer.getProperty("spring.base.package") + PackageNameConstant.INTERCEPTOR);
+            Set<Class<?>> classes = reflections.getTypesAnnotatedWith(SimpleInterceptor.class);
+
+            if (CollectionUtils.isEmpty(classes)) {
                 return;
             }
-            for (String className : classNames) {
-                Class<?> aClass = Class.forName(className);
-                Object interceptor = aClass.newInstance();
-                registry.addInterceptor((HandlerInterceptor) interceptor);
+            for (Class clazz : classes) {
+                System.out.println("SimpleInterceptor class: " + clazz.getName());
+                registry.addInterceptor((HandlerInterceptor) clazz.newInstance());
+
             }
 
         } catch (Exception e) {
