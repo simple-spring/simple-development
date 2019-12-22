@@ -26,10 +26,4 @@ public @interface HasPermissions {
      * 逻辑关系
      */
     Logical LOGICAL() default Logical.Or;
-    
-    /**
-     * 是否是列表泽返回内容有子权限集合(默认第一个权限的子权限)
-     * @return
-     */
-    boolean isPage() default false;
 }

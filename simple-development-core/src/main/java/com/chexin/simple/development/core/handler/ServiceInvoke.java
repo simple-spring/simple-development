@@ -42,11 +42,10 @@ public class ServiceInvoke {
         // check permission
         String[] permissions = ServerFactory.hasPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
         Logical logical = ServerFactory.relationPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        Boolean isPage = ServerFactory.isHasPagePermissionMap.get(request.getServiceName() + "-" + request.getMethodName()) == null ? false : ServerFactory.isHasPagePermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        String childPermissions = ServerFactory.checkPermission(permissions, logical, isPage);
+        ServerFactory.checkPermission(permissions, logical);
 
         // invoke
-        return invokeMethod(request, serviceBean, isPage, childPermissions);
+        return invokeMethod(request, serviceBean);
     }
 
 
@@ -58,21 +57,20 @@ public class ServiceInvoke {
         logger.info(request.getServiceName() + "-" + request.getMethodName() + " date:" + DateUtils.getCurrentTime());
 
         // service is exist?
-        Object serviceBean = ServerFactory.serviceConfigMap.get(request.getServiceName() + "-" + request.getMethodName());
+        Object serviceBean = ServerFactory.serviceNoLoginMap.get(request.getServiceName() + "-" + request.getMethodName());
         if (serviceBean == null) {
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
         // check permission
         String[] permissions = ServerFactory.hasPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
         Logical logical = ServerFactory.relationPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        Boolean isPage = ServerFactory.isHasPagePermissionMap.get(request.getServiceName() + "-" + request.getMethodName()) == null ? false : ServerFactory.isHasPagePermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        String childPermissions = ServerFactory.checkPermission(permissions, logical, isPage);
+        ServerFactory.checkPermission(permissions, logical);
 
         // invoke
-        return invokeMethod(request, serviceBean, isPage, childPermissions);
+        return invokeMethod(request, serviceBean);
     }
 
-    private ResBody invokeMethod(RpcRequest request, Object serviceBean, Boolean isPage, String childPermissions) throws Throwable {
+    private ResBody invokeMethod(RpcRequest request, Object serviceBean) throws Throwable {
         Object result;
         try {
             Class<?> serviceClass = serviceBean.getClass();
@@ -95,9 +93,6 @@ public class ServiceInvoke {
             }
             result = serviceFastMethod.invoke(serviceBean, objects);
             ResBody resBody = (ResBody) result;
-            if (isPage) {
-                resBody.setContent(childPermissions);
-            }
             return resBody;
         } catch (Throwable ex) {
             logger.error(DateUtils.getCurrentTime() + "调用" + request.getServiceName() + "的" + request.getMethodName() + "出错:", ex);

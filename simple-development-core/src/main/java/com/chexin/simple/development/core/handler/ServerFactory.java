@@ -7,28 +7,16 @@ import com.chexin.simple.development.core.annotation.IsApiMethodService;
 import com.chexin.simple.development.core.annotation.IsApiService;
 import com.chexin.simple.development.core.annotation.NoApiMethod;
 import com.chexin.simple.development.core.permission.HasPermissionService;
-import com.chexin.simple.development.core.mvc.page.ReqPageDTO;
-import com.chexin.simple.development.core.mvc.req.ReqBody;
-import com.chexin.simple.development.core.mvc.req.RpcRequest;
-import com.chexin.simple.development.core.mvc.res.ResBody;
 import com.chexin.simple.development.support.utils.AopTargetUtils;
-import com.chexin.simple.development.support.utils.DateUtils;
-import com.chexin.simple.development.support.GlobalException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.cglib.reflect.FastClass;
-import org.springframework.cglib.reflect.FastMethod;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.chexin.simple.development.support.GlobalResponseCode.SERVICE_NOT_EXIST;
 
 
 /**
@@ -49,15 +37,11 @@ public class ServerFactory {
     /**
      * init  serviceNoLogin map
      */
-    public static Map<String, Object> serviceConfigMap = new HashMap<>();
+    public static Map<String, Object> serviceNoLoginMap = new HashMap<>();
     /**
      * 权限集合
      */
     public static Map<String, String[]> hasPermissionMap = new HashMap<>();
-    /**
-     * 是否需要列表权限
-     */
-    public static Map<String, Boolean> isHasPagePermissionMap = new HashMap<>();
     /**
      * 权限关系集合
      */
@@ -85,7 +69,7 @@ public class ServerFactory {
                     methodName = isApiMethodService.value();
                 }
                 if (isApiService.isLogin()) {
-                    serviceConfigMap.put(serviceName + "-" + methodName, serviceBean);
+                    serviceNoLoginMap.put(serviceName + "-" + methodName, serviceBean);
                 } else {
                     serviceMap.put(serviceName + "-" + methodName, serviceBean);
                 }
@@ -107,7 +91,6 @@ public class ServerFactory {
             if (HasPermissions.class == annotationType) {
                 HasPermissions hasPermissions = (HasPermissions) annotation;
                 String[] value = hasPermissions.value();
-                boolean isPage = hasPermissions.isPage();
                 Logical logical = hasPermissions.LOGICAL();
                 // 类名+方法名
                 String name = method.getDeclaringClass().getInterfaces()[0].getSimpleName() + "-" + method.getName();
@@ -119,7 +102,6 @@ public class ServerFactory {
                     throw new RuntimeException("api方法名" + name + "的权限名为空");
                 }
                 hasPermissionMap.put(name, value);
-                isHasPagePermissionMap.put(name, isPage);
                 relationPermissionMap.put(name, logical);
                 System.err.println("api方法权限:" + name + "的" + JSON.toJSONString(value) + "已加载");
             }
@@ -137,19 +119,19 @@ public class ServerFactory {
      * @param logical
      * @param permissions
      */
-    public static String checkPermission(String[] permissions, Logical logical, Boolean isPage) {
+    public static void checkPermission(String[] permissions, Logical logical) {
 
         if (permissions == null) {
-            return null;
+            return;
         }
         if (permissions.length == 0) {
-            return null;
+            return;
         }
         HasPermissionService hasPermissionService = applicationContext.getBean(HasPermissionService.class);
         if (hasPermissionService == null) {
             throw new RuntimeException("权限实现找不到");
         }
         // 校验权限
-        return hasPermissionService.checkPermission(permissions, logical, isPage);
+        hasPermissionService.checkPermission(permissions, logical);
     }
 }

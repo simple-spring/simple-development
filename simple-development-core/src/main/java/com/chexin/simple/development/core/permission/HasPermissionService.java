@@ -16,8 +16,15 @@ public interface HasPermissionService {
      * 校验权限返回子权限集合
      *
      * @param permissionKeys
+     * @param logical
+     */
+    void checkPermission(String[] permissionKeys, Logical logical);
+
+    /**
+     * 是否存在权限
+     *
+     * @param key
      * @return
      */
-    String checkPermission(String[] permissionKeys, Logical logical, Boolean isPage);
-
+    boolean isExistPermission(String key);
 }
