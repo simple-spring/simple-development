@@ -5,7 +5,7 @@
     主体框架基于spring4.3.3开发，基于javassist,cglib,Reflections技术实现
 
 ### 使用
-##### 1.maven项目配置
+##### 1.maven项目配置(加入之前先配置settings.xml,在最下面demo项目中)
         (1) 加入依赖
             <dependency>
                 <groupId>com.chexin</groupId>
