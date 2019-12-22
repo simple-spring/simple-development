@@ -1,8 +1,0 @@
-#基础包的路径
-service.package.name=com.chexin.simple.development.demo.service
-dao.package.name=com.chexin.simple.development.demo.dao
-mapper.package.name=com.chexin.simple.development.demo.mapper
-model.package.name=com.chexin.simple.development.demo.model
-controller.package.name=com.chexin.simple.development.demo.controller
-mvc.interceptor.class.name=com.chexin.simple.development.demo.interceptor.ApiSupportInterceptor
-mybatis.mapper.path=classpath*:mybatis/*/*.xml

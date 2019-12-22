@@ -42,22 +42,22 @@ public class ClassLoadUtil extends ClassLoader {
             this.resolveClass(clazz);
         return clazz;
     }
+
     /**
-     * @author liko.wang
-     * @Date 2019/12/20/020 17:51
-     * @param className
+     * @param aclass
      * @param annotationName
      * @param packageNames
-     * @param simpleAnnotationName 
+     * @param simpleAnnotationName
      * @return void
+     * @author liko.wang
+     * @Date 2019/12/20/020 17:51
      * @Description 修改类注册参数值
      **/
-    public static Class javassistCompile(String className, String annotationName, List<String> packageNames, String simpleAnnotationName) throws NotFoundException, CannotCompileException, ClassNotFoundException {
+    public static Class javassistCompile(Class aclass, String annotationName, List<String> packageNames, String simpleAnnotationName) throws NotFoundException, CannotCompileException, ClassNotFoundException {
         ClassPool classPool = ClassPool.getDefault();
-        classPool.appendClassPath(new ClassClassPath(Class.forName(className)));
+        classPool.appendClassPath(new ClassClassPath(aclass));
         // 如果CtClass通过writeFile(),toClass(),toBytecode()转换了类文件，javassist冻结了CtClass对象。
-        // 以后是不允许修改这个 CtClass对象。这是为了警告开发人员当他们试图修改一个类文件时，已经被JVM载入的类不允许被重新载入。
-        CtClass clazz = classPool.get(className);
+        CtClass clazz = classPool.get(aclass.getName());
         clazz.stopPruning(true);
         // Defrost()执行后，CtClass对象将可以再次修改。
         clazz.defrost();
@@ -65,13 +65,7 @@ public class ClassLoadUtil extends ClassLoader {
 
         ConstPool constPool = classFile.getConstPool();
         Annotation tableAnnotation = new Annotation(annotationName, constPool);
-        ArrayMemberValue arrayMemberValue = new ArrayMemberValue(constPool);
-        List<StringMemberValue> stringMemberValueList = new ArrayList<>();
-        for (String str:packageNames){
-            StringMemberValue stringMemberValue = new StringMemberValue(str, constPool);
-            stringMemberValueList.add(stringMemberValue);
-        }
-        arrayMemberValue.setValue(stringMemberValueList.toArray(new StringMemberValue[stringMemberValueList.size()]));
+        ArrayMemberValue arrayMemberValue = getArrayMemberValue(packageNames, constPool);
         tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
         // 获取运行时注解属性
         AnnotationsAttribute attribute = (AnnotationsAttribute) classFile.getAttribute(AnnotationsAttribute.visibleTag);
@@ -81,18 +75,28 @@ public class ClassLoadUtil extends ClassLoader {
         // 当前ClassLoader中必须尚未加载该实体。（同一个ClassLoader加载同一个类只会加载一次）
         ClassLoadUtil loader = new ClassLoadUtil(ClassLoadUtil.class.getClassLoader());
         Class aClass = clazz.toClass(loader, null);
-        ComponentScan annotation = (ComponentScan)aClass.getAnnotation(ComponentScan.class);
-        System.out.println(annotation.basePackages().toString());
         return aClass;
     }
+
+    private static ArrayMemberValue getArrayMemberValue(List<String> packageNames, ConstPool constPool) {
+        ArrayMemberValue arrayMemberValue = new ArrayMemberValue(constPool);
+        List<StringMemberValue> stringMemberValueList = new ArrayList<>();
+        for (String str : packageNames) {
+            StringMemberValue stringMemberValue = new StringMemberValue(str, constPool);
+            stringMemberValueList.add(stringMemberValue);
+        }
+        arrayMemberValue.setValue(stringMemberValueList.toArray(new StringMemberValue[stringMemberValueList.size()]));
+        return arrayMemberValue;
+    }
+
     /**
-     * @author liko.wang
-     * @Date 2019/12/20/020 17:52
      * @param
      * @return void
+     * @author liko.wang
+     * @Date 2019/12/20/020 17:52
      * @Description 修改属性注解参数值(未验证)
      **/
-    public void test(){
+    public void test() {
         //        ClassPool pool = ClassPool.getDefault();
 //        //获取需要修改的类
 //        CtClass ct = pool.get("com.chexin.simple.development.core.init.RootConfig");

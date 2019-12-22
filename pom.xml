@@ -22,6 +22,9 @@
         <mysql-connector-java.version>5.1.29</mysql-connector-java.version>
         <mybatis.version>3.2.7</mybatis.version>
         <dubbo.version>2.5.3</dubbo.version>
+
+        <mybatis-plus.version>2.0.5</mybatis-plus.version>
+        <beetl.version>2.7.18</beetl.version>
     </properties>
     <dependencies>
 
@@ -104,6 +107,19 @@
             <artifactId>mybatis</artifactId>
             <version>3.2.8</version>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>com.baomidou</groupId>-->
+            <!--<artifactId>mybatis-plus</artifactId>-->
+            <!--<version>${mybatis-plus.version}</version>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.ibeetl/beetl &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.ibeetl</groupId>-->
+            <!--<artifactId>beetl</artifactId>-->
+            <!--<version>${beetl.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>

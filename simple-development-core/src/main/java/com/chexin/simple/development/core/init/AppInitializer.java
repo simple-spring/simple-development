@@ -1,8 +1,11 @@
 package com.chexin.simple.development.core.init;
 
+import com.chexin.simple.development.core.constant.PackageNameConstant;
+import com.chexin.simple.development.core.jdbc.DataSourceConfig;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import com.chexin.simple.development.support.utils.ClassLoadUtil;
 import com.chexin.simple.development.support.utils.JedisPoolUtils;
+import com.chexin.simple.development.support.utils.PackageUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -25,43 +28,41 @@ import java.util.List;
  **/
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return new Class[0];
-    }
-
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class[0];
-    }
-
-    @Override
-    protected String[] getServletMappings() {
-        return new String[0];
-    }
-
-    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         try {
             System.out.println("初始化项目...");
             System.out.println("开始加载配置文件");
             // 读取项目配置文件
             PropertyConfigurer.loadApplicationProperties("application.properties");
-            PropertyConfigurer.loadBaseProperties("/META-INF/simple-development");
             System.out.println("配置文件加载完成");
+            // 自定义注解@value待实现
+            //PackageUtil.getClassName(PropertyConfigurer.getProperty("spring.base.package"));
+
+            // 获取项目包路径
+            String basePackageName = PropertyConfigurer.getProperty("spring.base.package");
+            if (StringUtils.isEmpty(basePackageName)) {
+                throw new RuntimeException("base package is empty");
+            }
 
             System.out.println("spring 扫描包配置中...");
 
-            // 修改RootConfig扫描包的路径
+            // 修改RootConfig ComponentScan扫描包的路径
             List<String> packageNames = new ArrayList<>();
-            packageNames.add(PropertyConfigurer.getBaseProperty("service.package.name"));
-            packageNames.add(PropertyConfigurer.getBaseProperty("dao.package.name"));
-            Class rootConfig = ClassLoadUtil.javassistCompile("com.chexin.simple.development.core.init.RootConfig", "org.springframework.context.annotation.ComponentScan", packageNames, "basePackages");
+            packageNames.add(basePackageName + PackageNameConstant.DAO);
+            packageNames.add(basePackageName + PackageNameConstant.SERVICE);
+            Class rootConfig = ClassLoadUtil.javassistCompile(RootConfig.class, "org.springframework.context.annotation.ComponentScan", packageNames, "basePackages");
 
-            // 修改WebConfig扫描包的路径
+            // 添加DataSourceConfig MapperScan扫描包的路径
+            List<String> mapperPackageNames = new ArrayList<>();
+            mapperPackageNames.add(basePackageName + PackageNameConstant.MAPPER);
+            Class dataSourceConfig = ClassLoadUtil.javassistCompile(DataSourceConfig.class, "org.mybatis.spring.annotation.MapperScan", mapperPackageNames, "basePackages");
+
+            // 修改WebConfig ComponentScan扫描包的路径
             List<String> mvcPackageNames = new ArrayList<>();
+            // 支持isApiConfig,默认注册
             mvcPackageNames.add("com.chexin.simple.development.core.mvc.controller");
-            mvcPackageNames.add(PropertyConfigurer.getBaseProperty("controller.package.name"));
-            Class webConfig = ClassLoadUtil.javassistCompile("com.chexin.simple.development.core.init.WebConfig", "org.springframework.context.annotation.ComponentScan", mvcPackageNames, "basePackages");
+            mvcPackageNames.add(basePackageName + PackageNameConstant.CONTROLLER);
+            Class webConfig = ClassLoadUtil.javassistCompile(WebConfig.class, "org.springframework.context.annotation.ComponentScan", mvcPackageNames, "basePackages");
             System.out.println("spring 扫描包配置完成");
 
 
@@ -77,7 +78,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
             // 创建Spring的root配置环境
             AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-            rootContext.register(rootConfig);
+            rootContext.register(new Class[]{rootConfig, dataSourceConfig});
             // 将Spring的配置添加为listener
             servletContext.addListener(new ContextLoaderListener(rootContext));
 
@@ -112,5 +113,20 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
             e.printStackTrace();
             throw new RuntimeException("init fail", e);
         }
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[0];
+    }
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[0];
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[0];
     }
 }

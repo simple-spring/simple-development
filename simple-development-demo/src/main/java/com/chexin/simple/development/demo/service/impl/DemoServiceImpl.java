@@ -35,7 +35,6 @@ public class DemoServiceImpl implements DemoService {
     }
 
     @Override
-    @Transactional
     public ResBody insertDemoDo(ReqBody reqBody) throws Exception {
         DemoDo demoDo = new DemoDo();
         demoDo.setName("test");

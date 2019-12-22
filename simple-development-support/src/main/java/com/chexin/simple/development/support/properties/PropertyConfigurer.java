@@ -35,24 +35,6 @@ public class PropertyConfigurer {
         }
     }
 
-    public static void loadBaseProperties(String path) {
-        try {
-            // 读取系统配置文件
-            Properties properties = new Properties();
-            InputStream in = PropertyConfigurer.class.getClassLoader().getResourceAsStream(path);
-
-            properties.load(in);
-
-            Map<String, String> map = new HashMap<>();
-            for (Object key : properties.keySet()) {
-                map.put(key.toString(), properties.getProperty(key.toString()));
-            }
-            baseMap = Collections.unmodifiableMap(map);
-        } catch (IOException e) {
-            throw new RuntimeException("load baseProperties  application.properties  fail");
-        }
-    }
-
     /**
      * 获取配置配置文件，不可以修改
      *
@@ -61,19 +43,6 @@ public class PropertyConfigurer {
      */
     public static String getProperty(String key) {
         String value = configMap.get(key);
-        if (StringUtils.hasText(value)) {
-            return value;
-        }
-        throw new RuntimeException("no fonud config key : " + key);
-    }
-    /**
-     * 获取配置配置文件，不可以修改
-     *
-     * @param key
-     * @return
-     */
-    public static String getBaseProperty(String key) {
-        String value = baseMap.get(key);
         if (StringUtils.hasText(value)) {
             return value;
         }

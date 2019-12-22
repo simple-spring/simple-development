@@ -1,10 +1,13 @@
 package com.chexin.simple.development.core.init;
 
+import com.chexin.simple.development.core.constant.PackageNameConstant;
 import com.chexin.simple.development.core.mvc.interceptor.ApiSupportInterceptor;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
+import com.chexin.simple.development.support.utils.PackageUtil;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -12,6 +15,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import java.util.List;
 
 /**
  * @author liko.wang
@@ -38,11 +43,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resourceViewResolver;
     }
 
-    @Bean
-    public ApiSupportInterceptor apiSupportInterceptor() {
-        return new ApiSupportInterceptor();
-    }
-
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         super.configureDefaultServletHandling(configurer);
@@ -58,13 +58,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      **/
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(apiSupportInterceptor());
+        // 默认拦截器
+        registry.addInterceptor(new ApiSupportInterceptor());
         try {
-            Class<?> aClass = Class.forName(PropertyConfigurer.getBaseProperty("mvc.interceptor.class.name"));
-            Object o = aClass.newInstance();
-            registry.addInterceptor((HandlerInterceptor) o);
+            List<String> classNames = PackageUtil.getClassName(PropertyConfigurer.getProperty("spring.base.package") + PackageNameConstant.INTERCEPTOR);
+            if (CollectionUtils.isEmpty(classNames)) {
+                return;
+            }
+            for (String className : classNames) {
+                Class<?> aClass = Class.forName(className);
+                Object interceptor = aClass.newInstance();
+                registry.addInterceptor((HandlerInterceptor) interceptor);
+            }
+
         } catch (Exception e) {
-            throw new RuntimeException("mvc 拦截器注册失败",e);
+            throw new RuntimeException("mvc 拦截器注册失败", e);
         }
     }
 }
