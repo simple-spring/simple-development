@@ -10,7 +10,7 @@ import static com.chexin.simple.development.support.GlobalResponseCode.SYS_SUCCE
 
 
 /**
- * 请求报文消息
+ * 响应报文消息
  */
 public class ResBody implements Serializable{
 	/**
