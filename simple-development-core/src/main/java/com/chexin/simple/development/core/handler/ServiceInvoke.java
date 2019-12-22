@@ -27,7 +27,7 @@ import static com.chexin.simple.development.support.GlobalResponseCode.SERVICE_N
 public class ServiceInvoke {
     private static final Logger logger = LogManager.getLogger(ServiceInvoke.class);
 
-    public  ResBody invokeService(RpcRequest request, HttpServletRequest httpServletRequest) throws Throwable {
+    public ResBody invokeService(RpcRequest request, HttpServletRequest httpServletRequest) throws Throwable {
         // check param
         if (StringUtils.isEmpty(request.getMethodName()) || StringUtils.isEmpty(request.getServiceName())) {
             throw new GlobalException(SERVICE_NOT_EXIST);
@@ -46,42 +46,11 @@ public class ServiceInvoke {
         String childPermissions = ServerFactory.checkPermission(permissions, logical, isPage);
 
         // invoke
-        Object result;
-        try {
-            Class<?> serviceClass = serviceBean.getClass();
-            String methodName = request.getMethodName();
-            FastClass serviceFastClass = FastClass.create(serviceClass);
-
-            Class<?>[] parameterTypes = new Class[1];
-            parameterTypes[0] = ReqBody.class;
-            FastMethod serviceFastMethod = serviceFastClass.getMethod(methodName, parameterTypes);
-
-            Object[] objects = new Object[1];
-            if (request.getReqBody() == null) {
-                ReqPageDTO page = new ReqPageDTO();
-                ReqBody reqBody = new ReqBody();
-                reqBody.setPage(page);
-                reqBody.setParamsMap(null);
-                objects[0] = reqBody;
-            } else {
-                objects[0] = request.getReqBody();
-            }
-            result = serviceFastMethod.invoke(serviceBean, objects);
-            ResBody resBody = (ResBody) result;
-            if (isPage) {
-                resBody.setContent(childPermissions);
-            }
-            return resBody;
-        } catch (Throwable ex) {
-            logger.error(DateUtils.getCurrentTime() + "调用" + request.getServiceName() + "的" + request.getMethodName() + "出错:", ex);
-            if (ex.getCause() instanceof GlobalException) {
-                throw ex.getCause();
-            }
-            throw ex.getCause();
-        }
+        return invokeMethod(request, serviceBean, isPage, childPermissions);
     }
 
-    public  ResBody invokeConfigService(RpcRequest request, HttpServletRequest httpServletRequest) throws Throwable {
+
+    public ResBody invokeConfigService(RpcRequest request, HttpServletRequest httpServletRequest) throws Throwable {
         // check param
         if (StringUtils.isEmpty(request.getMethodName()) || StringUtils.isEmpty(request.getServiceName())) {
             throw new GlobalException(SERVICE_NOT_EXIST);
@@ -95,11 +64,15 @@ public class ServiceInvoke {
         }
         // check permission
         String[] permissions = ServerFactory.hasPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        Logical logical =ServerFactory. relationPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
+        Logical logical = ServerFactory.relationPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
         Boolean isPage = ServerFactory.isHasPagePermissionMap.get(request.getServiceName() + "-" + request.getMethodName()) == null ? false : ServerFactory.isHasPagePermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
         String childPermissions = ServerFactory.checkPermission(permissions, logical, isPage);
 
         // invoke
+        return invokeMethod(request, serviceBean, isPage, childPermissions);
+    }
+
+    private ResBody invokeMethod(RpcRequest request, Object serviceBean, Boolean isPage, String childPermissions) throws Throwable {
         Object result;
         try {
             Class<?> serviceClass = serviceBean.getClass();
