@@ -1,9 +1,7 @@
 package com.chexin.simple.development.support.utils;
 
 import javassist.*;
-import javassist.bytecode.AnnotationsAttribute;
-import javassist.bytecode.ClassFile;
-import javassist.bytecode.ConstPool;
+import javassist.bytecode.*;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.ArrayMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
@@ -96,37 +94,37 @@ public class ClassLoadUtil extends ClassLoader {
      * @Date 2019/12/20/020 17:52
      * @Description 修改属性注解参数值(未验证)
      **/
-    public void test() {
-        //        ClassPool pool = ClassPool.getDefault();
-//        //获取需要修改的类
-//        CtClass ct = pool.get("com.chexin.simple.development.core.init.RootConfig");
-//        //获取类里的所有方法
-//        CtMethod[] cms = ct.getDeclaredMethods();
-//        CtMethod cm = cms[0];
-//        System.out.println("方法名称====" + cm.getName());
-//
-//        MethodInfo minInfo = cm.getMethodInfo();
-//        //获取类里的em属性
-//        CtField cf = ct.getField("proxycreate");
-//        FieldInfo fieldInfo = cf.getFieldInfo();
-//
-//        System.out.println("属性名称===" + cf.getName());
-//
-//        ConstPool cp = fieldInfo.getConstPool();
-//        //获取注解信息
-//        AnnotationsAttribute attribute2 = new AnnotationsAttribute(cp, AnnotationsAttribute.visibleTag);
-//        Annotation annotation = new Annotation("org.springframework.context.annotation.ComponentScan", cp);
-//
-//        //修改名称为unitName的注解
-//        annotation.addMemberValue("basePackages", new StringMemberValue("124", cp));
-//        attribute2.setAnnotation(annotation);
-//        minInfo.addAttribute(attribute2);
-//
-//        //打印修改后方法
-//        Annotation annotation2 = attribute2.getAnnotation("org.springframework.context.annotation.ComponentScan");
-//        String text = ((StringMemberValue) annotation2.getMemberValue("basePackages")).getValue();
-//
-//        System.out.println("修改后的注解名称===" + text);
+    public void javassistCompileFild() throws NotFoundException {
+        ClassPool pool = ClassPool.getDefault();
+        //获取需要修改的类
+        CtClass ct = pool.get("com.chexin.simple.development.core.init.RootConfig");
+        //获取类里的所有方法
+        CtMethod[] cms = ct.getDeclaredMethods();
+        CtMethod cm = cms[0];
+        System.out.println("方法名称====" + cm.getName());
+
+        MethodInfo minInfo = cm.getMethodInfo();
+        //获取类里的em属性
+        CtField cf = ct.getField("proxycreate");
+        FieldInfo fieldInfo = cf.getFieldInfo();
+
+        System.out.println("属性名称===" + cf.getName());
+
+        ConstPool cp = fieldInfo.getConstPool();
+        //获取注解信息
+        AnnotationsAttribute attribute2 = new AnnotationsAttribute(cp, AnnotationsAttribute.visibleTag);
+        Annotation annotation = new Annotation("org.springframework.context.annotation.ComponentScan", cp);
+
+        //修改名称为unitName的注解
+        annotation.addMemberValue("basePackages", new StringMemberValue("124", cp));
+        attribute2.setAnnotation(annotation);
+        minInfo.addAttribute(attribute2);
+
+        //打印修改后方法
+        Annotation annotation2 = attribute2.getAnnotation("org.springframework.context.annotation.ComponentScan");
+        String text = ((StringMemberValue) annotation2.getMemberValue("basePackages")).getValue();
+
+        System.out.println("修改后的注解名称===" + text);
 
     }
 }

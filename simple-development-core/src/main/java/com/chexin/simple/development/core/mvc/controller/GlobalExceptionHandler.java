@@ -60,7 +60,7 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setProjectType("api");
             errorMessage.setLogType("restful api");
             errorMessage.setIp(IpUtil.getIp());
-            errorMessage.setLogPath("/data/logs/manila-api/error/error.log");
+            errorMessage.setLogPath("/data/logs/simple-development-core/error/error.log");
             errorMessage.setDate(DateUtils.getCurrentTime());
             errorMessage.setContent(GzipUtil.compressBase64(JSON.toJSONString(e)));
             errorMessage.setDescription(e+"");

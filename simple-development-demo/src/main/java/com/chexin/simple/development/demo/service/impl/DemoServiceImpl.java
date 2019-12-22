@@ -3,6 +3,7 @@ package com.chexin.simple.development.demo.service.impl;
 
 import com.chexin.simple.development.core.annotation.IsApiService;
 import com.chexin.simple.development.core.annotation.ValidHandler;
+import com.chexin.simple.development.core.annotation.Value;
 import com.chexin.simple.development.core.mvc.req.ReqBody;
 import com.chexin.simple.development.core.mvc.res.ResBody;
 import com.chexin.simple.development.demo.dao.DemoDao;
@@ -26,6 +27,8 @@ public class DemoServiceImpl implements DemoService {
 
     @Autowired
     private DemoDao demoDao;
+    @Value(value = "spring.base.package")
+    private String pageName;
 
     @Override
     @ValidHandler(key = "test", value = DemoDo.class)

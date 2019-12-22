@@ -1,16 +1,22 @@
 package com.chexin.simple.development.demo.interceptor;
 
-import com.chexin.simple.development.core.Idempotent.IdempotentHandler;
 import com.chexin.simple.development.core.annotation.SimpleInterceptor;
-import com.chexin.simple.development.core.handler.ThreadLocalSignInfoHandler;
+import com.chexin.simple.development.core.annotation.Value;
+import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
+import org.reflections.scanners.FieldAnnotationsScanner;
+import org.reflections.scanners.MethodAnnotationsScanner;
+import org.reflections.scanners.MethodParameterScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ConfigurationBuilder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Field;
 import java.util.Set;
 
 
@@ -38,7 +44,7 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
-         return true;
+        return true;
     }
 
     /**
@@ -65,17 +71,25 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
-        IdempotentHandler.clearIdempotentModel();
-        ThreadLocalSignInfoHandler.remove();
+
     }
 
     public static void main(String[] args) {
-        Reflections reflections = new Reflections("com.chexin.simple.development.demo");
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(SimpleInterceptor.class);
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .forPackages("com.chexin.simple.development.demo") // 指定路径URL
+                .addScanners(new SubTypesScanner()) // 添加子类扫描工具
+                .addScanners(new FieldAnnotationsScanner()) // 添加 属性注解扫描工具
+                .addScanners(new MethodAnnotationsScanner()) // 添加 方法注解扫描工具
+                .addScanners(new MethodParameterScanner()) // 添加方法参数扫描工具
+        );
 
-        for(Class clazz : classes) {
-            //logger.info(clazz.getName());
-            System.out.println("Found: " + clazz.getName());
+        Set<Field> fields = reflections.getFieldsAnnotatedWith(Value.class);
+        for (Field field : fields) {
+            String key = field.getAnnotation(Value.class).value();
+            String value = PropertyConfigurer.getProperty(key);
+            System.out.println(value);
         }
+
+
     }
 }

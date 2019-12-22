@@ -1,36 +1,44 @@
 package com.chexin.simple.development.core.handler;
 
 
+import com.chexin.simple.development.core.annotation.Value;
+import com.chexin.simple.development.support.properties.PropertyConfigurer;
+import org.reflections.Reflections;
+import org.reflections.scanners.FieldAnnotationsScanner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-/**
- * @author liko.wang
- * @Date 2019/12/20/020 13:07
- * @Description //TODO
- **/
+import java.lang.reflect.Field;
+import java.util.Set;
+
 @Component
 public class SimpleBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
-//        // 属性赋值
-//        Field[] declaredFields = o.getClass().getDeclaredFields();
-//        Value annotation = declaredFields[0].getAnnotation(Value.class);
-//        if(annotation == null){
-//            return o;
-//        }
-//        String key = annotation.value();
-//        try {
-//            declaredFields[0].set(o, PropertyConfigurer.getProperty(key));
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-       return o;
+        Set<Field> fields = new Reflections(o.getClass().getName(), new FieldAnnotationsScanner()).getFieldsAnnotatedWith(Value.class);
+        if (CollectionUtils.isEmpty(fields)) {
+            return o;
+        }
+        for (Field field : fields) {
+            Value annotation = field.getAnnotation(Value.class);
+            String key = annotation.value();
+            String value = PropertyConfigurer.getProperty(key);
+            try {
+                field.setAccessible(true);
+                field.set(o, value);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("@value 属性赋值失败");
+            }
+        }
+        return o;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
         return o;
     }
+
+
 }
