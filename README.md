@@ -5,7 +5,7 @@
     主体框架基于spring4.3.3开发，基于javassist,cglib,Reflections技术实现
 
 ### 使用
-##### 1.maven项目配置(加入之前先配置settings.xml,在最下面demo项目中)
+##### 1.maven项目配置(加入之前先配置settings.xml[下载](http://file.diangc.cn/settings.xml))
         (1) 加入依赖
             <dependency>
                 <groupId>com.chexin</groupId>
@@ -179,7 +179,7 @@
 | generatorConfig.xml | mybatis插件 | 自动生成代码工具
 
 ### 功能清单
-` simple-development主要集中在service层的开发,大多数的封装都基于注解+aop来实现`
+>simple-development主要集中在service层的开发,大多数的封装都基于注解+aop来实现
 
 | 注解名 | 作用 |
 | --- | --- |
@@ -199,7 +199,7 @@
     /data/api/v1    （鉴权后的地址）
     /data/config/v1 （鉴权前的地址）
 ###接口定义
-    ```
+    
     public interface DemoService {
         /**
          * 查询列表
@@ -209,6 +209,8 @@
          */
         ResBody querydemoDoList(ReqBody reqBody) throws Exception;
     }
+   
+    
 ### 启动
 目前还是基于tomcat启动,将打好的war包放入webapps目录下直接启动即可
 
