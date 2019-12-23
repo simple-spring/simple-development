@@ -173,7 +173,6 @@
 | --- | --- | --- |
 | config | application.properties开发，测试，线上隔离 | 利用maven环境隔离打包,配置不同环境的文件
 | mybatis | mybatis的xml存放路径 | 与mapper映射
-| aop-config.xml | aop声明式事务配置 | javaconfig方式使用aop配置声明式事务tx标签不好实现,则1.0先用xml代替
 | log4j.properties | 日志文件 | 日志文件
 | log4j2.xml | 日志文件 | 日志文件 |
 | generatorConfig.xml | mybatis插件 | 自动生成代码工具
