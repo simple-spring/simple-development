@@ -15,7 +15,6 @@ import java.util.Properties;
 public class PropertyConfigurer {
 
     private static Map<String, String> configMap = null;
-    private static Map<String, String> baseMap = null;
 
     public static void loadApplicationProperties(String path) {
         try {
