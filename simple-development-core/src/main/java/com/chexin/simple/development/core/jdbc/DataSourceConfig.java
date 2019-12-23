@@ -9,12 +9,19 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -26,7 +33,6 @@ import java.util.Properties;
  * @Description mybatis config
  **/
 @Configuration
-@ImportResource("classpath:/aop-config.xml")
 public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
@@ -80,6 +86,42 @@ public class DataSourceConfig {
         p.setProperty("dialect", "mysql");
         pageHelper.setProperties(p);
         return pageHelper;
+    }
+
+    @Bean
+    public TransactionInterceptor txAdvice() {
+        // 读写
+        DefaultTransactionAttribute txAttr_REQUIRED = new DefaultTransactionAttribute();
+        txAttr_REQUIRED.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        // 只读
+        DefaultTransactionAttribute txAttr_REQUIRED_READONLY = new DefaultTransactionAttribute();
+        txAttr_REQUIRED_READONLY.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        txAttr_REQUIRED_READONLY.setReadOnly(true);
+
+        NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
+        source.addTransactionalMethod("add*", txAttr_REQUIRED);
+        source.addTransactionalMethod("save*", txAttr_REQUIRED);
+        source.addTransactionalMethod("insert*", txAttr_REQUIRED);
+        source.addTransactionalMethod("delete*", txAttr_REQUIRED);
+        source.addTransactionalMethod("update*", txAttr_REQUIRED);
+        source.addTransactionalMethod("exec*", txAttr_REQUIRED);
+        source.addTransactionalMethod("set*", txAttr_REQUIRED);
+        source.addTransactionalMethod("get*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("query*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("find*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("list*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("count*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("is*", txAttr_REQUIRED_READONLY);
+        // 默认读写
+        source.addTransactionalMethod("*", txAttr_REQUIRED);
+        return new TransactionInterceptor(transactionManager(), source);
+    }
+
+    @Bean
+    public Advisor txAdviceAdvisor() {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression(PropertyConfigurer.getProperty("aop.expression"));
+        return new DefaultPointcutAdvisor(pointcut, txAdvice());
     }
 
 }
