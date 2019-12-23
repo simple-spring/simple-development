@@ -9,7 +9,6 @@
     <modules>
         <module>simple-development-core</module>
         <module>simple-development-support</module>
-        <module>simple-development-demo</module>
     </modules>
     <packaging>pom</packaging>
     <url>http://maven.apache.org</url>
@@ -393,4 +392,16 @@
             <version>0.9.11</version>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>manila.releases</id>
+            <name>Internal Releases</name>
+            <url>http://nexus.diangc.cn/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>manila.Snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>http://nexus.diangc.cn/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
