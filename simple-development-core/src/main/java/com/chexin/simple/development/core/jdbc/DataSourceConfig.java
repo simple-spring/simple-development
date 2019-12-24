@@ -63,8 +63,10 @@ public class DataSourceConfig {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
-        sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(PropertyConfigurer.getProperty("mybatis.mapper.path")));
-        sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty("spring.base.package")+ PackageNameConstant.MODEL);
+        String defaultPath = "classpath*:mybatis/*/*.xml";
+        String path = PropertyConfigurer.getProperty("mybatis.mapper.path");
+        sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(path == null ? defaultPath : path));
+        sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty("spring.base.package") + PackageNameConstant.MODEL);
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
         return sqlSessionFactoryBean;
     }
@@ -120,7 +122,10 @@ public class DataSourceConfig {
     @Bean
     public Advisor txAdviceAdvisor() {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression(PropertyConfigurer.getProperty("aop.expression"));
+        String basePackageName = PropertyConfigurer.getProperty("spring.base.package");
+        String defaultExpression = "execution (* " + basePackageName + ".service..*.*(..))";
+        String expression = PropertyConfigurer.getProperty("aop.expression");
+        pointcut.setExpression(expression == null ? defaultExpression : expression);
         return new DefaultPointcutAdvisor(pointcut, txAdvice());
     }
 

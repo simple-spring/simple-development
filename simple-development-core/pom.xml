@@ -16,11 +16,11 @@
         <dependency>
             <groupId>com.chexin</groupId>
             <artifactId>simple-development-support</artifactId>
-            <version>1.0</version>
+            <version>2.0</version>
         </dependency>
     </dependencies>
     <build>
-        <finalName>manila.common</finalName>
+        <finalName>simple-development-core</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>

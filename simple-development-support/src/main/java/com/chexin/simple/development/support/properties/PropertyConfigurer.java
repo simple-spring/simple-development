@@ -45,6 +45,6 @@ public class PropertyConfigurer {
         if (StringUtils.hasText(value)) {
             return value;
         }
-        throw new RuntimeException("no fonud config key : " + key);
+        return null;
     }
 }
