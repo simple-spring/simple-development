@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 注册service
+ * 忽略注册service 方法
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

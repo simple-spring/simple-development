@@ -55,7 +55,7 @@ public class ServerFactory {
         }
         System.err.println("服务:" + serviceName + "已加载");
 
-        Method[] methods = AopTargetUtils.getTarget(serviceBean).getClass().getMethods();
+        Method[] methods = AopTargetUtils.getTarget(serviceBean).getClass().getDeclaredMethods();
         if (methods.length == 0) {
             throw new RuntimeException(AopTargetUtils.getTarget(serviceBean).getClass() + "接口实现方法为空");
         }
