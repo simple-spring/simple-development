@@ -2,6 +2,7 @@ package com.chexin.simple.development.demo.service.impl;
 
 
 import com.chexin.simple.development.core.annotation.IsApiService;
+import com.chexin.simple.development.core.annotation.NoApiMethod;
 import com.chexin.simple.development.core.annotation.ValidHandler;
 import com.chexin.simple.development.core.annotation.Value;
 import com.chexin.simple.development.core.mvc.req.ReqBody;
@@ -38,6 +39,7 @@ public class DemoServiceImpl implements DemoService {
     }
 
     @Override
+    @NoApiMethod
     public ResBody insertDemoDo(ReqBody reqBody) throws Exception {
         DemoDo demoDo = new DemoDo();
         demoDo.setName("test");
