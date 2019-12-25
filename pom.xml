@@ -9,7 +9,6 @@
     <modules>
         <module>simple-development-core</module>
         <module>simple-development-support</module>
-        <module>simple-development-dubbo-api</module>
     </modules>
     <packaging>pom</packaging>
     <url>http://maven.apache.org</url>
