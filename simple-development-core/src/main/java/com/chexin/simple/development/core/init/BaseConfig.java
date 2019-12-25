@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION 基础配置
  */
 @Configuration
-@ComponentScan(basePackages = {"com.chexin.simple.development.core.init", "com.chexin.simple.development.core.handler", "com.chexin.simple.development.core.jdbc", "com.chexin.simple.development.core.Idempotent", "com.chexin.simple.development.core.valid", "com.chexin.simple.development.core.dozer", "com.chexin.simple.development.core.datasource"})
+@ComponentScan(basePackages = {"com.chexin.simple.development.core.init", "com.chexin.simple.development.core.handler", "com.chexin.simple.development.core.Idempotent", "com.chexin.simple.development.core.valid", "com.chexin.simple.development.core.dozer"})
 public class BaseConfig {
     public BaseConfig() {
         System.out.println("base config init ");

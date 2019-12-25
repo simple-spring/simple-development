@@ -2,6 +2,7 @@ package com.chexin.simple.development.core.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.chexin.simple.development.core.constant.PackageNameConstant;
+import com.chexin.simple.development.core.constant.SystemProperties;
 import com.chexin.simple.development.core.constant.ValueConstant;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import com.github.pagehelper.PageHelper;
@@ -13,6 +14,7 @@ import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -33,7 +35,9 @@ import java.util.Properties;
  * @Description mybatis config
  **/
 @Configuration
+@ComponentScan(basePackages = {"com.chexin.simple.development.core.datasource"})
 public class DataSourceConfig {
+
     @Bean
     public DataSource dataSource() {
         System.out.println("Initialize the data source...");
@@ -63,10 +67,8 @@ public class DataSourceConfig {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
-        String defaultPath = "classpath*:mybatis/*/*.xml";
-        String path = PropertyConfigurer.getProperty("mybatis.mapper.path");
-        sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(path == null ? defaultPath : path));
-        sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty("spring.base.package") + PackageNameConstant.MODEL);
+        sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPERXMLPATH)));
+        sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MODELPATH));
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
         return sqlSessionFactoryBean;
     }
@@ -122,10 +124,7 @@ public class DataSourceConfig {
     @Bean
     public Advisor txAdviceAdvisor() {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        String basePackageName = PropertyConfigurer.getProperty("spring.base.package");
-        String defaultExpression = "execution (* " + basePackageName + ".service..*.*(..))";
-        String expression = PropertyConfigurer.getProperty("aop.expression");
-        pointcut.setExpression(expression == null ? defaultExpression : expression);
+        pointcut.setExpression(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_EXPRESSION));
         return new DefaultPointcutAdvisor(pointcut, txAdvice());
     }
 

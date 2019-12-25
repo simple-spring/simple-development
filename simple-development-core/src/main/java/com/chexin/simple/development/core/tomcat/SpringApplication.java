@@ -1,13 +1,23 @@
 package com.chexin.simple.development.core.tomcat;
 
+import com.chexin.simple.development.core.annotation.config.SimpleConfig;
+import com.chexin.simple.development.core.annotation.config.SpringSimpleApplication;
+import com.chexin.simple.development.core.config.SimpleSpiConfig;
+import com.chexin.simple.development.core.constant.SystemProperties;
+import com.chexin.simple.development.core.init.AppInitializer;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.reflections.Reflections;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
+import java.lang.annotation.Annotation;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author liko.wang
@@ -64,6 +74,15 @@ public class SpringApplication {
             tomcat.start();
             long end = System.currentTimeMillis();
             log(end - begin);
+            System.out.println("\n" +
+                    "                 _                   _                 _                       _ \n" +
+                    "                (_)                 (_)               | |                     | |\n" +
+                    "  ___ _ __  _ __ _ _ __   __ _   ___ _ _ __ ___  _ __ | | ___    ___ _ __   __| |\n" +
+                    " / __| '_ \\| '__| | '_ \\ / _` | / __| | '_ ` _ \\| '_ \\| |/ _ \\  / _ \\ '_ \\ / _` |\n" +
+                    " \\__ \\ |_) | |  | | | | | (_| | \\__ \\ | | | | | | |_) | |  __/ |  __/ | | | (_| |\n" +
+                    " |___/ .__/|_|  |_|_| |_|\\__, | |___/_|_| |_| |_| .__/|_|\\___|  \\___|_| |_|\\__,_|\n" +
+                    "     | |                  __/ |                 | |                              \n" +
+                    "     |_|                 |___/                  |_|                              \n");
             //在控制台回车就可以重启，提高效率
             while (true) {
                 char c = (char) System.in.read();
@@ -106,7 +125,7 @@ public class SpringApplication {
     private void log(long time) {
         System.out.println("********************************************************");
         System.out.println("启动成功: http://127.0.0.1:" + port + "   in:" + time + "ms");
-        System.out.println("您可以直接在console里敲回车，重启tomcat");
+        System.out.println("小提示：直接在console里敲回车，可以重启tomcat");
         System.out.println("********************************************************");
     }
 
@@ -116,7 +135,50 @@ public class SpringApplication {
     }
 
 
-    public static void run() {
+    public static void run(Class appClass) {
+        String banner = "\n" +
+                "                                                                                                                                                            \n" +
+                "                                                                                                                                  .---.                     \n" +
+                "         _________   _...._              .--.   _..._                                  .--. __  __   ___  _________   _...._      |   |      __.....__      \n" +
+                "         \\        |.'      '-.           |__| .'     '.   .--./)                       |__||  |/  `.'   `.\\        |.'      '-.   |   |  .-''         '.    \n" +
+                "          \\        .'```'.    '. .-,.--. .--..   .-.   . /.''\\\\                        .--.|   .-.  .-.   '\\        .'```'.    '. |   | /     .-''\"'-.  `.  \n" +
+                "           \\      |       \\     \\|  .-. ||  ||  '   '  || |  | |                       |  ||  |  |  |  |  | \\      |       \\     \\|   |/     /________\\   \\ \n" +
+                "       _    |     |        |    || |  | ||  ||  |   |  | \\`-' /                    _   |  ||  |  |  |  |  |  |     |        |    ||   ||                  | \n" +
+                "     .' |   |      \\      /    . | |  | ||  ||  |   |  | /(\"'`                   .' |  |  ||  |  |  |  |  |  |      \\      /    . |   |\\    .-------------' \n" +
+                "    .   | / |     |\\`'-.-'   .'  | |  '- |  ||  |   |  | \\ '---.                .   | /|  ||  |  |  |  |  |  |     |\\`'-.-'   .'  |   | \\    '-.____...---. \n" +
+                "  .'.'| |// |     | '-....-'`    | |     |__||  |   |  |  /'\"\"'.\\             .'.'| |//|__||__|  |__|  |__|  |     | '-....-'`    |   |  `.             .'  \n" +
+                ".'.'.-'  / .'     '.             | |         |  |   |  | ||     ||          .'.'.-'  /                      .'     '.             '---'    `''-...... -'    \n" +
+                ".'   \\_.''-----------'           |_|         |  |   |  | \\'. __//           .'   \\_.'                     '-----------'                                     \n" +
+                "                                             '--'   '--'  `'---'                                                                                            \n";
+
+        System.out.println(banner);
+        // check system properties
+        Annotation[] annotations = appClass.getAnnotations();
+        if (annotations.length == 0) {
+            return;
+        }
+
+        for (Annotation annotation : annotations) {
+            AppInitializer.annotationSet.add(annotation);
+            if (annotation instanceof SpringSimpleApplication) {
+                SpringSimpleApplication springSimpleApplication = (SpringSimpleApplication) annotation;
+                // 启动类名
+                System.setProperty(SystemProperties.SPRINGAPPLICATION_CLASS_NAME, appClass.getName());
+                // 应用名
+                System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG, SystemProperties.APPLICATION_IS_ENABLE);
+                System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME, springSimpleApplication.applicationName());
+                // 系统包名
+                if (StringUtils.isEmpty(springSimpleApplication.appPackagePathName())) {
+                    System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME, appClass.getPackage().getName());
+                } else {
+                    System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME, springSimpleApplication.appPackagePathName());
+                }
+            }
+        }
+        // 是否有基础组件
+        if (StringUtils.isEmpty(System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG))) {
+            throw new RuntimeException(" no SpringSimpleApplication");
+        }
         // 读取项目配置文件
         PropertyConfigurer.loadApplicationProperties("application.properties");
         String port = PropertyConfigurer.getProperty("server.port");

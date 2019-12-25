@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 public class PropertyConfigurer {
 
-    private static Map<String, String> configMap = null;
+    private static Map<String, String> configMap = new HashMap<>();
 
     public static void loadApplicationProperties(String path) {
         try {
@@ -26,9 +26,8 @@ public class PropertyConfigurer {
 
             Map<String, String> map = new HashMap<>();
             for (Object key : properties.keySet()) {
-                map.put(key.toString(), properties.getProperty(key.toString()));
+                configMap.put(key.toString(), properties.getProperty(key.toString()));
             }
-            configMap = Collections.unmodifiableMap(map);
         } catch (IOException e) {
             throw new RuntimeException("load Properties  application.properties  fail");
         }
@@ -47,4 +46,15 @@ public class PropertyConfigurer {
         }
         return null;
     }
+
+    /**
+     * 设置配置配置文件，不可以修改
+     *
+     * @param key
+     * @return
+     */
+    public static void setProperty(String key, String value) {
+        configMap.put(key, value);
+    }
+
 }

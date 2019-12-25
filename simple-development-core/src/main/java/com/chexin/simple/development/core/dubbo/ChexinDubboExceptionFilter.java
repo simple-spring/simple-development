@@ -1,4 +1,4 @@
-package com.chexin.simple.development.core.dubboFillter;
+package com.chexin.simple.development.core.dubbo;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;

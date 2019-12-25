@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * desc:    自定义数据源注解(如果有事务，则无法动态切换数据源,应加在事务的上一层)
+ * 组件发现
  *
  * @author liko wang
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DataSource {
-    String value();
+public @interface Spi {
+    String configName() default "";
 }

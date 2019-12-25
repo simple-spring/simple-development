@@ -9,6 +9,7 @@
     <modules>
         <module>simple-development-core</module>
         <module>simple-development-support</module>
+        <module>simple-development-dubbo-api</module>
     </modules>
     <packaging>pom</packaging>
     <url>http://maven.apache.org</url>
@@ -22,7 +23,7 @@
         <druid.version>0.2.6</druid.version>
         <mysql-connector-java.version>5.1.29</mysql-connector-java.version>
         <mybatis.version>3.2.7</mybatis.version>
-        <dubbo.version>2.5.3</dubbo.version>
+        <dubbo.version>2.6.2</dubbo.version>
 
         <mybatis-plus.version>2.0.5</mybatis-plus.version>
         <beetl.version>2.7.18</beetl.version>
@@ -198,11 +199,10 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>taglibs</groupId>

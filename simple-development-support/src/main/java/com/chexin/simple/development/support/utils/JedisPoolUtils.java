@@ -13,6 +13,14 @@ public class JedisPoolUtils {
 
     private static JedisPool pool;
 
+    public static JedisPool getPool() {
+        return pool;
+    }
+
+    public static void setPool(JedisPool pool) {
+        JedisPoolUtils.pool = pool;
+    }
+
     /**
      * 初始化Redis连接池
      */

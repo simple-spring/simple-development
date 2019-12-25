@@ -1,7 +1,8 @@
-package com.chexin.simple.development.core.init;
+package com.chexin.simple.development.core.mvc;
 
 import com.chexin.simple.development.core.annotation.SimpleInterceptor;
 import com.chexin.simple.development.core.constant.PackageNameConstant;
+import com.chexin.simple.development.core.constant.SystemProperties;
 import com.chexin.simple.development.core.mvc.interceptor.ApiSupportInterceptor;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
@@ -62,7 +63,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 默认拦截器
         registry.addInterceptor(new ApiSupportInterceptor());
         try {
-            Reflections reflections = new Reflections(PropertyConfigurer.getProperty("spring.base.package") + PackageNameConstant.INTERCEPTOR);
+            Reflections reflections = new Reflections(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_INTERCEPTORPATH));
             Set<Class<?>> classes = reflections.getTypesAnnotatedWith(SimpleInterceptor.class);
 
             if (CollectionUtils.isEmpty(classes)) {
