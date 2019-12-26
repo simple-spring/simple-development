@@ -9,12 +9,13 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisConfig {
     public RedisConfig() {
         System.out.println("redis initialized...");
-        init(PropertyConfigurer.getProperty("redisHost"), PropertyConfigurer.getProperty("redisPort"),
-                PropertyConfigurer.getProperty("redisPwd"),
-                Long.valueOf(PropertyConfigurer.getProperty("maxTotal")).intValue(),
-                Long.valueOf(PropertyConfigurer.getProperty("maxWaitMillis")),
-                Long.valueOf(PropertyConfigurer.getProperty("maxIdle")).intValue(),
-                Long.valueOf(PropertyConfigurer.getProperty("timeout")).intValue());
+        init(PropertyConfigurer.getProperty("spring.simple.redisHost"),
+                PropertyConfigurer.getProperty("spring.simple.redisPort"),
+                PropertyConfigurer.getProperty("spring.simple.redisPwd"),
+                Long.valueOf(PropertyConfigurer.getProperty("spring.simple.maxTotal")).intValue(),
+                Long.valueOf(PropertyConfigurer.getProperty("spring.simple.maxWaitMillis")),
+                Long.valueOf(PropertyConfigurer.getProperty("spring.simple.maxIdle")).intValue(),
+                Long.valueOf(PropertyConfigurer.getProperty("spring.simple.timeout")).intValue());
         System.out.println("redis initialized successfully");
     }
 

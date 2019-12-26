@@ -18,7 +18,7 @@ public class DubboConfig {
     @Bean
     public ApplicationConfig applicationConfig() {
         ApplicationConfig applicationConfig = new ApplicationConfig();
-        applicationConfig.setName(PropertyConfigurer.getProperty("dubbo.application.name"));
+        applicationConfig.setName(PropertyConfigurer.getProperty("spring.simple.dubbo.application.name"));
         return applicationConfig;
     }
 
@@ -43,7 +43,7 @@ public class DubboConfig {
     @Bean
     public RegistryConfig registryConfig() {
         RegistryConfig registryConfig = new RegistryConfig();
-        registryConfig.setAddress(PropertyConfigurer.getProperty("dubbo.registry.address"));
+        registryConfig.setAddress(PropertyConfigurer.getProperty("spring.simple.dubbo.registry.address"));
         registryConfig.setClient("zkclient");
         return registryConfig;
     }
@@ -57,8 +57,8 @@ public class DubboConfig {
     @Bean
     public ProtocolConfig protocolConfig() {
         ProtocolConfig protocolConfig = new ProtocolConfig();
-        protocolConfig.setName(PropertyConfigurer.getProperty("dubbo.protocol.name"));
-        protocolConfig.setPort(Long.valueOf(PropertyConfigurer.getProperty("dubbo.protocol.port")).intValue());
+        protocolConfig.setName(PropertyConfigurer.getProperty("spring.simple.dubbo.protocol.name"));
+        protocolConfig.setPort(Long.valueOf(PropertyConfigurer.getProperty("spring.simple.dubbo.protocol.port")).intValue());
         return protocolConfig;
     }
 }
