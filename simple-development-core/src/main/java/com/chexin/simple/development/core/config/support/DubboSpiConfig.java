@@ -6,6 +6,7 @@ import com.chexin.simple.development.core.config.SimpleSpiConfig;
 import com.chexin.simple.development.core.constant.PackageNameConstant;
 import com.chexin.simple.development.core.constant.SystemProperties;
 import com.chexin.simple.development.core.dubbo.DubboConfig;
+import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import com.chexin.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -21,16 +22,15 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo, DubboConfig>
     public Class<DubboConfig> getConfigClass(EnableDubbo enableDubbo) {
         try {
             // 添加DataSourceConfig MapperScan扫描包的路径
-            String defaultDubboPackageName = null;
             // 默认包路径
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME);
             if (StringUtils.isEmpty(enableDubbo.dubboPackage())) {
-                defaultDubboPackageName = basePackageName + PackageNameConstant.DUBBO;
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBOPACKAGE, basePackageName + PackageNameConstant.DUBBO);
             } else {
-                defaultDubboPackageName = enableDubbo.dubboPackage();
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBOPACKAGE, enableDubbo.dubboPackage());
             }
             List<String> mapperPackageNames = new ArrayList<>();
-            mapperPackageNames.add(defaultDubboPackageName);
+            mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBOPACKAGE));
             Class dubboConfig = ClassLoadUtil.javassistCompile(DubboConfig.class, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", mapperPackageNames, "basePackages");
             return dubboConfig;
         } catch (Exception ex) {

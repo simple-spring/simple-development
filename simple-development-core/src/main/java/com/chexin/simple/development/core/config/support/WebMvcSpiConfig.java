@@ -29,6 +29,16 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc, WebConfig>
             } else {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MVC_CONFIG_INTERCEPTORPATH, enableWebMvc.interceptorPackagePath());
             }
+            if (StringUtils.isEmpty(enableWebMvc.urlPath())) {
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MVC_CONFIG_URLPATH, "/");
+            } else {
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MVC_CONFIG_URLPATH, enableWebMvc.urlPath());
+            }
+            if (StringUtils.isEmpty(enableWebMvc.packagePath())) {
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MVC_CONFIG_PACKAGEPATH, "");
+            } else {
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MVC_CONFIG_PACKAGEPATH, enableWebMvc.packagePath());
+            }
 
             // 修改WebConfig ComponentScan扫描包的路径
             List<String> mvcPackageNames = new ArrayList<>();

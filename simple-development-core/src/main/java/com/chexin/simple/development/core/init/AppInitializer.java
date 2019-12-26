@@ -112,7 +112,7 @@ public class AppInitializer implements WebApplicationInitializer {
             ServletRegistration.Dynamic dispatcher =
                     servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
             dispatcher.setLoadOnStartup(1);
-            dispatcher.addMapping("/");
+            dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URLPATH));
 
         } catch (Exception e) {
             e.printStackTrace();
