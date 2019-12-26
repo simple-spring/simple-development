@@ -40,20 +40,12 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>**/*.xml</include>
                     <include>**/*.properties</include>
-                    <include>META-INF/dubbo/com.alibaba.dubbo.rpc.Filter</include>
                 </includes>
                 <excludes>
                     <exclude>generatorConfig.xml</exclude>
                     <exclude>config/*/*.properties</exclude>
                 </excludes>
-            </resource>
-            <!-- 结合com.alibaba.dubbo.container.Main -->
-            <resource>
-                <targetPath>${project.build.directory}/classes/META-INF/spring</targetPath>
-                <directory>src/main/resources/META-INF/dubbo/</directory>
-                <filtering>true</filtering>
             </resource>
         </resources>
 
@@ -164,10 +156,6 @@
             <id>dev</id>
             <properties>
                 <package.environment>dev</package.environment>
-                <log_level>INFO</log_level>
-                <log_appender>stdout,D,I,E</log_appender>
-                <log_mapper_level>INFO</log_mapper_level>
-                <log_path>E:\workspace\logs\manila-risk-inside</log_path>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -177,20 +165,12 @@
             <id>net</id>
             <properties>
                 <package.environment>net</package.environment>
-                <log_level>INFO</log_level>
-                <log_appender>stdout,D,I,E</log_appender>
-                <log_mapper_level>INFO</log_mapper_level>
-                <log_path>E:\workspace\logs\manila-risk-inside</log_path>
             </properties>
         </profile>
         <profile>
             <id>test</id>
             <properties>
                 <package.environment>test</package.environment>
-                <log_level>INFO</log_level>
-                <log_appender>stdout,D,I,E</log_appender>
-                <log_mapper_level>INFO</log_mapper_level>
-                <log_path>E:\workspace\logs\manila-risk-inside</log_path>
             </properties>
         </profile>
     </profiles>
