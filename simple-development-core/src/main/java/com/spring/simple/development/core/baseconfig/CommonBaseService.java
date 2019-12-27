@@ -3,7 +3,7 @@ package com.spring.simple.development.core.baseconfig;
 import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
 import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
-import com.spring.simple.development.support.GlobalException;
+import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.PoJoCopyUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.spring.simple.development.support.ResponseCode.RES_PARAM_IS_EMPTY;
+import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
 
 
 /**

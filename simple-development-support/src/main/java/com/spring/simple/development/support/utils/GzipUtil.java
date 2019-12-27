@@ -1,6 +1,6 @@
 package com.spring.simple.development.support.utils;
 
-import com.spring.simple.development.support.GlobalException;
+import com.spring.simple.development.support.exception.GlobalException;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.ByteArrayInputStream;
@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import static com.spring.simple.development.support.ResponseCode.RES_DECRYPT_FAIL;
-import static com.spring.simple.development.support.ResponseCode.RES_ENCRYPT_FAIL;
+import static com.spring.simple.development.support.exception.ResponseCode.RES_DECRYPT_FAIL;
+import static com.spring.simple.development.support.exception.ResponseCode.RES_ENCRYPT_FAIL;
 
 /**
  * 数据压缩

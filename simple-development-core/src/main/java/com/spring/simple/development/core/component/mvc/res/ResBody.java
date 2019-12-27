@@ -2,11 +2,11 @@ package com.spring.simple.development.core.component.mvc.res;
 
 
 import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
-import com.spring.simple.development.support.GlobalResponseCode;
+import com.spring.simple.development.support.exception.GlobalResponseCode;
 
 import java.io.Serializable;
 
-import static com.spring.simple.development.support.GlobalResponseCode.SYS_SUCCESS;
+import static com.spring.simple.development.support.exception.GlobalResponseCode.SYS_SUCCESS;
 
 
 /**

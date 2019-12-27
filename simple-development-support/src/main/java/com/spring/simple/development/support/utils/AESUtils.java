@@ -1,7 +1,7 @@
 package com.spring.simple.development.support.utils;
 
-import com.spring.simple.development.support.GlobalException;
-import com.spring.simple.development.support.ResponseCode;
+import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.ResponseCode;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -9,7 +9,7 @@ import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.demo.dao.DemoDao;
 import com.spring.simple.development.demo.model.DemoDo;
 import com.spring.simple.development.demo.service.DemoService;
-import com.spring.simple.development.support.GlobalResponseCode;
+import com.spring.simple.development.support.exception.GlobalResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

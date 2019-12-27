@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@SimpleConfig
+@SimpleComponent
 public @interface EnableDubbo {
 
     /**

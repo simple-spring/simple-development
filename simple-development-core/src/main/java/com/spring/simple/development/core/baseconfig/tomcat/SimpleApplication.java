@@ -18,7 +18,7 @@ import java.lang.annotation.Annotation;
  * @return
  * @Description tomcat启动项目
  **/
-public class SpringSimpleApplication {
+public class SimpleApplication {
     private static final char ENTER_CHAR = '\n';
     private static final int DEFAULT_PORT = 8000;
     private int port = DEFAULT_PORT;
@@ -35,7 +35,7 @@ public class SpringSimpleApplication {
      * @param isServlet3Enable 是否启用servlet 3.0
      *                         支持，如果启用的话，就需要扫描jar包中是否有Servlet等annotation，这个会影响启动时间，默认不开启
      */
-    public SpringSimpleApplication(int port, boolean isServlet3Enable) {
+    public SimpleApplication(int port, boolean isServlet3Enable) {
         this.port = port;
         this.isServlet3Enable = isServlet3Enable;
     }
@@ -46,7 +46,7 @@ public class SpringSimpleApplication {
      *
      * @param port 端口
      */
-    public SpringSimpleApplication(int port) {
+    public SimpleApplication(int port) {
         this(port, false);
     }
 
@@ -54,7 +54,7 @@ public class SpringSimpleApplication {
      * 构建一个<code>TomcatBootstrapHelper.java</code><br>
      * 端口：8080、不启用servlet 3.0 支持、环境变量spring.profiles.active=dev
      */
-    public SpringSimpleApplication() {
+    public SimpleApplication() {
         this(DEFAULT_PORT);
     }
 
@@ -175,7 +175,7 @@ public class SpringSimpleApplication {
         // 读取项目配置文件
         PropertyConfigurer.loadApplicationProperties("application.properties");
         String port = PropertyConfigurer.getProperty("server.port");
-        SpringSimpleApplication tomcatTest = new SpringSimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
+        SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
         tomcatTest.start();
     }
 

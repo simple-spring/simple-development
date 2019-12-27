@@ -27,7 +27,7 @@ public class RootSpiConfig implements SimpleSpiConfig<SpringSimpleApplication, R
             } else {
                 packageNames.add(springSimpleApplication.appPackagePathName());
             }
-            packageNames.add(SystemProperties.SPRING_SIMPLE_BASE_PACKAGE_PATH);
+            packageNames.add(SystemProperties.SPRING_SIMPLE_BASE_COMPONENT_PACKAGE_PATH);
             Class rootConfig = ClassLoadUtil.javassistCompile(RootConfig.class, "org.springframework.context.annotation.ComponentScan", packageNames, "basePackages");
             return rootConfig;
         } catch (Exception ex) {

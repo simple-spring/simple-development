@@ -1,4 +1,4 @@
-package com.spring.simple.development.support;
+package com.spring.simple.development.support.exception;
 
 
 public class NoPermissionException extends RuntimeException {

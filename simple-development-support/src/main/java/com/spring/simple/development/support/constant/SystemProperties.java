@@ -10,7 +10,12 @@ public class SystemProperties {
     /**
      * spring simple基础组件包路径
      */
-    public static final String SPRING_SIMPLE_BASE_PACKAGE_PATH = "com.spring.simple.development.core.baseconfig";
+    public static final String SPRING_SIMPLE_BASE_COMPONENT_PACKAGE_PATH = "com.spring.simple.development.core.baseconfig";
+
+    /**
+     * spring simple组件包路径
+     */
+    public static final String SPRING_SIMPLE_COMPONENT_PACKAGE_PATH = "com.spring.simple.development.core.component";
 
     /**
      * 程序入口类全称

@@ -8,8 +8,8 @@ import com.alibaba.dubbo.common.utils.ReflectUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.rpc.*;
 import com.alibaba.dubbo.rpc.service.GenericService;
-import com.spring.simple.development.support.GlobalException;
-import com.spring.simple.development.support.GlobalResponseCode;
+import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.GlobalResponseCode;
 
 import java.lang.reflect.Method;
 

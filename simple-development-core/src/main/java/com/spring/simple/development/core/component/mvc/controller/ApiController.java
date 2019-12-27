@@ -10,7 +10,7 @@ import com.spring.simple.development.support.constant.VersionConstant;
 import com.spring.simple.development.core.baseconfig.ServiceInvoke;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.HttpRequestUtil;
-import com.spring.simple.development.support.GlobalException;
+import com.spring.simple.development.support.exception.GlobalException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.spring.simple.development.support.ResponseCode.RES_PARAM_INVALID;
-import static com.spring.simple.development.support.ResponseCode.RES_PARAM_IS_EMPTY;
+import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_INVALID;
+import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
 
 
 /**

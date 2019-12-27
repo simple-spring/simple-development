@@ -3,7 +3,7 @@ package com.spring.simple.development.core.baseconfig.Idempotent;
 import com.alibaba.fastjson.JSON;
 import com.spring.simple.development.core.annotation.base.Idempotent;
 import com.spring.simple.development.support.utils.JedisPoolUtils;
-import com.spring.simple.development.support.GlobalException;
+import com.spring.simple.development.support.exception.GlobalException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -18,7 +18,7 @@ import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.Method;
 
-import static com.spring.simple.development.support.ResponseCode.RES_IDEMPOTENT_INVALID;
+import static com.spring.simple.development.support.exception.ResponseCode.RES_IDEMPOTENT_INVALID;
 
 
 /**

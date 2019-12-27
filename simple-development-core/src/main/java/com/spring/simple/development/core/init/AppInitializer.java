@@ -1,7 +1,7 @@
 package com.spring.simple.development.core.init;
 
 import com.spring.simple.development.core.annotation.base.Spi;
-import com.spring.simple.development.core.annotation.config.SimpleConfig;
+import com.spring.simple.development.core.component.ComponentContainer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -51,43 +51,50 @@ public class AppInitializer implements WebApplicationInitializer {
             // 获取main类的包路径
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME);
             if (StringUtils.isEmpty(basePackageName)) {
-                throw new RuntimeException("base package is empty");
+                System.out.println("spring simple base package is empty");
+                return;
             }
+            if (CollectionUtils.isEmpty(annotationSet)) {
+                System.out.println("not enabled spring simple component");
+                return;
+            }
+            // 组件容器初始化
+            ComponentContainer.initComponentContainer();
+
+            for (Annotation annotation : annotationSet) {
+                // 选择加载的组件
+                if (ComponentContainer.Components.containsKey(annotation.annotationType().getName())) {
+                    System.out.println(ComponentContainer.Components.get(annotation.annotationType().getName()).getSimpleName() +"init");
+                    annotationMap.put(ComponentContainer.Components.get(annotation.annotationType().getName()).getSimpleName(), annotation);
+                }
+            }
+            // 是否有启动的组件
+            if(CollectionUtils.isEmpty(annotationMap)) {
+                System.out.println("not enabled spring simple component");
+                return;
+            }
+
+            List<Object> configClassList = new ArrayList<>();
             // 获取所有的组件注解实现
             Reflections sipReflections = new Reflections(SimpleSpiConfig.class);
             Set<Class<?>> classes = sipReflections.getTypesAnnotatedWith(Spi.class);
             if (CollectionUtils.isEmpty(classes)) {
-                throw new RuntimeException("SimpleConfig is empty");
+                throw new RuntimeException("spring simple component is empty");
             }
-
-            // 获取所有的组件注解
-            Reflections configReflections = new Reflections("com.spring.simple.development.core.annotation.config");
-            Set<Class<?>> simpleConfigList = configReflections.getTypesAnnotatedWith(SimpleConfig.class);
-            if (CollectionUtils.isEmpty(simpleConfigList) == false) {
-                for (Class simpleClass : simpleConfigList) {
-                    for (Annotation annotation : annotationSet) {
-                        // 选择需要加载的组件
-                        if (simpleClass.getName().equals(annotation.annotationType().getName())) {
-                            annotationMap.put(simpleClass.getSimpleName(), annotation);
-                        }
-                    }
-                }
-            }
-            List<Object> configClassList = new ArrayList<>();
-
             for (Class configClass : classes) {
                 Spi spi = (Spi) configClass.getAnnotation(Spi.class);
                 // 获取组件名
                 String configName = spi.configName();
                 if (annotationMap.containsKey(configName)) {
                     Object configObject = configClass.newInstance();
-                    Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME,annotationMap.get(configName).annotationType());
+                    Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME, annotationMap.get(configName).annotationType());
                     Object resultClass = method.invoke(configObject, annotationMap.get(configName));
                     configClassList.add(resultClass);
                 }
             }
             if (CollectionUtils.isEmpty(configClassList)) {
-                throw new RuntimeException("spring SimpleConfig is empty");
+                System.out.println("not enabled spring simple");
+                return;
             }
 
             // 配置字符集过滤器
@@ -100,7 +107,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
             // 创建Spring的root配置环境
             AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-            rootContext.setBeanName("spring simple "+System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME));
+            rootContext.setBeanName("spring simple " + System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME));
             Class[] configClass = new Class[configClassList.size()];
             rootContext.register(configClassList.toArray(configClass));
             // 将Spring的配置添加为listener

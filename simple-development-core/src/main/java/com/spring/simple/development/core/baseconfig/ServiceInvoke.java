@@ -7,7 +7,7 @@ import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.support.utils.DateUtils;
-import com.spring.simple.development.support.GlobalException;
+import com.spring.simple.development.support.exception.GlobalException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.spring.simple.development.support.GlobalResponseCode.SERVICE_NOT_EXIST;
+import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NOT_EXIST;
 
 /**
  * @author liko.wang
