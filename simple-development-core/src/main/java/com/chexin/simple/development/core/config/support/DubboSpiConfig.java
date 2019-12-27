@@ -9,6 +9,7 @@ import com.chexin.simple.development.core.dubbo.DubboConfig;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import com.chexin.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,11 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo, DubboConfig>
     @Override
     public Class<DubboConfig> getConfigClass(EnableDubbo enableDubbo) {
         try {
+            // dubbo参数校验
+            Assert.isNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_APPLICATION_NAME));
+            Assert.isNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_REGISTRY_ADDRESS));
+            Assert.isNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_PROTOCOL_NAME));
+            Assert.isNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_PROTOCOL_PORT));
             // 添加DataSourceConfig MapperScan扫描包的路径
             // 默认包路径
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME);

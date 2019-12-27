@@ -165,7 +165,6 @@ public class SpringApplication {
                 // 启动类名
                 System.setProperty(SystemProperties.SPRINGAPPLICATION_CLASS_NAME, appClass.getName());
                 // 应用名
-                System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG, SystemProperties.APPLICATION_IS_ENABLE);
                 System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME, springSimpleApplication.applicationName());
                 // 系统包名
                 if (StringUtils.isEmpty(springSimpleApplication.appPackagePathName())) {
@@ -177,7 +176,7 @@ public class SpringApplication {
         }
         // 是否有基础组件
         if (StringUtils.isEmpty(System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG))) {
-            throw new RuntimeException(" no SpringSimpleApplication");
+            throw new RuntimeException(" no SpringSimpleApplication Component");
         }
         // 读取项目配置文件
         PropertyConfigurer.loadApplicationProperties("application.properties");

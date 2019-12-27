@@ -4,12 +4,38 @@ import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ProtocolConfig;
 import com.alibaba.dubbo.config.ProviderConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
+import com.chexin.simple.development.core.constant.SystemProperties;
 import com.chexin.simple.development.support.properties.PropertyConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DubboConfig {
+    /**
+     * @author liko.wang
+     * @Date 2019/12/27/027 16:09
+     * @Description 应用名
+     **/
+    private String applicationName = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_APPLICATION_NAME);
+    /**
+     * @author liko.wang
+     * @Date 2019/12/27/027 16:09
+     * @Description 注册地址
+     **/
+    private String address = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_REGISTRY_ADDRESS);
+    /**
+     * @author liko.wang
+     * @Date 2019/12/27/027 16:09
+     * @Description 协议名
+     **/
+    private String protocolName = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_PROTOCOL_NAME);
+    /**
+     * @author liko.wang
+     * @Date 2019/12/27/027 16:09
+     * @Description 端口号
+     **/
+    private Integer port = Long.valueOf(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_PROTOCOL_PORT)).intValue();
+
     /**
      * 应用名
      *
@@ -18,7 +44,7 @@ public class DubboConfig {
     @Bean
     public ApplicationConfig applicationConfig() {
         ApplicationConfig applicationConfig = new ApplicationConfig();
-        applicationConfig.setName(PropertyConfigurer.getProperty("spring.simple.dubbo.application.name"));
+        applicationConfig.setName(applicationName);
         return applicationConfig;
     }
 
@@ -43,7 +69,7 @@ public class DubboConfig {
     @Bean
     public RegistryConfig registryConfig() {
         RegistryConfig registryConfig = new RegistryConfig();
-        registryConfig.setAddress(PropertyConfigurer.getProperty("spring.simple.dubbo.registry.address"));
+        registryConfig.setAddress(address);
         registryConfig.setClient("zkclient");
         return registryConfig;
     }
@@ -57,8 +83,8 @@ public class DubboConfig {
     @Bean
     public ProtocolConfig protocolConfig() {
         ProtocolConfig protocolConfig = new ProtocolConfig();
-        protocolConfig.setName(PropertyConfigurer.getProperty("spring.simple.dubbo.protocol.name"));
-        protocolConfig.setPort(Long.valueOf(PropertyConfigurer.getProperty("spring.simple.dubbo.protocol.port")).intValue());
+        protocolConfig.setName(protocolName);
+        protocolConfig.setPort(port);
         return protocolConfig;
     }
 }

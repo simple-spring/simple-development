@@ -16,10 +16,6 @@ public class SystemProperties {
     public static final String CONFIGMETHODNAME = "getConfigClass";
 
     /**
-     * 组件开启标致
-     */
-    public static final String APPLICATION_IS_ENABLE = "enable";
-    /**
      * 基本组件
      */
     public static final String APPLICATION_ROOT_CONFIG = "spring.simple.root";
@@ -67,4 +63,8 @@ public class SystemProperties {
      * dubbo组件
      */
     public static final String APPLICATION_DUBBO_CONFIG_DUBBOPACKAGE = "spring.simple.dubbo.dubboPackage";
+    public static final String APPLICATION_DUBBO_CONFIG_APPLICATION_NAME = "spring.simple.dubbo.application.name";
+    public static final String APPLICATION_DUBBO_CONFIG_REGISTRY_ADDRESS = "spring.simple.dubbo.registry.address";
+    public static final String APPLICATION_DUBBO_CONFIG_PROTOCOL_NAME = "spring.simple.dubbo.protocol.name";
+    public static final String APPLICATION_DUBBO_CONFIG_PROTOCOL_PORT = "spring.simple.dubbo.protocol.port";
 }
