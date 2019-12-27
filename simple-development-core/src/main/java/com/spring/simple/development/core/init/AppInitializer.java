@@ -119,6 +119,8 @@ public class AppInitializer implements WebApplicationInitializer {
             rootContext.register(configClassList.toArray(configClass));
             // 将Spring的配置添加为listener
             servletContext.addListener(new ContextLoaderListener(rootContext));
+
+            // 扫描事件
             scanEven(basePackageName);
             System.out.println("spring simple initialized successful");
 
@@ -127,6 +129,13 @@ public class AppInitializer implements WebApplicationInitializer {
             throw new RuntimeException("spring simple initialized fail", e);
         }
     }
+
+    /**
+     * scan event
+     * @param basePackageName
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     private void scanEven(String basePackageName) throws IllegalAccessException, InstantiationException {
         // 主题
         SimpleApplicationEventSubject simpleApplicationEventSubject = new SimpleComponentEventSubject(AppInitializer.servletContext, AppInitializer.rootContext);
