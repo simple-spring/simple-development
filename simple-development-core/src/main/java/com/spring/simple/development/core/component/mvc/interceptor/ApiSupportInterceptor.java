@@ -1,23 +1,11 @@
-package com.spring.simple.development.demo.interceptor;
+package com.spring.simple.development.core.component.mvc.interceptor;
 
-import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
-import com.spring.simple.development.core.annotation.base.Value;
-import com.spring.simple.development.support.properties.PropertyConfigurer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.reflections.Reflections;
-import org.reflections.scanners.FieldAnnotationsScanner;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.MethodParameterScanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ConfigurationBuilder;
+import com.spring.simple.development.core.baseconfig.Idempotent.IdempotentHandler;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
-import java.util.Set;
 
 
 /**
@@ -27,11 +15,7 @@ import java.util.Set;
  * @author liko
  * @create 2018-10-09 上午9:13
  */
-@SimpleInterceptor
 public class ApiSupportInterceptor implements HandlerInterceptor {
-    private static final Logger logger = LogManager.getLogger(ApiSupportInterceptor.class);
-    private static final Logger apiUserLogger = LogManager.getLogger("userLogger");
-
     /**
      * 该方法会在控制器方法前执行，其返回值表示是否中断后续操作。当其返回值为true时，表示继续向下执行
      * 当其返回值为false时，会中断后续的所有操作（包括调用下一个拦截器和控制器类中的方法执行等）
@@ -44,6 +28,7 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
+        IdempotentHandler.fastSetIdempotentModel(httpServletRequest.getRemoteHost(), httpServletRequest.getRequestURI());
         return true;
     }
 
@@ -71,25 +56,6 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
-
-    }
-
-    public static void main(String[] args) {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .forPackages("com.spring.simple.development.demo") // 指定路径URL
-                .addScanners(new SubTypesScanner()) // 添加子类扫描工具
-                .addScanners(new FieldAnnotationsScanner()) // 添加 属性注解扫描工具
-                .addScanners(new MethodAnnotationsScanner()) // 添加 方法注解扫描工具
-                .addScanners(new MethodParameterScanner()) // 添加方法参数扫描工具
-        );
-
-        Set<Field> fields = reflections.getFieldsAnnotatedWith(Value.class);
-        for (Field field : fields) {
-            String key = field.getAnnotation(Value.class).value();
-            String value = PropertyConfigurer.getProperty(key);
-            System.out.println(value);
-        }
-
-
+        IdempotentHandler.clearIdempotentModel();
     }
 }

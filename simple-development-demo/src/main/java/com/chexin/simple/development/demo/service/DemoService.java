@@ -1,8 +1,8 @@
 package com.spring.simple.development.demo.service;
 
 
-import com.spring.simple.development.core.mvc.req.ReqBody;
-import com.spring.simple.development.core.mvc.res.ResBody;
+import com.spring.simple.development.core.component.mvc.req.ReqBody;
+import com.spring.simple.development.core.component.mvc.res.ResBody;
 
 /**
  * demo

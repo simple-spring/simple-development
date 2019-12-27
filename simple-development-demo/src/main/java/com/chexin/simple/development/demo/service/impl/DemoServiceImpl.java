@@ -1,11 +1,11 @@
 package com.spring.simple.development.demo.service.impl;
 
 
-import com.spring.simple.development.core.annotation.IsApiService;
-import com.spring.simple.development.core.annotation.NoApiMethod;
-import com.spring.simple.development.core.annotation.Value;
-import com.spring.simple.development.core.mvc.req.ReqBody;
-import com.spring.simple.development.core.mvc.res.ResBody;
+import com.spring.simple.development.core.annotation.base.IsApiService;
+import com.spring.simple.development.core.annotation.base.NoApiMethod;
+import com.spring.simple.development.core.annotation.base.Value;
+import com.spring.simple.development.core.component.mvc.req.ReqBody;
+import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.demo.dao.DemoDao;
 import com.spring.simple.development.demo.model.DemoDo;
 import com.spring.simple.development.demo.service.DemoService;

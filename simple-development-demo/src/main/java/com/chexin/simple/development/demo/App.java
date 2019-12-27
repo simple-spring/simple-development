@@ -3,8 +3,7 @@ package com.spring.simple.development.demo;
 
 import com.spring.simple.development.core.annotation.config.EnableMybatis;
 import com.spring.simple.development.core.annotation.config.EnableWebMvc;
-import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
-import com.spring.simple.development.core.tomcat.SpringApplication;
+import com.spring.simple.development.core.baseconfig.tomcat.SpringSimpleApplication;
 
 /**
  * @author liko.wang
@@ -14,9 +13,9 @@ import com.spring.simple.development.core.tomcat.SpringApplication;
 //@EnableDubbo
 @EnableMybatis
 @EnableWebMvc
-@SpringSimpleApplication
+@com.spring.simple.development.core.annotation.config.SpringSimpleApplication
 public class App {
     public static void main(String[] args) {
-        SpringApplication.run(App.class);
+        SpringSimpleApplication.run(App.class);
     }
 }

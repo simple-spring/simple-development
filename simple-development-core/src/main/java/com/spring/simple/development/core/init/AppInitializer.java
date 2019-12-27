@@ -1,9 +1,9 @@
 package com.spring.simple.development.core.init;
 
-import com.spring.simple.development.core.annotation.Spi;
+import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.SimpleConfig;
-import com.spring.simple.development.core.config.SimpleSpiConfig;
-import com.spring.simple.development.core.constant.SystemProperties;
+import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
+import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
 import org.springframework.util.CollectionUtils;
@@ -49,7 +49,7 @@ public class AppInitializer implements WebApplicationInitializer {
             System.out.println("spring simple config end");
 
             // 获取main类的包路径
-            String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME);
+            String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME);
             if (StringUtils.isEmpty(basePackageName)) {
                 throw new RuntimeException("base package is empty");
             }
@@ -81,7 +81,7 @@ public class AppInitializer implements WebApplicationInitializer {
                 String configName = spi.configName();
                 if (annotationMap.containsKey(configName)) {
                     Object configObject = configClass.newInstance();
-                    Method method = configClass.getDeclaredMethod(SystemProperties.CONFIGMETHODNAME,annotationMap.get(configName).annotationType());
+                    Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME,annotationMap.get(configName).annotationType());
                     Object resultClass = method.invoke(configObject, annotationMap.get(configName));
                     configClassList.add(resultClass);
                 }
@@ -110,7 +110,9 @@ public class AppInitializer implements WebApplicationInitializer {
             ServletRegistration.Dynamic dispatcher =
                     servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
             dispatcher.setLoadOnStartup(1);
-            dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URLPATH));
+            dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
+
+            System.out.println("spring simple initialized successful");
 
         } catch (Exception e) {
             e.printStackTrace();

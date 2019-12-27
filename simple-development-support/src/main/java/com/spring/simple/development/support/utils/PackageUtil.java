@@ -20,7 +20,7 @@ import java.util.jar.JarFile;
 public class PackageUtil {
 
     public static void main(String[] args) throws Exception {
-        String packageName = "com.spring.simple.development.core.constant";
+        String packageName = "com.spring.simple.development.support.constant";
         // List<String> classNames = getClassName(packageName);
         List<String> classNames = getClassName(packageName, false);
         if (classNames != null) {
