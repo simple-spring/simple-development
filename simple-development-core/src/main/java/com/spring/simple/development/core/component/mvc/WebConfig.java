@@ -1,6 +1,8 @@
 package com.spring.simple.development.core.component.mvc;
 
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
+import com.spring.simple.development.core.handler.event.SimpleApplicationListener;
+import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.core.component.mvc.interceptor.ApiSupportInterceptor;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -8,6 +10,8 @@ import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -16,6 +20,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 import java.util.Set;
 
 /**
@@ -25,7 +31,10 @@ import java.util.Set;
  **/
 @Configurable
 @EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter implements SimpleApplicationListener {
+    public WebConfig(){
+
+    }
     /**
      * @param
      * @return org.springframework.web.servlet.ViewResolver
@@ -75,5 +84,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         } catch (Exception e) {
             throw new RuntimeException("mvc 拦截器注册失败", e);
         }
+    }
+
+    @Override
+    public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
+        // 注册请求分发器
+        ServletRegistration.Dynamic dispatcher = AppInitializer.servletContext.addServlet("dispatcher", new DispatcherServlet(AppInitializer.rootContext));
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
     }
 }

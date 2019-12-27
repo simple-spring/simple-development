@@ -2,6 +2,9 @@ package com.spring.simple.development.core.init;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.component.ComponentContainer;
+import com.spring.simple.development.core.handler.event.SimpleApplicationEventSubject;
+import com.spring.simple.development.core.handler.event.SimpleApplicationListener;
+import com.spring.simple.development.core.handler.event.support.SimpleComponentEventSubject;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -13,12 +16,10 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -29,6 +30,8 @@ import java.util.*;
  * @Description 服务初始化
  **/
 public class AppInitializer implements WebApplicationInitializer {
+    public static ServletContext servletContext;
+    public static AnnotationConfigWebApplicationContext rootContext;
     /**
      * 组件寄存器
      */
@@ -41,6 +44,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        AppInitializer.servletContext = servletContext;
         try {
             System.out.println("spring simple start");
             System.out.println("spring simple config init ...");
@@ -64,23 +68,25 @@ public class AppInitializer implements WebApplicationInitializer {
             for (Annotation annotation : annotationSet) {
                 // 选择加载的组件
                 if (ComponentContainer.Components.containsKey(annotation.annotationType().getName())) {
-                    System.out.println(ComponentContainer.Components.get(annotation.annotationType().getName()).getSimpleName() +"init");
+                    System.out.println(ComponentContainer.Components.get(annotation.annotationType().getName()).getSimpleName() + "init");
                     annotationMap.put(ComponentContainer.Components.get(annotation.annotationType().getName()).getSimpleName(), annotation);
                 }
             }
             // 是否有启动的组件
-            if(CollectionUtils.isEmpty(annotationMap)) {
+            if (CollectionUtils.isEmpty(annotationMap)) {
                 System.out.println("not enabled spring simple component");
                 return;
             }
 
             List<Object> configClassList = new ArrayList<>();
+
             // 获取所有的组件注解实现
             Reflections sipReflections = new Reflections(SimpleSpiConfig.class);
             Set<Class<?>> classes = sipReflections.getTypesAnnotatedWith(Spi.class);
             if (CollectionUtils.isEmpty(classes)) {
                 throw new RuntimeException("spring simple component is empty");
             }
+            // 通过spi找到组件
             for (Class configClass : classes) {
                 Spi spi = (Spi) configClass.getAnnotation(Spi.class);
                 // 获取组件名
@@ -106,19 +112,14 @@ public class AppInitializer implements WebApplicationInitializer {
 
 
             // 创建Spring的root配置环境
-            AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
+            rootContext = new AnnotationConfigWebApplicationContext();
             rootContext.setBeanName("spring simple " + System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME));
+            // 注册并启动
             Class[] configClass = new Class[configClassList.size()];
             rootContext.register(configClassList.toArray(configClass));
             // 将Spring的配置添加为listener
             servletContext.addListener(new ContextLoaderListener(rootContext));
-            // TODO: 2019/12/26 0026 mvc后续再做封装
-            // 注册请求分发器
-            ServletRegistration.Dynamic dispatcher =
-                    servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
-            dispatcher.setLoadOnStartup(1);
-            dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
-
+            scanEven(basePackageName);
             System.out.println("spring simple initialized successful");
 
         } catch (Exception e) {
@@ -126,4 +127,24 @@ public class AppInitializer implements WebApplicationInitializer {
             throw new RuntimeException("spring simple initialized fail", e);
         }
     }
+    private void scanEven(String basePackageName) throws IllegalAccessException, InstantiationException {
+        // 主题
+        SimpleApplicationEventSubject simpleApplicationEventSubject = new SimpleComponentEventSubject(AppInitializer.servletContext, AppInitializer.rootContext);
+        Reflections reflections1 = new Reflections("com.spring.simple.development.core");
+        Set<Class<? extends SimpleApplicationListener>> subTypes1 = reflections1.getSubTypesOf(SimpleApplicationListener.class);
+        if (!CollectionUtils.isEmpty(subTypes1)) {
+            for (Class aclass : subTypes1) {
+                simpleApplicationEventSubject.addObserver(aclass.newInstance());
+            }
+        }
+        Reflections reflections2 = new Reflections(basePackageName);
+        Set<Class<? extends SimpleApplicationListener>> subTypes2 = reflections2.getSubTypesOf(SimpleApplicationListener.class);
+        if (!CollectionUtils.isEmpty(subTypes2)) {
+            for (Class aclass : subTypes2) {
+                simpleApplicationEventSubject.addObserver(aclass.newInstance());
+            }
+        }
+        simpleApplicationEventSubject.notifyObserver();
+    }
+
 }

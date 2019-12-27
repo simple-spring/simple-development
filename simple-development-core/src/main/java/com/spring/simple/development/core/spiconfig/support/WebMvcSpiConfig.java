@@ -43,7 +43,7 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc, WebConfig>
             // 修改WebConfig ComponentScan扫描包的路径
             List<String> mvcPackageNames = new ArrayList<>();
             // 支持isApiConfig,默认注册
-            mvcPackageNames.add("com.spring.simple.development.core.mvc.controller");
+            mvcPackageNames.add("com.spring.simple.development.core.component.mvc.controller");
             String[] paths = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_PACKAGE_PATH).split(",");
             for (String path : paths) {
                 mvcPackageNames.add(path);
