@@ -1,7 +1,7 @@
-package com.chexin.simple.development.demo.mapper;
+package com.spring.simple.development.demo.mapper;
 
-import com.chexin.simple.development.demo.model.DemoDo;
-import com.chexin.simple.development.demo.model.DemoDoExample;
+import com.spring.simple.development.demo.model.DemoDo;
+import com.spring.simple.development.demo.model.DemoDoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

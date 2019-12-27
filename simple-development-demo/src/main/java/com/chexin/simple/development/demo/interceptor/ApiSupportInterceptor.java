@@ -1,8 +1,8 @@
-package com.chexin.simple.development.demo.interceptor;
+package com.spring.simple.development.demo.interceptor;
 
-import com.chexin.simple.development.core.annotation.SimpleInterceptor;
-import com.chexin.simple.development.core.annotation.Value;
-import com.chexin.simple.development.support.properties.PropertyConfigurer;
+import com.spring.simple.development.core.annotation.SimpleInterceptor;
+import com.spring.simple.development.core.annotation.Value;
+import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
@@ -76,7 +76,7 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
 
     public static void main(String[] args) {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .forPackages("com.chexin.simple.development.demo") // 指定路径URL
+                .forPackages("com.spring.simple.development.demo") // 指定路径URL
                 .addScanners(new SubTypesScanner()) // 添加子类扫描工具
                 .addScanners(new FieldAnnotationsScanner()) // 添加 属性注解扫描工具
                 .addScanners(new MethodAnnotationsScanner()) // 添加 方法注解扫描工具

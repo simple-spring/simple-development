@@ -8,7 +8,7 @@
 ##### 1.maven项目配置(加入之前先配置settings.xml[下载](http://file.diangc.cn/settings.xml))
         (1) 加入依赖
             <dependency>
-                <groupId>com.chexin</groupId>
+                <groupId>com.spring</groupId>
                 <artifactId>simple-development-core</artifactId>
                 <version>2.0</version>
                 <scope>compile</scope>
@@ -128,7 +128,7 @@
                                <classesDirectory>target/classes/</classesDirectory>
                                <archive>
                                    <manifest>
-                                       <mainClass>com.chexin.simple.development.demo.App</mainClass>
+                                       <mainClass>com.spring.simple.development.demo.App</mainClass>
                                        <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
                                        <useUniqueVersions>false</useUniqueVersions>
                                        <addClasspath>true</addClasspath>

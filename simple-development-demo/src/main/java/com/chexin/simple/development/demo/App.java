@@ -1,12 +1,10 @@
-package com.chexin.simple.development.demo;
+package com.spring.simple.development.demo;
 
 
-import com.chexin.simple.development.core.annotation.config.EnableDubbo;
-import com.chexin.simple.development.core.annotation.config.EnableElasticSearch;
-import com.chexin.simple.development.core.annotation.config.EnableMybatis;
-import com.chexin.simple.development.core.annotation.config.EnableWebMvc;
-import com.chexin.simple.development.core.annotation.config.SpringSimpleApplication;
-import com.chexin.simple.development.core.tomcat.SpringApplication;
+import com.spring.simple.development.core.annotation.config.EnableMybatis;
+import com.spring.simple.development.core.annotation.config.EnableWebMvc;
+import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
+import com.spring.simple.development.core.tomcat.SpringApplication;
 
 /**
  * @author liko.wang

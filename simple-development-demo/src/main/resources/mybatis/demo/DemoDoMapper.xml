@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chexin.simple.development.demo.mapper.DemoDoMapper">
-  <resultMap id="BaseResultMap" type="com.chexin.simple.development.demo.model.DemoDo">
+<mapper namespace="com.spring.simple.development.demo.mapper.DemoDoMapper">
+  <resultMap id="BaseResultMap" type="com.spring.simple.development.demo.model.DemoDo">
     <id column="NAME_" jdbcType="VARCHAR" property="name" />
     <result column="VALUE_" jdbcType="VARCHAR" property="value" />
   </resultMap>
@@ -66,7 +66,7 @@
   <sql id="Base_Column_List">
     NAME_, VALUE_
   </sql>
-  <select id="selectByExample" parameterType="com.chexin.simple.development.demo.model.DemoDoExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.spring.simple.development.demo.model.DemoDoExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -90,17 +90,17 @@
     delete from T_DEME_TABLE
     where NAME_ = #{name,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.chexin.simple.development.demo.model.DemoDoExample">
+  <delete id="deleteByExample" parameterType="com.spring.simple.development.demo.model.DemoDoExample">
     delete from T_DEME_TABLE
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.chexin.simple.development.demo.model.DemoDo">
+  <insert id="insert" parameterType="com.spring.simple.development.demo.model.DemoDo">
     insert into T_DEME_TABLE (NAME_, VALUE_)
     values (#{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.chexin.simple.development.demo.model.DemoDo">
+  <insert id="insertSelective" parameterType="com.spring.simple.development.demo.model.DemoDo">
     insert into T_DEME_TABLE
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -119,7 +119,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.chexin.simple.development.demo.model.DemoDoExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.spring.simple.development.demo.model.DemoDoExample" resultType="java.lang.Long">
     select count(*) from T_DEME_TABLE
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -147,7 +147,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.chexin.simple.development.demo.model.DemoDo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.spring.simple.development.demo.model.DemoDo">
     update T_DEME_TABLE
     <set>
       <if test="value != null">
@@ -156,7 +156,7 @@
     </set>
     where NAME_ = #{name,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.chexin.simple.development.demo.model.DemoDo">
+  <update id="updateByPrimaryKey" parameterType="com.spring.simple.development.demo.model.DemoDo">
     update T_DEME_TABLE
     set VALUE_ = #{value,jdbcType=VARCHAR}
     where NAME_ = #{name,jdbcType=VARCHAR}

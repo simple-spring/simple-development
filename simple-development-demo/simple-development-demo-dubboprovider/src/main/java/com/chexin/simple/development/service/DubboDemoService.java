@@ -1,4 +1,4 @@
-package com.chexin.simple.development.service;
+package com.spring.simple.development.service;
 
 /**
  * @author liko.wang

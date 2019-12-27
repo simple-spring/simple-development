@@ -120,14 +120,20 @@ under the License.
     <mirrors>
         <mirror>
             <id>nexus</id>
-            <mirrorOf>*</mirrorOf>
+            <mirrorOf>central</mirrorOf>
             <name>manila Nexus Mirror</name>
             <url>http://nexus.diangc.cn/nexus/content/groups/public/</url>
+        </mirror>
+        <mirror>
+            <id>alimaven</id>
+            <mirrorOf>central</mirrorOf>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
         </mirror>
     </mirrors>
     <profiles>
         <profile>
-            <id>chexin</id>
+            <id>spring simple</id>
             <repositories>
                 <repository>
                     <id>central</id>
@@ -153,8 +159,20 @@ under the License.
                 </pluginRepository>
             </pluginRepositories>
         </profile>
+        <profile>
+            <id>jdk1.8</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
+                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
     </profiles>
     <activeProfiles>
-        <activeProfile>chexin</activeProfile>
+        <activeProfile>spring simple</activeProfile>
     </activeProfiles>
 </settings>

@@ -1,16 +1,15 @@
-package com.chexin.simple.development.demo.service.impl;
+package com.spring.simple.development.demo.service.impl;
 
 
-import com.chexin.simple.development.core.annotation.IsApiService;
-import com.chexin.simple.development.core.annotation.NoApiMethod;
-import com.chexin.simple.development.core.annotation.ValidHandler;
-import com.chexin.simple.development.core.annotation.Value;
-import com.chexin.simple.development.core.mvc.req.ReqBody;
-import com.chexin.simple.development.core.mvc.res.ResBody;
-import com.chexin.simple.development.demo.dao.DemoDao;
-import com.chexin.simple.development.demo.model.DemoDo;
-import com.chexin.simple.development.demo.service.DemoService;
-import com.chexin.simple.development.support.GlobalResponseCode;
+import com.spring.simple.development.core.annotation.IsApiService;
+import com.spring.simple.development.core.annotation.NoApiMethod;
+import com.spring.simple.development.core.annotation.Value;
+import com.spring.simple.development.core.mvc.req.ReqBody;
+import com.spring.simple.development.core.mvc.res.ResBody;
+import com.spring.simple.development.demo.dao.DemoDao;
+import com.spring.simple.development.demo.model.DemoDo;
+import com.spring.simple.development.demo.service.DemoService;
+import com.spring.simple.development.support.GlobalResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

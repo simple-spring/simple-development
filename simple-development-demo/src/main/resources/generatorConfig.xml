@@ -35,11 +35,11 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.chexin.simple.development.demo.model"
+        <javaModelGenerator targetPackage="com.spring.simple.development.demo.model"
                             targetProject="./src/main/java"/>
         <sqlMapGenerator targetPackage="demo"
                          targetProject="src/main/resources/mybatis"/>
-        <javaClientGenerator targetPackage="com.chexin.simple.development.demo.mapper"
+        <javaClientGenerator targetPackage="com.spring.simple.development.demo.mapper"
                              targetProject="./src/main/java" type="XMLMAPPER"/>
 
         <table tableName="T_DEME_TABLE" domainObjectName="DemoDo">

@@ -3,19 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>simple-development-demo</artifactId>
-    <groupId>com.chexin</groupId>
+    <groupId>com.spring</groupId>
     <version>1.0</version>
     <modelVersion>4.0.0</modelVersion>
 
     <dependencies>
         <dependency>
-            <groupId>com.chexin</groupId>
+            <groupId>com.spring</groupId>
             <artifactId>simple-development-core</artifactId>
             <version>2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.chexin</groupId>
+            <groupId>com.spring</groupId>
             <artifactId>simple-development-demo-dubboprovider</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
@@ -23,7 +23,8 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jc-slf4j.version>0.0.1-SNAPSHOT</jc-slf4j.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <!--MAVEN打包duboo可执行jar begin -->
@@ -117,7 +118,7 @@
                     <classesDirectory>target/classes/</classesDirectory>
                     <archive>
                         <manifest>
-                            <mainClass>com.chexin.simple.development.demo.App</mainClass>
+                            <mainClass>com.spring.simple.development.demo.App</mainClass>
                             <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
                             <useUniqueVersions>false</useUniqueVersions>
                             <addClasspath>true</addClasspath>

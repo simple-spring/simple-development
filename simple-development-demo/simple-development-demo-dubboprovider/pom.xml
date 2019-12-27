@@ -24,7 +24,7 @@
   <packaging>jar</packaging>
 
   <name>simple-development-demo-dubboprovider</name>
-  <groupId>com.chexin</groupId>
+  <groupId>com.spring</groupId>
   <artifactId>simple-development-demo-dubboprovider</artifactId>
   <version>1.0</version>
 
@@ -50,7 +50,7 @@
 
   <dependencies>
     <!--dependency>
-      <groupId>com.chexin</groupId>
+      <groupId>com.spring</groupId>
       <artifactId>[the artifact id of the block to be mounted]</artifactId>
       <version>1.0</version>
     </dependency-->

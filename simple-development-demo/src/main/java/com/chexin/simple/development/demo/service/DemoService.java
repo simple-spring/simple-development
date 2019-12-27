@@ -1,8 +1,8 @@
-package com.chexin.simple.development.demo.service;
+package com.spring.simple.development.demo.service;
 
 
-import com.chexin.simple.development.core.mvc.req.ReqBody;
-import com.chexin.simple.development.core.mvc.res.ResBody;
+import com.spring.simple.development.core.mvc.req.ReqBody;
+import com.spring.simple.development.core.mvc.res.ResBody;
 
 /**
  * demo

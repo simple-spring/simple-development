@@ -1,4 +1,4 @@
-package com.chexin.simple.development.demo.model;
+package com.spring.simple.development.demo.model;
 
 import java.io.Serializable;
 import lombok.Data;

@@ -8,7 +8,7 @@
 ##### 1.maven项目配置(加入之前先配置settings.xml[下载](http://file.diangc.cn/settings.xml))
         (1) 加入依赖
             <dependency>
-                <groupId>com.chexin</groupId>
+                <groupId>com.spring</groupId>
                 <artifactId>simple-development-core</artifactId>
                 <version>2.0</version>
                 <scope>compile</scope>

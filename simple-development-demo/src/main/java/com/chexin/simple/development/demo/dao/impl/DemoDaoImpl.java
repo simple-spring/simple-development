@@ -1,9 +1,9 @@
-package com.chexin.simple.development.demo.dao.impl;
+package com.spring.simple.development.demo.dao.impl;
 
-import com.chexin.simple.development.demo.dao.DemoDao;
-import com.chexin.simple.development.demo.mapper.DemoDoMapper;
-import com.chexin.simple.development.demo.model.DemoDo;
-import com.chexin.simple.development.demo.model.DemoDoExample;
+import com.spring.simple.development.demo.dao.DemoDao;
+import com.spring.simple.development.demo.mapper.DemoDoMapper;
+import com.spring.simple.development.demo.model.DemoDo;
+import com.spring.simple.development.demo.model.DemoDoExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
