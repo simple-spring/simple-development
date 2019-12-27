@@ -1,5 +1,6 @@
 package com.spring.simple.development.core.handler.event;
 
+import com.spring.simple.development.core.annotation.event.SimpleEvent;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import javax.servlet.ServletContext;
