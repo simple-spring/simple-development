@@ -38,97 +38,130 @@
                     </profile>
                 </profiles>
         (3)打包配置
-            <build>
-                    <finalName>simple-development-demo</finalName>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-compiler-plugin</artifactId>
-                            <configuration>
-                                <source>6</source>
-                                <target>6</target>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                    <resources>
-                        <resource>
-                            <directory>src/main/resources/config/${package.environment}</directory>
-                            <filtering>true</filtering>
-                        </resource>
-                        <resource>
-                            <directory>src/main/resources</directory>
-                            <excludes>
-                                <exclude>generatorConfig.xml</exclude>
-                                <exclude>config/*/*.properties</exclude>
-                            </excludes>
-                            <filtering>false</filtering>
-                        </resource>
-                    </resources>
-                    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-                        <plugins>
-                            <plugin>
-                                <groupId>org.mybatis.generator</groupId>
-                                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                                <version>1.3.7</version>
-                                <configuration>
-                                    <overwrite>true</overwrite>
-                                    <verbose>true</verbose>
-                                </configuration>
-                                <dependencies>
-                                    <dependency>
-                                        <groupId>org.apache.maven</groupId>
-                                        <artifactId>maven-project</artifactId>
-                                        <version>2.2.1</version>
-                                    </dependency>
-                                    <!-- MySQL Connector -->
-                                    <dependency>
-                                        <groupId>mysql</groupId>
-                                        <artifactId>mysql-connector-java</artifactId>
-                                        <version>5.1.40</version>
-                                    </dependency>
-            
-                                    <!-- MyBatis Generator -->
-                                    <dependency>
-                                        <groupId>com.manila.generator</groupId>
-                                        <artifactId>manila.generator</artifactId>
-                                        <version>1.0</version>
-                                    </dependency>
-                                </dependencies>
-                            </plugin>
-                            <plugin>
-                                <artifactId>maven-clean-plugin</artifactId>
-                                <version>3.0.0</version>
-                            </plugin>
-                            <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
-                            <plugin>
-                                <artifactId>maven-resources-plugin</artifactId>
-                                <version>3.0.2</version>
-                            </plugin>
-                            <plugin>
-                                <artifactId>maven-compiler-plugin</artifactId>
-                                <version>3.7.0</version>
-                            </plugin>
-                            <plugin>
-                                <artifactId>maven-surefire-plugin</artifactId>
-                                <version>2.20.1</version>
-                            </plugin>
-                            <plugin>
-                                <artifactId>maven-war-plugin</artifactId>
-                                <version>3.2.0</version>
-                            </plugin>
-                            <plugin>
-                                <artifactId>maven-install-plugin</artifactId>
-                                <version>2.5.2</version>
-                            </plugin>
-                            <plugin>
-                                <artifactId>maven-deploy-plugin</artifactId>
-                                <version>2.8.2</version>
-                            </plugin>
-                        </plugins>
-            
-                    </pluginManagement>
-            
-                </build>
+           <!--MAVEN打包duboo可执行jar begin -->
+               <build>
+                   <finalName>simple-development-demo</finalName>
+           
+                   <resources>
+                       <resource>
+                           <directory>src/main/resources/config/${package.environment}</directory>
+                           <filtering>true</filtering>
+                       </resource>
+                       <resource>
+                           <targetPath>${project.build.directory}/classes</targetPath>
+                           <directory>src/main/resources</directory>
+                           <filtering>true</filtering>
+                           <includes>
+                               <include>**/*.properties</include>
+                           </includes>
+                           <excludes>
+                               <exclude>generatorConfig.xml</exclude>
+                               <exclude>config/*/*.properties</exclude>
+                           </excludes>
+                       </resource>
+                   </resources>
+           
+                   <pluginManagement>
+                       <plugins>
+                           <plugin>
+                               <groupId>org.mybatis.generator</groupId>
+                               <artifactId>mybatis-generator-maven-plugin</artifactId>
+                               <version>1.3.7</version>
+                               <configuration>
+                                   <overwrite>true</overwrite>
+                                   <verbose>true</verbose>
+                               </configuration>
+                               <dependencies>
+                                   <dependency>
+                                       <groupId>org.apache.maven</groupId>
+                                       <artifactId>maven-project</artifactId>
+                                       <version>2.2.1</version>
+                                   </dependency>
+                                   <!-- MySQL Connector -->
+                                   <dependency>
+                                       <groupId>mysql</groupId>
+                                       <artifactId>mysql-connector-java</artifactId>
+                                       <version>5.1.40</version>
+                                   </dependency>
+           
+                                   <!-- MyBatis Generator -->
+                                   <dependency>
+                                       <groupId>com.manila.generator</groupId>
+                                       <artifactId>manila.generator</artifactId>
+                                       <version>1.0</version>
+                                   </dependency>
+                               </dependencies>
+                           </plugin>
+                           <!-- 解决Maven插件在Eclipse内执行了一系列的生命周期引起冲突 -->
+                           <plugin>
+                               <groupId>org.eclipse.m2e</groupId>
+                               <artifactId>lifecycle-mapping</artifactId>
+                               <version>1.0.0</version>
+                               <configuration>
+                                   <lifecycleMappingMetadata>
+                                       <pluginExecutions>
+                                           <pluginExecution>
+                                               <pluginExecutionFilter>
+                                                   <groupId>org.apache.maven.plugins</groupId>
+                                                   <artifactId>maven-dependency-plugin</artifactId>
+                                                   <versionRange>[2.0,)</versionRange>
+                                                   <goals>
+                                                       <goal>copy-dependencies</goal>
+                                                   </goals>
+                                               </pluginExecutionFilter>
+                                               <action>
+                                                   <ignore/>
+                                               </action>
+                                           </pluginExecution>
+                                       </pluginExecutions>
+                                   </lifecycleMappingMetadata>
+                               </configuration>
+                           </plugin>
+                       </plugins>
+                   </pluginManagement>
+                   <plugins>
+                       <!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->
+                       <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-jar-plugin</artifactId>
+                           <configuration>
+                               <classesDirectory>target/classes/</classesDirectory>
+                               <archive>
+                                   <manifest>
+                                       <mainClass>com.chexin.simple.development.demo.App</mainClass>
+                                       <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
+                                       <useUniqueVersions>false</useUniqueVersions>
+                                       <addClasspath>true</addClasspath>
+                                       <classpathPrefix>lib/</classpathPrefix>
+                                   </manifest>
+                                   <manifestEntries>
+                                       <Class-Path>.</Class-Path>
+                                   </manifestEntries>
+                               </archive>
+                           </configuration>
+                       </plugin>
+                       <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-dependency-plugin</artifactId>
+                           <executions>
+                               <execution>
+                                   <id>copy-dependencies</id>
+                                   <phase>package</phase>
+                                   <goals>
+                                       <goal>copy-dependencies</goal>
+                                   </goals>
+                                   <configuration>
+                                       <type>jar</type>
+                                       <includeTypes>jar</includeTypes>
+                                       <outputDirectory>
+                                           ${project.build.directory}/lib
+                                       </outputDirectory>
+                                   </configuration>
+                               </execution>
+                           </executions>
+                       </plugin>
+                   </plugins>
+               </build>
 ### 开发中
  功能清单 | 说明 |
 | --- | --- |

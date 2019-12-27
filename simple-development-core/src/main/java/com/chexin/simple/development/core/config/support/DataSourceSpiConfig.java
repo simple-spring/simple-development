@@ -24,7 +24,7 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis, DataS
             // 默认包路径
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME);
             // mapper xml路径
-            String defaultMapperXmlPath = "classpath*:mybatis/*/*.xml";
+            String defaultMapperXmlPath = "classpath:mybatis/*/*.xml";
             if (StringUtils.isEmpty(enableMybatis.mapperXmlPath())) {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPERXMLPATH, defaultMapperXmlPath);
             } else {

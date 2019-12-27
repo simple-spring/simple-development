@@ -157,7 +157,7 @@ public class SpringApplication {
         if (annotations.length == 0) {
             return;
         }
-
+        Boolean isBaseConfig = false;
         for (Annotation annotation : annotations) {
             AppInitializer.annotationSet.add(annotation);
             if (annotation instanceof SpringSimpleApplication) {
@@ -172,10 +172,11 @@ public class SpringApplication {
                 } else {
                     System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APPPACKAGEPATHNAME, springSimpleApplication.appPackagePathName());
                 }
+                isBaseConfig = true;
             }
         }
         // 是否有基础组件
-        if (StringUtils.isEmpty(System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG))) {
+        if (!isBaseConfig) {
             throw new RuntimeException(" no SpringSimpleApplication Component");
         }
         // 读取项目配置文件

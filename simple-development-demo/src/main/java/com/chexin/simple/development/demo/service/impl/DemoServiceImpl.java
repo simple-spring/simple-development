@@ -31,7 +31,6 @@ public class DemoServiceImpl implements DemoService {
     private String pageName;
 
     @Override
-    @ValidHandler(key = "test", value = DemoDo.class)
     public ResBody querydemoDoList(ReqBody reqBody) {
         List<DemoDo> demoDoList = demoDao.queryList();
         return ResBody.buildSuccessResBody(demoDoList, null, GlobalResponseCode.SYS_SUCCESS);
