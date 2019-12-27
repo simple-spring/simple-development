@@ -103,6 +103,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
             // 创建Spring的root配置环境
             AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
+            rootContext.setBeanName("spring simple "+System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME));
             Class[] configClass = new Class[configClassList.size()];
             rootContext.register(configClassList.toArray(configClass));
             // 将Spring的配置添加为listener
