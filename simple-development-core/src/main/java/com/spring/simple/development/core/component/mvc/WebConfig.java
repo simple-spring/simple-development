@@ -1,8 +1,7 @@
 package com.spring.simple.development.core.component.mvc;
 
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
-import com.spring.simple.development.core.handler.event.SimpleApplicationListener;
-import com.spring.simple.development.core.init.AppInitializer;
+import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.core.component.mvc.interceptor.ApiSupportInterceptor;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -31,7 +30,7 @@ import java.util.Set;
  **/
 @Configurable
 @EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter implements SimpleApplicationListener {
+public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponentListener {
     public WebConfig(){
 
     }
@@ -89,7 +88,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleApplicat
     @Override
     public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
         // 注册请求分发器
-        ServletRegistration.Dynamic dispatcher = AppInitializer.servletContext.addServlet("dispatcher", new DispatcherServlet(AppInitializer.rootContext));
+        ServletRegistration.Dynamic dispatcher =servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
     }

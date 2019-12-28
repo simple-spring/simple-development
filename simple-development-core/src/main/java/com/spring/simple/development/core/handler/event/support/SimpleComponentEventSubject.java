@@ -1,7 +1,7 @@
 package com.spring.simple.development.core.handler.event.support;
 
 import com.spring.simple.development.core.handler.event.SimpleApplicationEventSubject;
-import com.spring.simple.development.core.handler.event.SimpleApplicationListener;
+import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import javax.servlet.ServletContext;
@@ -14,7 +14,7 @@ import java.util.concurrent.*;
  *
  * @author liko wang
  */
-public class SimpleComponentEventSubject implements SimpleApplicationEventSubject<SimpleApplicationListener> {
+public class SimpleComponentEventSubject implements SimpleApplicationEventSubject<SimpleComponentListener> {
 
     private ServletContext servletContext;
     private AnnotationConfigWebApplicationContext rootContext;
@@ -31,11 +31,11 @@ public class SimpleComponentEventSubject implements SimpleApplicationEventSubjec
     /**
      * 存放订阅者
      */
-    private List<SimpleApplicationListener> observers = new ArrayList<>();
+    private List<SimpleComponentListener> observers = new ArrayList<>();
 
 
     @Override
-    public void addObserver(SimpleApplicationListener simpleComponentEvent) {
+    public void addObserver(SimpleComponentListener simpleComponentEvent) {
         observers.add(simpleComponentEvent);
     }
 
@@ -44,11 +44,11 @@ public class SimpleComponentEventSubject implements SimpleApplicationEventSubjec
      */
     @Override
     public void notifyObserver() {
-        for (SimpleApplicationListener simpleApplicationListener : observers) {
+        for (SimpleComponentListener simpleComponentListener : observers) {
             executorService.submit(new Runnable() {
                 @Override
                 public void run() {
-                    simpleApplicationListener.onApplicationEvent(servletContext, rootContext);
+                    simpleComponentListener.onApplicationEvent(servletContext, rootContext);
                 }
             });
         }
