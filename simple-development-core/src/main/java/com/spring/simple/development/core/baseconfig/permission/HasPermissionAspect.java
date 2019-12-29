@@ -2,6 +2,7 @@ package com.spring.simple.development.core.baseconfig.permission;
 
 import com.spring.simple.development.core.annotation.base.HasPermissions;
 import com.spring.simple.development.core.commonenum.Logical;
+import com.spring.simple.development.core.init.AppInitializer;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -23,7 +24,9 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class HasPermissionAspect {
-    @Autowired
+    /**
+     * 权限实现
+     */
     private HasPermissionService hasPermissionService;
 
     @Pointcut("@annotation(com.spring.simple.development.core.annotation.base.HasPermissions)")
@@ -51,7 +54,18 @@ public class HasPermissionAspect {
 
             String[] keys = hasPermissions.value();
             Logical logical = hasPermissions.LOGICAL();
-            hasPermissionService.checkPermission(keys, logical);
+            getHasPermissionService().checkPermission(keys, logical);
         }
+    }
+
+    private HasPermissionService getHasPermissionService() {
+        if (hasPermissionService == null) {
+            HasPermissionService hasPermissionServiceBean = AppInitializer.rootContext.getBean(HasPermissionService.class);
+            if (hasPermissionServiceBean == null) {
+                throw new RuntimeException("没有权限实现");
+            }
+            hasPermissionService = hasPermissionServiceBean;
+        }
+        return hasPermissionService;
     }
 }

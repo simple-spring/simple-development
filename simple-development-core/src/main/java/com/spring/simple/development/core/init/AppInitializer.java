@@ -121,7 +121,7 @@ public class AppInitializer implements WebApplicationInitializer {
             servletContext.addListener(new ContextLoaderListener(rootContext));
 
             // 组件扫描事件
-            scanEven(basePackageName);
+            scanEven();
             System.out.println("spring simple initialized successful");
 
         } catch (Exception e) {
@@ -133,24 +133,16 @@ public class AppInitializer implements WebApplicationInitializer {
     /**
      * scan event
      *
-     * @param basePackageName
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    private void scanEven(String basePackageName) throws IllegalAccessException, InstantiationException {
+    private void scanEven() throws IllegalAccessException, InstantiationException {
         // 主题
         SimpleApplicationEventSubject simpleApplicationEventSubject = new SimpleComponentEventSubject(AppInitializer.servletContext, AppInitializer.rootContext);
-        Reflections reflections1 = new Reflections("com.spring.simple.development.core");
-        Set<Class<? extends SimpleComponentListener>> subTypes1 = reflections1.getSubTypesOf(SimpleComponentListener.class);
-        if (!CollectionUtils.isEmpty(subTypes1)) {
-            for (Class aclass : subTypes1) {
-                simpleApplicationEventSubject.addObserver(aclass.newInstance());
-            }
-        }
-        Reflections reflections2 = new Reflections(basePackageName);
-        Set<Class<? extends SimpleComponentListener>> subTypes2 = reflections2.getSubTypesOf(SimpleComponentListener.class);
-        if (!CollectionUtils.isEmpty(subTypes2)) {
-            for (Class aclass : subTypes2) {
+        Reflections reflections = new Reflections("com.spring.simple.development.core");
+        Set<Class<? extends SimpleComponentListener>> subTypes = reflections.getSubTypesOf(SimpleComponentListener.class);
+        if (!CollectionUtils.isEmpty(subTypes)) {
+            for (Class aclass : subTypes) {
                 simpleApplicationEventSubject.addObserver(aclass.newInstance());
             }
         }
