@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Configurable;
  * @Date 2019-09-22 10:36
  * @DESCRIPTION 权限校验接口
  */
-@Configurable
 public interface HasPermissionService {
     /**
-     * 校验权限返回子权限集合
+     * 校验权限
      *
      * @param permissionKeys
      * @param logical

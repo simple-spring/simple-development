@@ -1,7 +1,5 @@
-package com.spring.simple.development.core.baseconfig;
+package com.spring.simple.development.core.baseconfig.isapiservice;
 
-import com.spring.simple.development.core.baseconfig.isapiservice.ServerFactory;
-import com.spring.simple.development.core.commonenum.Logical;
 import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
@@ -22,7 +20,7 @@ import static com.spring.simple.development.support.exception.GlobalResponseCode
 /**
  * @author liko.wang
  * @Date 2019/12/20/020 14:58
- * @Description //TODO
+ * @Description 反射调用isConfigApi
  **/
 @Component
 public class ServiceInvoke {
@@ -40,11 +38,6 @@ public class ServiceInvoke {
         if (serviceBean == null) {
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
-        // check permission
-        String[] permissions = ServerFactory.hasPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        Logical logical = ServerFactory.relationPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        ServerFactory.checkPermission(permissions, logical);
-
         // invoke
         return invokeMethod(request, serviceBean);
     }
@@ -62,11 +55,6 @@ public class ServiceInvoke {
         if (serviceBean == null) {
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
-        // check permission
-        String[] permissions = ServerFactory.hasPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        Logical logical = ServerFactory.relationPermissionMap.get(request.getServiceName() + "-" + request.getMethodName());
-        ServerFactory.checkPermission(permissions, logical);
-
         // invoke
         return invokeMethod(request, serviceBean);
     }

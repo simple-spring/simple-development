@@ -7,7 +7,7 @@ import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.support.constant.VersionConstant;
-import com.spring.simple.development.core.baseconfig.ServiceInvoke;
+import com.spring.simple.development.core.baseconfig.isapiservice.ServiceInvoke;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.HttpRequestUtil;
 import com.spring.simple.development.support.exception.GlobalException;

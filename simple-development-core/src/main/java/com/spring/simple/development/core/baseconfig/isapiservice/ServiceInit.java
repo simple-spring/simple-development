@@ -22,16 +22,6 @@ import java.util.Map;
 @Component
 public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, ApplicationContextAware {
 
-    public Boolean isCheckPermission = true;
-
-    public Boolean getCheckPermission() {
-        return isCheckPermission;
-    }
-
-    public void setCheckPermission(Boolean checkPermission) {
-        isCheckPermission = checkPermission;
-    }
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 根容器为Spring容器  
@@ -40,26 +30,11 @@ public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, 
             Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(IsApiService.class);
             for (Object bean : beans.values()) {
                 if (bean != null) {
-                    // 加载服务
-                    if (ServerFactory.isExist(bean.getClass().getSimpleName())) {
-                        throw new RuntimeException(bean.getClass().getSimpleName() + "服务已存在,服务名必须唯一");
-                    }
                     try {
                         ServerFactory.putService(bean);
                     } catch (Exception e) {
                         System.out.println(e);
                         throw new RuntimeException(bean.getClass().getSimpleName() + "服务加载异常");
-                    }
-                    if (isCheckPermission) {
-                        // 加载方法权限
-                        try {
-                            Method[] methods = AopTargetUtils.getTarget(bean).getClass().getMethods();
-                            for (Method method : methods) {
-                                ServerFactory.putPermission(method);
-                            }
-                        } catch (Exception e) {
-                            throw new RuntimeException(bean.getClass().getSimpleName() + "权限加载异常");
-                        }
                     }
                 }
             }
