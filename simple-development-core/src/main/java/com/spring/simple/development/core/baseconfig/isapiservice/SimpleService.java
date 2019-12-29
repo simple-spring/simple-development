@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.baseconfig;
+package com.spring.simple.development.core.baseconfig.isapiservice;
 
 import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
 import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
@@ -24,9 +24,9 @@ import static com.spring.simple.development.support.exception.ResponseCode.RES_P
 /**
  * 基础功能支持
  */
-public class CommonBaseService {
+public class SimpleService {
 
-    private static final Logger logger = LogManager.getLogger(CommonBaseService.class);
+    private static final Logger logger = LogManager.getLogger(SimpleService.class);
 
     @Autowired
     private Mapper mapper;
