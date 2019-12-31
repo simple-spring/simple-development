@@ -13,5 +13,6 @@ public class PackageNameConstant {
     public final static String CONTROLLER = ".controller";
     public final static String INTERCEPTOR = ".interceptor";
     public final static String DUBBO = ".dubbo";
+    public final static String JOBHANDLER = ".jobhandler";
 
 }

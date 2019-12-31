@@ -19,6 +19,9 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
+
+import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 
 /**
@@ -29,23 +32,38 @@ import com.spring.simple.development.support.properties.PropertyConfigurer;
 @Configuration
 public class ElasticSearchConfig {
 
+	/**
+	 * 地址
+	 */
+	private String host = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_HOST);
+	
+	/**
+	 * 端口
+	 */
+	private Integer port = Integer.valueOf(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_PORT));
+	
+	/**
+	 * 集群
+	 */
+	private String clusterName = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_CLUSTER_NAME);
+	
 	private TransportClient transportClient;
 	
 	public ElasticSearchConfig() {
 		System.out.println("elasticsearch initialized...");
+		Assert.notNull(host, "elasticsearch host is empty");
+		Assert.notNull(port, "elasticsearch port is empty");
 	}
 	
 	@Bean
     public TransportClient transportClient(){
         Settings settings = Settings.EMPTY;
-        if(StringUtils.isNotEmpty(PropertyConfigurer.getProperty("spring.elasticsearch.cluster.name"))){
-            settings = Settings.builder()
-                    .put("cluster.name", PropertyConfigurer.getProperty("spring.elasticsearch.cluster.name"))
-                    .build();
+        if(StringUtils.isNotEmpty(clusterName)){
+            settings = Settings.builder().put("cluster.name", clusterName).build();
         }
         try {
-            transportClient = new PreBuiltTransportClient(settings).addTransportAddress(new TransportAddress
-                    (InetAddress.getByName(PropertyConfigurer.getProperty("spring.elasticsearch.host")), Integer.valueOf(PropertyConfigurer.getProperty("spring.elasticsearch.port"))));
+            transportClient = new PreBuiltTransportClient(settings).addTransportAddress(
+            		new TransportAddress(InetAddress.getByName(host), port));
         } catch (UnknownHostException e) {
             System.out.println("创建elasticsearch客户端失败");
             e.printStackTrace();
@@ -58,14 +76,12 @@ public class ElasticSearchConfig {
     public BulkProcessor bulkProcessor() throws UnknownHostException {
 
         Settings settings = Settings.EMPTY;
-        if(StringUtils.isNotEmpty(PropertyConfigurer.getProperty("spring.elasticsearch.cluster.name"))){
-            settings = Settings.builder()
-                    .put("cluster.name", PropertyConfigurer.getProperty("spring.elasticsearch.cluster.name"))
-                    .build();
+        if(StringUtils.isNotEmpty(clusterName)){
+            settings = Settings.builder().put("cluster.name", clusterName).build();
         }
 
         TransportClient transportClient = new PreBuiltTransportClient(settings).addTransportAddress(new TransportAddress
-                (InetAddress.getByName(PropertyConfigurer.getProperty("spring.elasticsearch.host")), Integer.valueOf(PropertyConfigurer.getProperty("spring.elasticsearch.port"))));
+                (InetAddress.getByName(host), port));
                 
 
         return BulkProcessor.builder(transportClient, new BulkProcessor.Listener() {

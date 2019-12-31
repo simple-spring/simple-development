@@ -57,4 +57,23 @@ public class SystemProperties {
     public static final String APPLICATION_DUBBO_CONFIG_REGISTRY_ADDRESS = "spring.simple.dubbo.registry.address";
     public static final String APPLICATION_DUBBO_CONFIG_PROTOCOL_NAME = "spring.simple.dubbo.protocol.name";
     public static final String APPLICATION_DUBBO_CONFIG_PROTOCOL_PORT = "spring.simple.dubbo.protocol.port";
+    
+    /**
+     * elasticsearch组件
+     */
+    public static final String APPLICATION_ELASTICSEARCH_HOST = "spring.simple.elasticsearch.host";
+    public static final String APPLICATION_ELASTICSEARCH_PORT = "spring.simple.elasticsearch.port";
+    public static final String APPLICATION_ELASTICSEARCH_CLUSTER_NAME = "spring.simple.elasticsearch.cluster.name";
+    
+    /**
+     * job组件
+     */
+    public static final String APPLICATION_XXLJOB_CONFIG_JOBPACKAGE = "spring.simple.xxljob.jobPackage";
+    public static final String APPLICATION_XXLJOB_CONFIG_ADDRESSES = "spring.simple.xxljob.addresses";
+    public static final String APPLICATION_XXLJOB_CONFIG_APPNAME = "spring.simple.xxljob.appName";
+    public static final String APPLICATION_XXLJOB_CONFIG_IP = "spring.simple.xxljob.ip";
+    public static final String APPLICATION_XXLJOB_CONFIG_PORT = "spring.simple.xxljob.port";
+    public static final String APPLICATION_XXLJOB_CONFIG_ACCESSTOKEN = "spring.simple.xxljob.accessToken";
+    public static final String APPLICATION_XXLJOB_CONFIG_LOGPATH = "spring.simple.xxljob.logPath";
+    public static final String APPLICATION_XXLJOB_CONFIG_LOGRETENTIONDAYS = "spring.simple.xxljob.logRetentionDays";
 }

@@ -1,6 +1,7 @@
 package com.spring.simple.development.demo;
 
 
+import com.spring.simple.development.core.annotation.config.EnableDubbo;
 import com.spring.simple.development.core.annotation.config.EnableMybatis;
 import com.spring.simple.development.core.annotation.config.EnableWebMvc;
 import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
@@ -11,7 +12,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
-//@EnableDubbo
+@EnableDubbo
 @EnableMybatis
 @EnableWebMvc
 @SpringSimpleApplication
