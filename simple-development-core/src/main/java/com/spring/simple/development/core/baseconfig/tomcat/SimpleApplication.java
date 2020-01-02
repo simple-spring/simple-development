@@ -76,6 +76,8 @@ public class SimpleApplication {
                     " |___/ .__/|_|  |_|_| |_|\\__, | |___/_|_| |_| |_| .__/|_|\\___|  \\___|_| |_|\\__,_|\n" +
                     "     | |                  __/ |                 | |                              \n" +
                     "     |_|                 |___/                  |_|                              \n");
+            String command = "cmd /c start http://127.0.0.1:" + port;
+            Runtime.getRuntime().exec(command);
             //在控制台回车就可以重启，提高效率
             while (true) {
                 char c = (char) System.in.read();
