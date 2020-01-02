@@ -1,4 +1,4 @@
-package com.manila.generator;
+package com.spring.simple.development.generator;
 
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;

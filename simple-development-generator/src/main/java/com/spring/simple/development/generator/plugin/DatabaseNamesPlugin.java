@@ -1,4 +1,4 @@
-package com.manila.generator.plugin;
+package com.spring.simple.development.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
