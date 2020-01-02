@@ -16,9 +16,9 @@
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
 <!--        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
 <!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
-        <plugin type="com.manila.generator.plugin.LombokPlugin"/>
+        <plugin type="LombokPlugin"/>
         <!-- 自定义注释生成器 -->
-        <commentGenerator type="com.manila.generator.MySQLCommentGenerator">
+        <commentGenerator type="MySQLCommentGenerator">
             <property name="author" value="liko"/>
             <property name="dateFormat" value="yyyy/MM/dd"/>
         </commentGenerator>

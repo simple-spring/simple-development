@@ -76,8 +76,8 @@
 
                         <!-- MyBatis Generator -->
                         <dependency>
-                            <groupId>com.manila.generator</groupId>
-                            <artifactId>manila.generator</artifactId>
+                            <groupId>com.spring</groupId>
+                            <artifactId>simple-development-generator</artifactId>
                             <version>1.0</version>
                         </dependency>
                     </dependencies>
