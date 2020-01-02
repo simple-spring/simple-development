@@ -137,7 +137,7 @@ under the License.
             <repositories>
                 <repository>
                     <id>central</id>
-                    <url>http://nexus.diangc.cn/nexus/content/groups/public</url>
+                    <url>http://nexus.diangc.cn:8091/nexus/content/groups/public/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -149,7 +149,7 @@ under the License.
             <pluginRepositories>
                 <pluginRepository>
                     <id>central</id>
-                    <url>http://nexus.diangc.cn/nexus/content/groups/public</url>
+                    <url>http://nexus.diangc.cn:8091/nexus/content/groups/public/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
