@@ -3,30 +3,23 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
-    <context id="context1" targetRuntime="MyBatis3">
 
-        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
-        <property name="beginningDelimiter" value="`"/>
-        <property name="endingDelimiter" value="`"/>
-        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表； 一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
-        <property name="autoDelimitKeywords" value="true"/>
+    <!-- 生成dal配置 -->
+    <context id="project" targetRuntime="MyBatis3">
+        <property name="suppressAllComments" value="true"/>
+        <property name="useActualColumnNames" value="false"/>
 
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>
-        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
-<!--        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
-<!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
-        <plugin type="LombokPlugin"/>
-        <!-- 自定义注释生成器 -->
-        <commentGenerator type="MySQLCommentGenerator">
-            <property name="author" value="liko"/>
-            <property name="dateFormat" value="yyyy/MM/dd"/>
-        </commentGenerator>
-
+        <!-- 配置插件 -->
+        <plugin type="com.alibaba.lava.dal.common.MultiDbPaginationPlugin"/>
+        <plugin type="com.alibaba.lava.dal.common.BoPlugin">
+            <property name="basePath"
+                      value="E:/simple-development/simple-development-demo/src/main/java/"/>
+        </plugin>
+        <plugin type="com.spring.simple.development.generator.plugin.LombokPlugin"/>
 
         <!-- 配置连接数据信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/demo?characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://172.22.5.239:3306/demo?characterEncoding=utf8"
                         userId="root" password="123456">
         </jdbcConnection>
 
@@ -35,15 +28,31 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
+        <!-- 生成文件位置 -->
         <javaModelGenerator targetPackage="com.spring.simple.development.demo.model"
-                            targetProject="./src/main/java"/>
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
         <sqlMapGenerator targetPackage="demo"
-                         targetProject="src/main/resources/mybatis"/>
-        <javaClientGenerator targetPackage="com.spring.simple.development.demo.mapper"
-                             targetProject="./src/main/java" type="XMLMAPPER"/>
+                         targetProject="src/main/resources/mybatis/">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.spring.simple.development.demo.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
 
-        <table tableName="T_DEME_TABLE" domainObjectName="DemoDo">
+        <table tableName="t_demo" domainObjectName="DemoDo">
+            <property name="stateAction" value="false"/>
+            <property name="boPackage" value="com.spring.simple.development.demo.service"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <ignoreColumn   column="ID" />
+            <ignoreColumn 	 column="GMT_CREATE" />
+            <ignoreColumn 	 column="CREATOR" />
+            <ignoreColumn 	 column="GMT_MODIFIED" />
+            <ignoreColumn   column="MODIFIER" />
+            <ignoreColumn   column="IS_DELETED" />
         </table>
     </context>
 </generatorConfiguration>
