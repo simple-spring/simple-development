@@ -37,4 +37,36 @@ public class ValueConstant {
     public final static boolean testOnBorrow = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testOnBorrow"));
 
     public final static boolean testOnReturn = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testOnReturn"));
+
+
+    // 从库
+    public final static boolean is_open_slave = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.is.open.slave.datasource"));
+
+    public final static String slave_dbUrl = PropertyConfigurer.getProperty("spring.simple.slave.datasource.url");
+
+    public final static String slave_username = PropertyConfigurer.getProperty("spring.simple.slave.datasource.username");
+
+    public final static String slave_password = PropertyConfigurer.getProperty("spring.simple.slave.datasource.password");
+
+    public final static String slave_driverClassName = PropertyConfigurer.getProperty("spring.simple.slave.datasource.driverClassName");
+
+    public final static int slave_initialSize = PropertyConfigurer.getProperty("spring.simple.slave.datasource.initialSize") == null ? 0 : Long.valueOf(PropertyConfigurer.getProperty("spring.simple.slave.datasource.initialSize")).intValue();
+
+    public final static int slave_minIdle = PropertyConfigurer.getProperty("spring.simple.slave.datasource.minIdle") == null ? 0 : Long.valueOf(PropertyConfigurer.getProperty("spring.simple.slave.datasource.minIdle")).intValue();
+
+    public final static int slave_maxActive = PropertyConfigurer.getProperty("spring.simple.slave.datasource.maxActive") == null ? 0 : Long.valueOf(PropertyConfigurer.getProperty("spring.simple.slave.datasource.maxActive")).intValue();
+
+    public final static int slave_maxWait = PropertyConfigurer.getProperty("spring.simple.slave.datasource.maxWait") == null?0:Long.valueOf(PropertyConfigurer.getProperty("spring.simple.slave.datasource.maxWait")).intValue();
+
+    public final static int slave_timeBetweenEvictionRunsMillis = PropertyConfigurer.getProperty("spring.simple.slave.datasource.timeBetweenEvictionRunsMillis") == null?0:Long.valueOf(PropertyConfigurer.getProperty("spring.simple.slave.datasource.timeBetweenEvictionRunsMillis")).intValue();
+
+    public final static int slave_minEvictableIdleTimeMillis = PropertyConfigurer.getProperty("spring.simple.slave.datasource.minEvictableIdleTimeMillis") == null?0:Long.valueOf(PropertyConfigurer.getProperty("spring.simple.slave.datasource.minEvictableIdleTimeMillis")).intValue();
+
+    public final static String slave_validationQuery = PropertyConfigurer.getProperty("spring.simple.slave.datasource.validationQuery");
+
+    public final static boolean slave_testWhileIdle = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testWhileIdle"));
+
+    public final static boolean slave_testOnBorrow = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testOnBorrow"));
+
+    public final static boolean slave_testOnReturn = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testOnReturn"));
 }

@@ -1,10 +1,13 @@
 package com.spring.simple.development.core.component.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.spring.simple.development.core.baseconfig.datasource.DynamicDataSource;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.constant.ValueConstant;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.github.pagehelper.PageHelper;
+import org.apache.ibatis.mapping.DatabaseIdProvider;
+import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.aop.Advisor;
@@ -22,6 +25,9 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -32,45 +38,90 @@ import java.util.Properties;
 @Configuration
 public class DataSourceConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        System.out.println("Initialize the data source...");
-        DruidDataSource datasource = new DruidDataSource();
+    @Bean(value = "masterDataSource")
+    public DataSource masterDataSource() {
+        System.out.println("Initialize the masterDataSource source...");
+        DruidDataSource masterDataSource = new DruidDataSource();
 
-        datasource.setUrl(ValueConstant.dbUrl);
-        datasource.setUsername(ValueConstant.username);
-        datasource.setPassword(ValueConstant.password);
-        datasource.setDriverClassName(ValueConstant.driverClassName);
+        masterDataSource.setUrl(ValueConstant.dbUrl);
+        masterDataSource.setUsername(ValueConstant.username);
+        masterDataSource.setPassword(ValueConstant.password);
+        masterDataSource.setDriverClassName(ValueConstant.driverClassName);
 
         //configuration
-        datasource.setInitialSize(ValueConstant.initialSize);
-        datasource.setMinIdle(ValueConstant.minIdle);
-        datasource.setMaxActive(ValueConstant.maxActive);
-        datasource.setMaxWait(ValueConstant.maxWait);
-        datasource.setTimeBetweenEvictionRunsMillis(ValueConstant.timeBetweenEvictionRunsMillis);
-        datasource.setMinEvictableIdleTimeMillis(ValueConstant.minEvictableIdleTimeMillis);
-        datasource.setValidationQuery(ValueConstant.validationQuery);
-        datasource.setTestWhileIdle(ValueConstant.testWhileIdle);
-        datasource.setTestOnBorrow(ValueConstant.testOnBorrow);
-        datasource.setTestOnReturn(ValueConstant.testOnReturn);
-        return datasource;
+        masterDataSource.setInitialSize(ValueConstant.initialSize);
+        masterDataSource.setMinIdle(ValueConstant.minIdle);
+        masterDataSource.setMaxActive(ValueConstant.maxActive);
+        masterDataSource.setMaxWait(ValueConstant.maxWait);
+        masterDataSource.setTimeBetweenEvictionRunsMillis(ValueConstant.timeBetweenEvictionRunsMillis);
+        masterDataSource.setMinEvictableIdleTimeMillis(ValueConstant.minEvictableIdleTimeMillis);
+        masterDataSource.setValidationQuery(ValueConstant.validationQuery);
+        masterDataSource.setTestWhileIdle(ValueConstant.testWhileIdle);
+        masterDataSource.setTestOnBorrow(ValueConstant.testOnBorrow);
+        masterDataSource.setTestOnReturn(ValueConstant.testOnReturn);
+        return masterDataSource;
+    }
+
+    @Bean(value = "slaveDataSource")
+    public DataSource slaveDataSource() {
+        if (ValueConstant.is_open_slave == false) {
+            return masterDataSource();
+        }
+        System.out.println("Initialize the slaveDataSource source...");
+        DruidDataSource slaveDataSource = new DruidDataSource();
+
+        slaveDataSource.setUrl(ValueConstant.slave_dbUrl);
+        slaveDataSource.setUsername(ValueConstant.slave_username);
+        slaveDataSource.setPassword(ValueConstant.slave_password);
+        slaveDataSource.setDriverClassName(ValueConstant.slave_driverClassName);
+
+        //configuration
+        slaveDataSource.setInitialSize(ValueConstant.slave_initialSize);
+        slaveDataSource.setMinIdle(ValueConstant.slave_minIdle);
+        slaveDataSource.setMaxActive(ValueConstant.slave_maxActive);
+        slaveDataSource.setMaxWait(ValueConstant.slave_maxWait);
+        slaveDataSource.setTimeBetweenEvictionRunsMillis(ValueConstant.slave_timeBetweenEvictionRunsMillis);
+        slaveDataSource.setMinEvictableIdleTimeMillis(ValueConstant.slave_minEvictableIdleTimeMillis);
+        slaveDataSource.setValidationQuery(ValueConstant.slave_validationQuery);
+        slaveDataSource.setTestWhileIdle(ValueConstant.slave_testWhileIdle);
+        slaveDataSource.setTestOnBorrow(ValueConstant.slave_testOnBorrow);
+        slaveDataSource.setTestOnReturn(ValueConstant.slave_testOnReturn);
+        return slaveDataSource;
+    }
+
+    @Bean
+    public DynamicDataSource dynamicDataSource() {
+        DynamicDataSource dynamicDataSource = new DynamicDataSource();
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put("masterDataSource", masterDataSource());
+        targetDataSources.put("slaveDataSource", slaveDataSource());
+        dynamicDataSource.setTargetDataSources(targetDataSources);
+        dynamicDataSource.setDefaultTargetDataSource(masterDataSource());
+        return dynamicDataSource;
     }
 
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean() throws IOException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(dataSource());
+        sqlSessionFactoryBean.setDataSource(dynamicDataSource());
         sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_XML_PATH)));
         sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MODEL_PATH));
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
+
+        Properties properties = new Properties();
+        properties.setProperty("Oracle", "oracle");
+        properties.setProperty("MySQL", "mysql");
+        DatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
+        databaseIdProvider.setProperties(properties);
+        sqlSessionFactoryBean.setDatabaseIdProvider(databaseIdProvider);
         return sqlSessionFactoryBean;
     }
 
     @Bean(name = "transactionManager")
     public DataSourceTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-        transactionManager.setDataSource(dataSource());
+        transactionManager.setDataSource(dynamicDataSource());
         return transactionManager;
     }
 

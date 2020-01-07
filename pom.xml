@@ -459,17 +459,22 @@
             <artifactId>xxl-job-core</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>lava</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
     <distributionManagement>
         <repository>
             <id>manila.releases</id>
             <name>Internal Releases</name>
-            <url>http://nexus.diangc.cn/nexus/content/repositories/releases/</url>
+            <url>http://nexus.diangc.cn:8091/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>manila.Snapshots</id>
             <name>Internal Snapshots</name>
-            <url>http://nexus.diangc.cn/nexus/content/repositories/snapshots/</url>
+            <url>http://nexus.diangc.cn:8091/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
