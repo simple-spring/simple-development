@@ -1,10 +1,12 @@
 package com.spring.simple.development.demo.context;
 
+import com.alibaba.lava.privilege.PrivilegeInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +22,11 @@ public class DemoApplication implements ApplicationContextAware {
     private static Logger logger = LogManager.getLogger(DemoApplication.class);
 
     private static ApplicationContext applicationContext;
-//
-//    @Bean(name = "lavaPvgInfo")
-//    public PrivilegeInfo privilegeInfo() {
-//        return new PrivilegeInfo();
-//    }
-//    @Bean
-//    public BizExceptions bizExceptions() {
-//        return new BizExceptions();
-//    }
+
+    @Bean(name = "lavaPvgInfo")
+    public PrivilegeInfo privilegeInfo() {
+        return new PrivilegeInfo();
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

@@ -1,7 +1,6 @@
 package com.spring.simple.development.demo;
 
 
-import com.spring.simple.development.core.annotation.config.EnableDubbo;
 import com.spring.simple.development.core.annotation.config.EnableMybatis;
 import com.spring.simple.development.core.annotation.config.EnableWebMvc;
 import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
