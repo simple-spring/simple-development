@@ -1,0 +1,1 @@
+nohup java -jar ./simple-development-demo.jar &

@@ -26,7 +26,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
-
     </properties>
 
     <!--MAVEN打包duboo可执行jar begin -->
@@ -48,6 +47,7 @@
                 </includes>
                 <excludes>
                     <exclude>generatorConfig.xml</exclude>
+                    <exclude>assembly.xml</exclude>
                     <exclude>config/*/*.properties</exclude>
                 </excludes>
             </resource>
@@ -125,7 +125,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                        <descriptor>src/main/resources/assembly.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>
