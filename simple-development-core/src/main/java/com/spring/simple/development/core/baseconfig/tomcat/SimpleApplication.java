@@ -116,8 +116,7 @@ public class SimpleApplication {
 
     public String getWebappsPath() {
         String file = getClass().getClassLoader().getResource(".").getFile();
-        //return file.substring(0, file.indexOf("target")) + "src/main/webapp";
-        return file;
+        return file.substring(0, file.indexOf("target"));
     }
 
 
