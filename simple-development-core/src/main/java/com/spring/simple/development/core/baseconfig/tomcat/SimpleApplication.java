@@ -76,8 +76,10 @@ public class SimpleApplication {
                     " |___/ .__/|_|  |_|_| |_|\\__, | |___/_|_| |_| |_| .__/|_|\\___|  \\___|_| |_|\\__,_|\n" +
                     "     | |                  __/ |                 | |                              \n" +
                     "     |_|                 |___/                  |_|                              \n");
-            String command = "cmd /c start http://127.0.0.1:" + port;
-            Runtime.getRuntime().exec(command);
+            if(isWindows()){
+                String command = "cmd /c start http://127.0.0.1:" + port;
+                Runtime.getRuntime().exec(command);
+            }
             //在控制台回车就可以重启，提高效率
             while (true) {
                 char c = (char) System.in.read();
@@ -179,6 +181,9 @@ public class SimpleApplication {
         String port = PropertyConfigurer.getProperty("server.port");
         SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
         tomcatTest.start();
+    }
+    public boolean isWindows() {
+        return System.getProperties().getProperty("os.name").toUpperCase().indexOf("WINDOWS") != -1;
     }
 
 }
