@@ -80,18 +80,7 @@ public class SimpleApplication {
                 String command = "cmd /c start http://127.0.0.1:" + port;
                 Runtime.getRuntime().exec(command);
             }
-            //在控制台回车就可以重启，提高效率
-            while (true) {
-                char c = (char) System.in.read();
-                if (c == ENTER_CHAR) {
-                    begin = System.currentTimeMillis();
-                    System.out.println("重启tomcat...");
-                    tomcat.stop();
-                    tomcat.start();
-                    end = System.currentTimeMillis();
-                    log(end - begin);
-                }
-            }
+            tomcat.getServer().await();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,13 +111,13 @@ public class SimpleApplication {
     private void log(long time) {
         System.out.println("********************************************************");
         System.out.println("启动成功: http://127.0.0.1:" + port + "   in:" + time + "ms");
-        System.out.println("小提示：直接在console里敲回车，可以重启tomcat");
         System.out.println("********************************************************");
     }
 
     public String getWebappsPath() {
         String file = getClass().getClassLoader().getResource(".").getFile();
-        return file.substring(0, file.indexOf("target")) + "src/main/webapp";
+        //return file.substring(0, file.indexOf("target")) + "src/main/webapp";
+        return file;
     }
 
 
