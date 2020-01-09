@@ -23,13 +23,13 @@ public class RedisConfig {
 
     public RedisConfig() {
         System.out.println("redis initialized...");
-        Assert.notNull(host,"redis host is empty");
-        Assert.notNull(post,"redis post is empty");
-        Assert.notNull(pwd,"redis pwd is empty");
-        Assert.notNull(maxTotal,"redis maxTotal is empty");
-        Assert.notNull(maxWaitMillis,"redis maxWaitMillis is empty");
-        Assert.notNull(maxIdle,"redis maxIdle is empty");
-        Assert.notNull(timeout,"redis timeout is empty");
+        Assert.notNull(host, "redis host is empty");
+        Assert.notNull(post, "redis post is empty");
+        Assert.notNull(pwd, "redis pwd is empty");
+        Assert.notNull(maxTotal, "redis maxTotal is empty");
+        Assert.notNull(maxWaitMillis, "redis maxWaitMillis is empty");
+        Assert.notNull(maxIdle, "redis maxIdle is empty");
+        Assert.notNull(timeout, "redis timeout is empty");
         init(host, post, pwd, maxTotal, maxWaitMillis, maxIdle, timeout);
         System.out.println("redis initialized successfully");
     }
@@ -52,6 +52,7 @@ public class RedisConfig {
         // 设置空间连接 10
         config.setMaxIdle(maxIdle.intValue());
         pool = new JedisPool(config, host, Long.valueOf(port).intValue(), timeout.intValue(), pwd);
+        JedisPoolUtils.setPool(pool);
         // 测试是否成功
         Jedis jedis = null;
         try {
