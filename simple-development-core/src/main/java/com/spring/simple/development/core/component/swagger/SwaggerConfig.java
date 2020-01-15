@@ -3,11 +3,7 @@ package com.spring.simple.development.core.component.swagger;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.GroovyClassLoaderUtils;
-import com.xxl.job.core.handler.IJobHandler;
-import groovy.lang.GroovyClassLoader;
-import org.apache.ibatis.annotations.Arg;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -48,6 +44,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         Class aClass = GroovyClassLoaderUtils.loadNewInstance(code);
         DynamicControllerMapping.addMapping(aClass);
     }
+
     private String title = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_TITLE);
     private String description = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_DESCRIPTION);
     private String contact = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT);
@@ -66,6 +63,12 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
+        boolean isEnableBoolean = Boolean.getBoolean(isEnable);
+        // 不启动
+        if (!isEnableBoolean) {
+            return;
+        }
         // 解决静态资源无法访问
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
