@@ -32,6 +32,7 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_VERSION, "1.0");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_URL, "https://swagger.io/");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, "spring simple team");
+            PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, "true");
 
             if (!StringUtils.isEmpty(enableSwagger.title())) {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_TITLE, enableSwagger.title());
@@ -47,6 +48,15 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             }
             if (!StringUtils.isEmpty(enableSwagger.contact())) {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, enableSwagger.contact());
+            }
+            String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
+            if (StringUtils.isEmpty(isEnable)) {
+                return SwaggerConfig.class;
+            }
+            boolean isEnableBoolean = Boolean.getBoolean(isEnable);
+            // 不启动
+            if (!isEnableBoolean) {
+                return null;
             }
             return SwaggerConfig.class;
         } catch (Exception ex) {
