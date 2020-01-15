@@ -29,7 +29,7 @@ import static com.spring.simple.development.support.exception.ResponseCode.RES_P
  *
  * @author liko
  */
-@RestController
+@Controller
 @RequestMapping("/data")
 public class ApiController {
     private static final Logger logger = LogManager.getLogger(ApiController.class);
@@ -37,6 +37,7 @@ public class ApiController {
 
     @Autowired
     private ServiceInvoke serviceInvoke;
+
     /**
      * 登录后接口服务
      *
@@ -44,7 +45,7 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @RequestMapping(value = {"/api/{version}/{serviceName}/{methodName}", "/api", "/api/{version}"},method = RequestMethod.POST)
+    @RequestMapping(value = {"/api/{version}/{serviceName}/{methodName}", "/api", "/api/{version}"}, method = RequestMethod.POST)
     @ResponseBody
     public ResBody api(HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
 
@@ -88,7 +89,7 @@ public class ApiController {
      * @throws Throwable
      */
     @NoLogin
-    @RequestMapping(value = {"/config/{version}/{serviceName}/{methodName}", "/config", "/config/{version}"},method = RequestMethod.POST)
+    @RequestMapping(value = {"/config/{version}/{serviceName}/{methodName}", "/config", "/config/{version}"}, method = RequestMethod.POST)
     @ResponseBody
     public ResBody config(HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
         if (StringUtils.isEmpty(version)) {

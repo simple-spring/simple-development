@@ -41,11 +41,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 "public class DemoSwaggerController {\n" +
                 "\n" +
                 "    @RequestMapping(value = \"index\",method = RequestMethod.POST)\n" +
-                "    @ApiOperation(value = \"进入首页面\")\n" +
-                "    public String index() {\n" +
-                "        return \"index\";\n" +
+                "    @ApiOperation(value = \"进入首页面1\")\n" +
+                "    public String index1() {\n" +
+                "        return \"index1\";\n" +
                 "    }\n" +
-                "\n" +
                 "}\n";
         Class aClass = GroovyClassLoaderUtils.loadNewInstance(code);
         DynamicControllerMapping.addMapping(aClass);
