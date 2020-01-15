@@ -84,5 +84,6 @@ public class SystemProperties {
     public static final String APPLICATION_SWAGGER_CONTACT = "spring.simple.swagger.contact";
     public static final String APPLICATION_SWAGGER_VERSION = "spring.simple.swagger.version";
     public static final String APPLICATION_SWAGGER_URL = "spring.simple.swagger.url";
+    public static final String APPLICATION_SWAGGER_IS_ENABLE = "spring.simple.swagger.is_enable";
 
 }
