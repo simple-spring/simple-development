@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 /**
  * 注册service 方法名称自定义
  */
-@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
 public @interface IsApiMethodService {
     String value() default "";
 }
