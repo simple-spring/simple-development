@@ -10,9 +10,8 @@
 //public class DemoSwaggerController {
 //
 //    @RequestMapping(value = "index",method = RequestMethod.POST)
-//    @ApiOperation(value = "进入首页面")
-//    public String index() {
-//        return "index";
+//    @ApiOperation(value = "进入首页面1")
+//    public String index1() {
+//        return "index1";
 //    }
-//
 //}

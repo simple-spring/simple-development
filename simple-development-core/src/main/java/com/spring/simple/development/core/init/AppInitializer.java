@@ -95,6 +95,9 @@ public class AppInitializer implements WebApplicationInitializer {
                     Object configObject = configClass.newInstance();
                     Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME, annotationMap.get(configName).annotationType());
                     Object resultClass = method.invoke(configObject, annotationMap.get(configName));
+                    if(resultClass == null){
+                        continue;
+                    }
                     configClassList.add(resultClass);
                 }
             }
