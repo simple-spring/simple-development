@@ -32,15 +32,15 @@ public class ValueConstant {
 
     public final static String validationQuery = PropertyConfigurer.getProperty("spring.simple.datasource.validationQuery");
 
-    public final static boolean testWhileIdle = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testWhileIdle"));
+    public final static boolean testWhileIdle = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testWhileIdle"));
 
-    public final static boolean testOnBorrow = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testOnBorrow"));
+    public final static boolean testOnBorrow = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testOnBorrow"));
 
-    public final static boolean testOnReturn = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testOnReturn"));
+    public final static boolean testOnReturn = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.datasource.testOnReturn"));
 
 
     // 从库
-    public final static boolean is_open_slave = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.is.open.slave.datasource"));
+    public final static boolean is_open_slave = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.is.open.slave.datasource"));
 
     public final static String slave_dbUrl = PropertyConfigurer.getProperty("spring.simple.slave.datasource.url");
 
@@ -64,9 +64,9 @@ public class ValueConstant {
 
     public final static String slave_validationQuery = PropertyConfigurer.getProperty("spring.simple.slave.datasource.validationQuery");
 
-    public final static boolean slave_testWhileIdle = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testWhileIdle"));
+    public final static boolean slave_testWhileIdle = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testWhileIdle"));
 
-    public final static boolean slave_testOnBorrow = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testOnBorrow"));
+    public final static boolean slave_testOnBorrow = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testOnBorrow"));
 
-    public final static boolean slave_testOnReturn = Boolean.getBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testOnReturn"));
+    public final static boolean slave_testOnReturn = Boolean.parseBoolean(PropertyConfigurer.getProperty("spring.simple.slave.datasource.testOnReturn"));
 }
