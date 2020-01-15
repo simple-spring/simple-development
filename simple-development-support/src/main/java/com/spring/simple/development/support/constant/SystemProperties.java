@@ -57,14 +57,14 @@ public class SystemProperties {
     public static final String APPLICATION_DUBBO_CONFIG_REGISTRY_ADDRESS = "spring.simple.dubbo.registry.address";
     public static final String APPLICATION_DUBBO_CONFIG_PROTOCOL_NAME = "spring.simple.dubbo.protocol.name";
     public static final String APPLICATION_DUBBO_CONFIG_PROTOCOL_PORT = "spring.simple.dubbo.protocol.port";
-    
+
     /**
      * elasticsearch组件
      */
     public static final String APPLICATION_ELASTICSEARCH_HOST = "spring.simple.elasticsearch.host";
     public static final String APPLICATION_ELASTICSEARCH_PORT = "spring.simple.elasticsearch.port";
     public static final String APPLICATION_ELASTICSEARCH_CLUSTER_NAME = "spring.simple.elasticsearch.cluster.name";
-    
+
     /**
      * job组件
      */
@@ -76,4 +76,14 @@ public class SystemProperties {
     public static final String APPLICATION_XXLJOB_CONFIG_ACCESSTOKEN = "spring.simple.xxljob.accessToken";
     public static final String APPLICATION_XXLJOB_CONFIG_LOGPATH = "spring.simple.xxljob.logPath";
     public static final String APPLICATION_XXLJOB_CONFIG_LOGRETENTIONDAYS = "spring.simple.xxljob.logRetentionDays";
+    /**
+     * swagger组件
+     **/
+    public static final String APPLICATION_SWAGGER_PACKAGE_PATH = "spring.simple.swagger.package.path";
+    public static final String APPLICATION_SWAGGER_TITLE = "spring.simple.swagger.title";
+    public static final String APPLICATION_SWAGGER_DESCRIPTION = "spring.simple.swagger.description";
+    public static final String APPLICATION_SWAGGER_CONTACT = "spring.simple.swagger.contact";
+    public static final String APPLICATION_SWAGGER_VERSION = "spring.simple.swagger.version";
+    public static final String APPLICATION_SWAGGER_URL = "spring.simple.swagger.url";
+
 }
