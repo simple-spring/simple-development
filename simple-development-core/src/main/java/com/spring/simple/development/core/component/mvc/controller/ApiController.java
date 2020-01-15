@@ -16,9 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,7 +29,7 @@ import static com.spring.simple.development.support.exception.ResponseCode.RES_P
  *
  * @author liko
  */
-@Controller
+@RestController
 @RequestMapping("/data")
 public class ApiController {
     private static final Logger logger = LogManager.getLogger(ApiController.class);
@@ -46,7 +44,7 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @RequestMapping(value = {"/api/{version}/{serviceName}/{methodName}", "/api", "/api/{version}"})
+    @RequestMapping(value = {"/api/{version}/{serviceName}/{methodName}", "/api", "/api/{version}"},method = RequestMethod.POST)
     @ResponseBody
     public ResBody api(HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
 
@@ -90,7 +88,7 @@ public class ApiController {
      * @throws Throwable
      */
     @NoLogin
-    @RequestMapping(value = {"/config/{version}/{serviceName}/{methodName}", "/config", "/config/{version}"})
+    @RequestMapping(value = {"/config/{version}/{serviceName}/{methodName}", "/config", "/config/{version}"},method = RequestMethod.POST)
     @ResponseBody
     public ResBody config(HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
         if (StringUtils.isEmpty(version)) {
