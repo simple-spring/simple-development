@@ -79,7 +79,6 @@ public class SystemProperties {
     /**
      * swagger组件
      **/
-    public static final String APPLICATION_SWAGGER_PACKAGE_PATH = "spring.simple.swagger.package.path";
     public static final String APPLICATION_SWAGGER_TITLE = "spring.simple.swagger.title";
     public static final String APPLICATION_SWAGGER_DESCRIPTION = "spring.simple.swagger.description";
     public static final String APPLICATION_SWAGGER_CONTACT = "spring.simple.swagger.contact";
