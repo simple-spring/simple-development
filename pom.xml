@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.spring</groupId>
     <artifactId>simple-development</artifactId>
-    <version>2.1</version>
+    <version>2.2</version>
     <modules>
         <module>simple-development-core</module>
         <module>simple-development-support</module>
@@ -454,15 +454,29 @@
             <artifactId>transport-netty4-client</artifactId>
             <version>6.2.3</version>
         </dependency>
+        <!--  job      -->
         <dependency>
             <groupId>com.xuxueli</groupId>
             <artifactId>xxl-job-core</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <!--  lava      -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>lava</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <!-- swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
         </dependency>
     </dependencies>
     <distributionManagement>
