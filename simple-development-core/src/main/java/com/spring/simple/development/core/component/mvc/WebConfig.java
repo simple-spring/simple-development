@@ -64,10 +64,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 默认拦截器
-        String[] excludes = new String[3];
-        excludes[0] = "classpath:/static/";
-        excludes[1] = "classpath:/META-INF/resources/";
-        excludes[2] = "classpath:/META-INF/resources/webjars/";
+        String[] excludes = new String[2];
+        excludes[0] = "classpath:/META-INF/resources/*";
+        excludes[1] = "classpath:/META-INF/resources/webjars/*";
         registry.addInterceptor(new ApiSupportInterceptor()).excludePathPatterns(excludes);
         try {
             Reflections reflections = new Reflections(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_INTERCEPTOR_PATH));
@@ -102,9 +101,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         if (!isEnableBoolean) {
             return;
         }
-        // 解决静态资源无法访问
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
         // 解决swagger无法访问
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
