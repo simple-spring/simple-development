@@ -1,14 +1,26 @@
 package com.spring.simple.development.core.component.swagger;
 
+import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.annotation.base.IsApiMethodService;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
+import com.spring.simple.development.core.baseconfig.isapiservice.ServiceInvoke;
+import com.spring.simple.development.core.component.mvc.req.RpcRequest;
+import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.support.constant.SystemProperties;
+import com.spring.simple.development.support.utils.DateUtils;
+import com.spring.simple.development.support.utils.HttpRequestUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -34,49 +46,52 @@ public class SwaggerIsApiService {
         }
         List<String> codes = new ArrayList<>();
         // 类上面的地址默认
-        String classRequestMappingPath = "/data/api/v1";
+        String baseUrl = "/data/api/v1";
         for (Class isApiClass : typesAnnotatedWith) {
+            Method[] declaredMethods = isApiClass.getDeclaredMethods();
+            if (declaredMethods == null || declaredMethods.length == 0) {
+                continue;
+            }
             // 方法上面的地址
-            String methodRequestMappingPath;
+            String className;
             Annotation annotation = isApiClass.getAnnotation(IsApiService.class);
             IsApiService isApiService = (IsApiService) annotation;
             String defaultMethodRequestMappingPath = isApiService.value();
-            if (StringUtils.isEmpty(defaultMethodRequestMappingPath)) {
-                methodRequestMappingPath = defaultMethodRequestMappingPath;
+            if (!StringUtils.isEmpty(defaultMethodRequestMappingPath)) {
+                className = defaultMethodRequestMappingPath;
             } else {
-                methodRequestMappingPath = isApiClass.getClass().getInterfaces()[0].getSimpleName();
+                className = isApiClass.getInterfaces()[0].getSimpleName();
             }
-
-            // 包名
-            String code = "package com.spring.simple.development.demo.controller;\n" +
-                    "\n" +
-                    "import org.springframework.web.bind.annotation.*;\n" +
-                    "\n" +
-                    "@RestController\n" +
-                    "@RequestMapping(\"/data/api/v1\")\n" +
-                    "public class " + isApiClass.getSimpleName() + "Controller {";
-
-            Method[] declaredMethods = isApiClass.getDeclaredMethods();
+            List<String> methodParams = new ArrayList<>();
             for (Method method : declaredMethods) {
                 NoApiMethod noApiMethod = method.getAnnotation(NoApiMethod.class);
                 if (noApiMethod != null) {
                     continue;
                 }
+                String methodName = method.getName();
                 IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
-                String defaultMethodValue = isApiMethodService.value();
-                if (StringUtils.isEmpty(defaultMethodValue)) {
-                    methodRequestMappingPath = methodRequestMappingPath + "/" + method.getName();
-                } else {
-                    methodRequestMappingPath = methodRequestMappingPath + "/" + defaultMethodValue;
-
+                if (isApiMethodService != null) {
+                    String defaultMethodValue = isApiMethodService.value();
+                    if (!StringUtils.isEmpty(defaultMethodValue)) {
+                        methodName = defaultMethodValue;
+                    }
                 }
-                code += "@RequestMapping(value = " + methodRequestMappingPath + ",method = RequestMethod.POST)\n" +
-                        "                public String index1() {\n" +
-                        "                    return \"index1\";\n" +
-                        "                }";
+
+                boolean login = isApiService.isLogin();
+                String methodParam = baseUrl + "/"+className+"/"+methodName;
+                if (login) {
+                    methodParam = methodParam + ","+className+","+ method.getName() + "," + "invokeConfigService";
+                } else {
+                    methodParam = methodParam + ","+className+","+ method.getName() + "," + "invokeService";
+                }
+                methodParams.add(methodParam);
+
             }
-            code += code + "}";
-            codes.add(code);
+            if (CollectionUtils.isEmpty(methodParams)) {
+                continue;
+            }
+            String baseCode = CodeGenerationHandler.getBaseCode(isApiClass.getSimpleName(), methodParams);
+            codes.add(baseCode);
         }
         return codes;
     }

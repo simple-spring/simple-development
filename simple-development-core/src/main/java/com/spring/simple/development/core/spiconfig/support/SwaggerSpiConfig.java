@@ -53,9 +53,9 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             if (StringUtils.isEmpty(isEnable)) {
                 return SwaggerConfig.class;
             }
-            boolean isEnableBoolean = Boolean.getBoolean(isEnable);
+            boolean isEnableBoolean = Boolean.parseBoolean(isEnable);
             // 不启动
-            if (!isEnableBoolean) {
+            if (isEnableBoolean == false) {
                 return null;
             }
             return SwaggerConfig.class;
@@ -63,5 +63,4 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             throw new RuntimeException("swagger Config initialization failed", ex);
         }
     }
-
 }

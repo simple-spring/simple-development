@@ -29,6 +29,9 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     public SwaggerConfig() throws Exception {
         List<String> isApiServiceTransformControllerCodes = SwaggerIsApiService.getIsApiServiceTransformControllerCodes();
 
+        if (CollectionUtils.isEmpty(isApiServiceTransformControllerCodes)) {
+            return;
+        }
         if (!CollectionUtils.isEmpty(isApiServiceTransformControllerCodes)) {
             for (String code : isApiServiceTransformControllerCodes) {
                 Class aClass = GroovyClassLoaderUtils.loadNewInstance(code);
@@ -56,7 +59,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
-        boolean isEnableBoolean = Boolean.getBoolean(isEnable);
+        boolean isEnableBoolean = Boolean.parseBoolean(isEnable);
         // 不启动
         if (!isEnableBoolean) {
             return;
