@@ -101,7 +101,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     public void addMapping(Class loadClass) throws Exception {
         while (true) {
-            RequestMappingHandlerMapping bean = AppInitializer.rootContext.getBean(RequestMappingHandlerMapping.class);
+            RequestMappingHandlerMapping bean = (RequestMappingHandlerMapping)AppInitializer.rootContext.getBean("requestMappingHandlerMapping");
             if (bean == null) {
                 System.out.println("等待自动注册mapping"+ DateUtils.getCurrentTime());
                 Thread.sleep(3000);
