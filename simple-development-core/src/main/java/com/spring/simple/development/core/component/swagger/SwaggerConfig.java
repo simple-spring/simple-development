@@ -42,8 +42,7 @@ import java.util.Set;
  * @Date 2020/1/15/015 10:11
  * @Description SwaggerConfig
  **/
-@EnableSwagger2
-public class SwaggerConfig implements ApplicationListener<ContextRefreshedEvent> {
+public class SwaggerConfig {
     public SwaggerConfig() {
 
     }
@@ -74,12 +73,6 @@ public class SwaggerConfig implements ApplicationListener<ContextRefreshedEvent>
                 .contact(contact)
                 .version(version)
                 .build();
-    }
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        // 动态注册controller
-        //InvokeSwaggerIsApiService();
     }
 
     public void InvokeSwaggerIsApiService() {

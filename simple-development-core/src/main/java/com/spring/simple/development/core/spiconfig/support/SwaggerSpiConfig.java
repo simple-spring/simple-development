@@ -4,6 +4,7 @@ import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableSwagger;
 import com.spring.simple.development.core.annotation.config.EnableXxlJob;
 import com.spring.simple.development.core.component.job.XxlJobConfig;
+import com.spring.simple.development.core.component.mvc.WebConfig;
 import com.spring.simple.development.core.component.swagger.SwaggerConfig;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
@@ -50,15 +51,18 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, enableSwagger.contact());
             }
             String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
+
+            Class swaggerConfig = ClassLoadUtil.javassistCompileNoParam(SwaggerConfig.class, "springfox.documentation.swagger2.annotations.EnableSwagger2");
+
             if (StringUtils.isEmpty(isEnable)) {
-                return SwaggerConfig.class;
+                return swaggerConfig;
             }
             boolean isEnableBoolean = Boolean.parseBoolean(isEnable);
             // 不启动
             if (isEnableBoolean == false) {
                 return null;
             }
-            return SwaggerConfig.class;
+            return swaggerConfig;
         } catch (Exception ex) {
             throw new RuntimeException("swagger Config initialization failed", ex);
         }
