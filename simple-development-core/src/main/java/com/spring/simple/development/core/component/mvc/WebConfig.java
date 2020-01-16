@@ -65,12 +65,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     public void addInterceptors(InterceptorRegistry registry) {
         // 默认拦截器
         String[] excludes = new String[5];
-        String serverPath = PropertyConfigurer.getProperty("server.path") == null ? "" : "/" + PropertyConfigurer.getProperty("server.path");
-        excludes[0] = serverPath + "/swagger-ui.html";
-        excludes[1] = serverPath + "/webjars/**";
-        excludes[2] = serverPath + "/swagger-resources";
-        excludes[3] = serverPath + "/swagger-resources/configuration/ui";
-        excludes[4] = serverPath + "/swagger-resources/configuration/security";
+        excludes[0] = "/swagger-ui.html";
+        excludes[1] = "/webjars/**";
+        excludes[2] = "/swagger-resources";
+        excludes[3] = "/swagger-resources/configuration/ui";
+        excludes[4] = "/swagger-resources/configuration/security";
         registry.addInterceptor(new ApiSupportInterceptor()).excludePathPatterns(excludes);
         try {
             Reflections reflections = new Reflections(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_INTERCEPTOR_PATH));
