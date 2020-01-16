@@ -1,5 +1,6 @@
 package com.spring.simple.development.demo.interceptor;
 
+import com.spring.simple.development.core.annotation.base.NoLogin;
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
 import com.spring.simple.development.core.annotation.base.Value;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -11,6 +12,7 @@ import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.MethodParameterScanner;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ConfigurationBuilder;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,6 +46,16 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
+        //获取请求的url
+        String url = httpServletRequest.getRequestURI();
+        // 不需要登录的地址
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod method = (HandlerMethod) handler;
+            NoLogin noLogin = method.getMethodAnnotation(NoLogin.class);
+            if (noLogin != null) {
+                return true;
+            }
+        }
         return true;
     }
 

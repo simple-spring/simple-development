@@ -64,7 +64,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 默认拦截器
-        registry.addInterceptor(new ApiSupportInterceptor());
+        String[] excludes = new String[3];
+        excludes[0] = "classpath:/static/";
+        excludes[1] = "classpath:/META-INF/resources/";
+        excludes[2] = "classpath:/META-INF/resources/webjars/";
+        registry.addInterceptor(new ApiSupportInterceptor()).excludePathPatterns(excludes);
         try {
             Reflections reflections = new Reflections(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_INTERCEPTOR_PATH));
             Set<Class<?>> classes = reflections.getTypesAnnotatedWith(SimpleInterceptor.class);
@@ -74,8 +78,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
             }
             for (Class clazz : classes) {
                 System.out.println("SimpleInterceptor class: " + clazz.getName());
-                registry.addInterceptor((HandlerInterceptor) clazz.newInstance());
-
+                registry.addInterceptor((HandlerInterceptor) clazz.newInstance()).excludePathPatterns(excludes);
             }
 
         } catch (Exception e) {
