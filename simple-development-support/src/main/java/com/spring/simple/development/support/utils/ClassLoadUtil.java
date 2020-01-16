@@ -48,7 +48,7 @@ public class ClassLoadUtil extends ClassLoader {
      * @return void
      * @author liko.wang
      * @Date 2019/12/20/020 17:51
-     * @Description 修改类注册参数值
+     * @Description 类添加注解 有参数
      **/
     public static Class javassistCompile(Class aclass, String annotationName, List<String> packageNames, String simpleAnnotationName) throws NotFoundException, CannotCompileException, ClassNotFoundException {
         ClassPool classPool = ClassPool.getDefault();
@@ -62,13 +62,46 @@ public class ClassLoadUtil extends ClassLoader {
 
         ConstPool constPool = classFile.getConstPool();
         Annotation tableAnnotation = new Annotation(annotationName, constPool);
-        ArrayMemberValue arrayMemberValue = getArrayMemberValue(packageNames, constPool);
-        tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
+        if (packageNames != null && simpleAnnotationName != null) {
+            ArrayMemberValue arrayMemberValue = getArrayMemberValue(packageNames, constPool);
+            tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
+        }
         // 获取运行时注解属性
         AnnotationsAttribute attribute = (AnnotationsAttribute) classFile.getAttribute(AnnotationsAttribute.visibleTag);
         attribute.addAnnotation(tableAnnotation);
         classFile.addAttribute(attribute);
         classFile.setVersionToJava5();
+        // 当前ClassLoader中必须尚未加载该实体。（同一个ClassLoader加载同一个类只会加载一次）
+        ClassLoadUtil loader = new ClassLoadUtil(ClassLoadUtil.class.getClassLoader());
+        Class aClass = clazz.toClass(loader, null);
+        return aClass;
+    }
+
+    /**
+     * @param aclass
+     * @param annotationName
+     * @return void
+     * @author liko.wang
+     * @Date 2019/12/20/020 17:51
+     * @Description 类添加注解 无参数
+     **/
+    public static Class javassistCompileNoParam(Class aclass, String annotationName) throws NotFoundException, CannotCompileException, ClassNotFoundException {
+        ClassPool classPool = ClassPool.getDefault();
+        classPool.appendClassPath(new ClassClassPath(aclass));
+        // 如果CtClass通过writeFile(),toClass(),toBytecode()转换了类文件，javassist冻结了CtClass对象。
+        CtClass clazz = classPool.get(aclass.getName());
+        clazz.stopPruning(true);
+        // Defrost()执行后，CtClass对象将可以再次修改。
+        clazz.defrost();
+        ClassFile classFile = clazz.getClassFile();
+
+        ConstPool constPool = classFile.getConstPool();
+        // 类附上注解
+        AnnotationsAttribute classAttr = new AnnotationsAttribute(constPool, AnnotationsAttribute.visibleTag);
+        Annotation annotation = new Annotation(annotationName, constPool);
+        classAttr.addAnnotation(annotation);
+        classFile.addAttribute(classAttr);
+
         // 当前ClassLoader中必须尚未加载该实体。（同一个ClassLoader加载同一个类只会加载一次）
         ClassLoadUtil loader = new ClassLoadUtil(ClassLoadUtil.class.getClassLoader());
         Class aClass = clazz.toClass(loader, null);
