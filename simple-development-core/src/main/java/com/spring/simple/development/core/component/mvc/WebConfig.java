@@ -13,10 +13,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.ServletContext;
@@ -31,9 +28,10 @@ import java.util.Set;
 @Configurable
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponentListener {
-    public WebConfig(){
+    public WebConfig() {
 
     }
+
     /**
      * @param
      * @return org.springframework.web.servlet.ViewResolver
@@ -88,8 +86,27 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     @Override
     public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
         // 注册请求分发器
-        ServletRegistration.Dynamic dispatcher =servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
+        boolean isEnableBoolean = Boolean.parseBoolean(isEnable);
+        // 不启动
+        if (!isEnableBoolean) {
+            return;
+        }
+        // 解决静态资源无法访问
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+        // 解决swagger无法访问
+        registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        // 解决swagger的js文件无法访问
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
