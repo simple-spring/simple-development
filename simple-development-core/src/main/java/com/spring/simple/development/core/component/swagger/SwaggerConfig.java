@@ -1,13 +1,27 @@
 package com.spring.simple.development.core.component.swagger;
 
+import com.spring.simple.development.core.component.mvc.controller.ApiController;
+import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
+import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.GroovyClassLoaderUtils;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -16,6 +30,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -28,14 +43,12 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     public SwaggerConfig() throws Exception {
         List<String> isApiServiceTransformControllerCodes = SwaggerIsApiService.getIsApiServiceTransformControllerCodes();
-
-        if (CollectionUtils.isEmpty(isApiServiceTransformControllerCodes)) {
-            return;
-        }
         if (!CollectionUtils.isEmpty(isApiServiceTransformControllerCodes)) {
-            for (String code : isApiServiceTransformControllerCodes) {
-                Class aClass = GroovyClassLoaderUtils.loadNewInstance(code);
-                DynamicControllerMapping.addMapping(aClass);
+            if (!CollectionUtils.isEmpty(isApiServiceTransformControllerCodes)) {
+                for (String code : isApiServiceTransformControllerCodes) {
+                    Class aClass = GroovyClassLoaderUtils.loadNewInstance(code);
+                    this.addMapping(aClass);
+                }
             }
         }
     }
@@ -47,7 +60,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     private String url = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_URL);
 
     @Bean
-    public Docket buildDocket() {
+    public Docket buildDocket() throws Exception {
+
         Docket build = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any()) // and by paths
@@ -83,5 +97,53 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .contact(contact)
                 .version(version)
                 .build();
+    }
+
+    public void addMapping(Class loadClass) throws Exception {
+        while (true) {
+            RequestMappingHandlerMapping bean = AppInitializer.rootContext.getBean(RequestMappingHandlerMapping.class);
+            if (bean == null) {
+                System.out.println("等待自动注册mapping"+ DateUtils.getCurrentTime());
+                Thread.sleep(3000);
+            } else {
+                break;
+            }
+        }
+        RequestMappingHandlerMapping requestMappingHandlerMapping = AppInitializer.rootContext.getBean(RequestMappingHandlerMapping.class);
+        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) AppInitializer.rootContext.getAutowireCapableBeanFactory();
+        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(loadClass);
+        String simpleName = loadClass.getSimpleName();
+        defaultListableBeanFactory.registerBeanDefinition(simpleName, beanDefinitionBuilder.getBeanDefinition());
+        Method method = requestMappingHandlerMapping.getClass().getSuperclass().getSuperclass().getDeclaredMethod("detectHandlerMethods", Object.class);
+        method.setAccessible(true);
+        method.invoke(requestMappingHandlerMapping, simpleName);
+
+    }
+
+    public void removeMapping(Class beanClass) {
+        RequestMappingHandlerMapping requestMappingHandlerMapping = AppInitializer.rootContext.getBean(RequestMappingHandlerMapping.class);
+        Object controller = AppInitializer.rootContext.getBeanNamesForType(beanClass);
+        if (controller == null) {
+            System.out.println("spring容器中已不存在该实体");
+        }
+        Class<?> targetClass = controller.getClass();
+        ReflectionUtils.doWithMethods(targetClass, new ReflectionUtils.MethodCallback() {
+            @Override
+            public void doWith(Method method) {
+                Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
+                try {
+                    Method createMappingMethod = RequestMappingHandlerMapping.class.
+                            getDeclaredMethod("getMappingForMethod", Method.class, Class.class);
+                    createMappingMethod.setAccessible(true);
+                    RequestMappingInfo requestMappingInfo = (RequestMappingInfo)
+                            createMappingMethod.invoke(requestMappingHandlerMapping, specificMethod, targetClass);
+                    if (requestMappingInfo != null) {
+                        requestMappingHandlerMapping.unregisterMapping(requestMappingInfo);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, ReflectionUtils.USER_DECLARED_METHODS);
     }
 }

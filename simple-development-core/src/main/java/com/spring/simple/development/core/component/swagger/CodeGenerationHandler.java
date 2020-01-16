@@ -81,7 +81,7 @@ public class CodeGenerationHandler {
             methodTemplateParams[3] = params[2];
             methodTemplateParams[4] = params[3];
 
-            methodCodes += String.format(methodTemplate, methodTemplateParams);
+            methodCodes += String.format(methodTemplate, methodTemplateParams)+"\n";
         }
         return baseCode + "\n" + methodCodes + "\n" + endCode;
 
