@@ -13,13 +13,13 @@
         <plugin type="com.alibaba.lava.dal.common.MultiDbPaginationPlugin"/>
         <plugin type="com.alibaba.lava.dal.common.BoPlugin">
             <property name="basePath"
-                      value="E:/simple-development/simple-development-demo/src/main/java/"/>
+                      value="D:/simple-development/simple-development-demo/src/main/java"/>
         </plugin>
         <plugin type="com.spring.simple.development.generator.plugin.LombokPlugin"/>
 
         <!-- 配置连接数据信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://172.22.5.239:3306/demo?characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/demo?characterEncoding=utf8"
                         userId="root" password="123456">
         </jdbcConnection>
 
