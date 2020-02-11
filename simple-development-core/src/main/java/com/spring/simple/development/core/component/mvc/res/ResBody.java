@@ -36,7 +36,7 @@ public class ResBody<T> implements Serializable {
      */
     private ResPageDTO<T> page;
 
-    private ResBody() {
+    public ResBody() {
     }
 
     public int getStatus() {
@@ -79,23 +79,23 @@ public class ResBody<T> implements Serializable {
         this.page = page;
     }
 
-    public static ResBody buildSuccessResBody() {
+    public  ResBody buildSuccessResBody() {
         return buildSuccessResBody(null, null, SYS_SUCCESS);
     }
 
-    public static ResBody buildSuccessResBody(Object content) {
+    public  ResBody buildSuccessResBody(T content) {
         return buildSuccessResBody(content, null, SYS_SUCCESS);
     }
 
-    public static ResBody buildSuccessResBody(ResPageDTO page) {
+    public  ResBody buildSuccessResBody(ResPageDTO<T> page) {
         return buildSuccessResBody(null, page, SYS_SUCCESS);
     }
 
-    public static ResBody buildSuccessResBody(Object content, ResPageDTO page) {
+    public  ResBody buildSuccessResBody(T content, ResPageDTO<T> page) {
         return buildSuccessResBody(content, page, SYS_SUCCESS);
     }
 
-    public static ResBody buildSuccessResBody(Object content, ResPageDTO page, GlobalResponseCode successConst) {
+    public ResBody<T> buildSuccessResBody(T content, ResPageDTO<T> page, GlobalResponseCode successConst) {
         ResBody res = new ResBody();
         res.setStatus(successConst.getStatus());
         res.setCode(successConst.getCode());

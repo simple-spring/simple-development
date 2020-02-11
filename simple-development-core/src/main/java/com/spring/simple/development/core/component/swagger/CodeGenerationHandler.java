@@ -55,7 +55,7 @@ public class CodeGenerationHandler {
             "    @RequestMapping(value = \"%s\", method = RequestMethod.POST)\n" +
             "    @ApiOperation(value=\"%s\", notes=\"%s\")\n" +
             //"    @ApiImplicitParam(name = \"%s\", value = \"%s\", paramType = \"body\", allowMultiple = true, dataType = \"%s\")\n" +
-            "    public ResBody %s(HttpServletRequest request, %s) throws Throwable {\n" +
+            "    public ResBody<%s> %s(HttpServletRequest request, %s) throws Throwable {\n" +
             "        logger.info(\"requestJson:\" + JSONObject.toJSONString(%s) + \" date:\" + DateUtils.getCurrentTime());\n" +
             "        RpcRequest rpcRequest = new RpcRequest();\n" +
             "        rpcRequest.setServiceName(\"%s\");\n" +
@@ -95,6 +95,7 @@ public class CodeGenerationHandler {
             //baseCodeMethodParams.add(codeGenerationMethodParams.getApiImplicitParamName());
             //baseCodeMethodParams.add(codeGenerationMethodParams.getApiImplicitParamValue());
             //baseCodeMethodParams.add(codeGenerationMethodParams.getApiImplicitParamDataType());
+            baseCodeMethodParams.add(codeGenerationMethodParams.getResultDataType());
             baseCodeMethodParams.add(codeGenerationMethodParams.getMethodName());
             baseCodeMethodParams.add("@ApiParam(name = \""+codeGenerationMethodParams.getApiImplicitParamName()+"\",value=\""+codeGenerationMethodParams.getApiImplicitParamValue()+"\")@RequestBody "+codeGenerationMethodParams.getRequestBodyType() + codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());

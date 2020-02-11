@@ -48,4 +48,10 @@ public @interface ApiImplicitParam {
      */
     String dataType() default "String";
 
+    /**
+     * 返回值类型，默认String
+     * @return
+     */
+    Class resultDataType();
+
 }

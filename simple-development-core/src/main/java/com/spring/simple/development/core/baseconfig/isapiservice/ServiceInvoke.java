@@ -108,9 +108,9 @@ public class ServiceInvoke {
             Object result = serviceFastMethod.invoke(serviceBean, objects);
 
             if (result instanceof ResPageDTO) {
-                return ResBody.buildSuccessResBody(null, (ResPageDTO) result, GlobalResponseCode.SYS_SUCCESS);
+                return new ResBody().buildSuccessResBody(null, (ResPageDTO) result, GlobalResponseCode.SYS_SUCCESS);
             }
-            return ResBody.buildSuccessResBody(result, null, GlobalResponseCode.SYS_SUCCESS);
+            return new ResBody().buildSuccessResBody(result, null, GlobalResponseCode.SYS_SUCCESS);
         } catch (Throwable ex) {
             logger.error(DateUtils.getCurrentTime() + "调用" + request.getServiceName() + "的" + request.getMethodName() + "出错:", ex);
             if (ex.getCause() instanceof GlobalException) {

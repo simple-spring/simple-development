@@ -55,6 +55,14 @@ public class CodeGenerationMethodParams {
      * 调用的方法名
      */
     private String invokeMethodName;
+    /**
+     * 返回值类型名称
+     */
+    private String resultDataType;
+    /**
+     * 返回值类型包路径
+     */
+    private String resultDataTypePackagePath;
 
     public String getIsLogin() {
         return isLogin;
@@ -142,5 +150,21 @@ public class CodeGenerationMethodParams {
 
     public void setInvokeMethodName(String invokeMethodName) {
         this.invokeMethodName = invokeMethodName;
+    }
+
+    public String getResultDataType() {
+        return resultDataType;
+    }
+
+    public void setResultDataType(String resultDataType) {
+        this.resultDataType = resultDataType;
+    }
+
+    public String getResultDataTypePackagePath() {
+        return resultDataTypePackagePath;
+    }
+
+    public void setResultDataTypePackagePath(String resultDataTypePackagePath) {
+        this.resultDataTypePackagePath = resultDataTypePackagePath;
     }
 }
