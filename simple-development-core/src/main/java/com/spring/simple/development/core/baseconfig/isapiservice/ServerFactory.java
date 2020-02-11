@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,11 @@ public class ServerFactory {
      */
     public static Map<String, Object> serviceNoLoginMap = new HashMap<>();
 
+    /**
+     * init  serviceMethod map
+     */
+    public static Map<String, MethodParams> serviceMethodMap = new HashMap<>();
+
     public static void putService(Object serviceBean) throws Exception {
         IsApiService isApiService = AopTargetUtils.getTarget(serviceBean).getClass().getAnnotation(IsApiService.class);
         String serviceName = isApiService.value();
@@ -50,7 +56,7 @@ public class ServerFactory {
             if (method.isAnnotationPresent(NoApiMethod.class) == false) {
                 String methodName = "";
                 IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
-                if (isApiMethodService == null) {
+                if (isApiMethodService == null || StringUtils.isEmpty(isApiMethodService.value())) {
                     methodName = method.getName();
                 } else {
                     methodName = isApiMethodService.value();
@@ -60,7 +66,37 @@ public class ServerFactory {
                 } else {
                     serviceMap.put(serviceName + "-" + methodName, serviceBean);
                 }
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (parameterTypes != null) {
+                    String[] paramsKey = new String[parameterTypes.length];
+                    Class<?>[] methodClass = new Class[parameterTypes.length];
+
+                    for (int i = 0; i < parameterTypes.length; i++) {
+                        String simpleName = parameterTypes[i].getSimpleName();
+                        String paramKey = toLowerCaseFirstOne(simpleName);
+                        paramsKey[i] = paramKey;
+                        methodClass[i] = parameterTypes[i];
+                    }
+                    MethodParams methodParams = new MethodParams();
+                    methodParams.setKey(paramsKey);
+                    methodParams.setMethodClass(methodClass);
+                    serviceMethodMap.put(serviceName + "-" + methodName, methodParams);
+                }
             }
+        }
+    }
+
+    /**
+     * 首字母转小写
+     *
+     * @param s
+     * @return
+     */
+    public static String toLowerCaseFirstOne(String s) {
+        if (Character.isLowerCase(s.charAt(0))) {
+            return s;
+        } else {
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
         }
     }
 }

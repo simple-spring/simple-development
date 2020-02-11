@@ -1,7 +1,7 @@
 package com.spring.simple.development.demo.dubbo;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.spring.simple.development.service.DubboDemoService;
+import com.chexin.simple.development.dubbo.api.DubboDemoService;
 import org.springframework.stereotype.Component;
 
 @Component

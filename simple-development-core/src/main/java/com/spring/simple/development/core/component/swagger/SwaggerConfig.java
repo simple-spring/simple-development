@@ -3,6 +3,10 @@ package com.spring.simple.development.core.component.swagger;
 import com.spring.simple.development.core.annotation.base.IsApiMethodService;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
+import com.spring.simple.development.core.annotation.base.swagger.Api;
+import com.spring.simple.development.core.annotation.base.swagger.ApiImplicitParam;
+import com.spring.simple.development.core.annotation.base.swagger.ApiOperation;
+import com.spring.simple.development.core.baseconfig.isapiservice.MethodParams;
 import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -10,18 +14,12 @@ import com.spring.simple.development.support.utils.GroovyClassLoaderUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -29,7 +27,6 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -93,9 +90,12 @@ public class SwaggerConfig {
     }
 
     public List<String> getIsApiServiceTransformControllerCodes() {
+
         Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .forPackages(System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME)) // 指定路径URL
-                .addScanners(new MethodAnnotationsScanner()) // 添加 方法注解扫描工具
+                // 指定路径URL
+                .forPackages(System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME))
+                // 添加 方法注解扫描工具
+                .addScanners(new MethodAnnotationsScanner())
         );
         Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(IsApiService.class);
         if (CollectionUtils.isEmpty(typesAnnotatedWith)) {
@@ -110,6 +110,7 @@ public class SwaggerConfig {
                 continue;
             }
             // 方法上面的地址
+            CodeGenerationParams codeGenerationParams = new CodeGenerationParams();
             String className;
             Annotation annotation = isApiClass.getAnnotation(IsApiService.class);
             IsApiService isApiService = (IsApiService) annotation;
@@ -119,12 +120,21 @@ public class SwaggerConfig {
             } else {
                 className = isApiClass.getInterfaces()[0].getSimpleName();
             }
-            List<String> methodParams = new ArrayList<>();
+            Api api = (Api) isApiClass.getAnnotation(Api.class);
+            codeGenerationParams.setServiceName(className);
+            codeGenerationParams.setServiceNameLog(className);
+            if (api != null) {
+                codeGenerationParams.setClassTags(api.tags());
+            }
+
+            List<CodeGenerationMethodParams> codeGenerationMethodParamsList = new ArrayList<>();
             for (Method method : declaredMethods) {
                 NoApiMethod noApiMethod = method.getAnnotation(NoApiMethod.class);
                 if (noApiMethod != null) {
                     continue;
                 }
+                CodeGenerationMethodParams codeGenerationMethodParams = new CodeGenerationMethodParams();
+
                 String methodName = method.getName();
                 IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
                 if (isApiMethodService != null) {
@@ -133,21 +143,53 @@ public class SwaggerConfig {
                         methodName = defaultMethodValue;
                     }
                 }
-
                 boolean login = isApiService.isLogin();
-                String methodParam = baseUrl + "/" + className + "/" + methodName;
                 if (login) {
-                    methodParam = methodParam + "," + className + "," + method.getName() + "," + "invokeConfigService";
+                    codeGenerationMethodParams.setIsLogin("");
+                    codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
                 } else {
-                    methodParam = methodParam + "," + className + "," + method.getName() + "," + "invokeService";
+                    codeGenerationMethodParams.setIsLogin("@NoLogin");
+                    codeGenerationMethodParams.setInvokeMethodName("invokeService");
                 }
-                methodParams.add(methodParam);
+                codeGenerationMethodParams.setMethodName(methodName);
+                codeGenerationMethodParams.setMappingUrl(baseUrl + "/" + className + "/" + methodName);
 
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (parameterTypes != null) {
+                    String[] paramsKey = new String[parameterTypes.length];
+                    Class<?>[] methodClass = new Class[parameterTypes.length];
+
+                    for (int i = 0; i < parameterTypes.length; i++) {
+                        String simpleName = parameterTypes[i].getSimpleName();
+                        String paramKey = toLowerCaseFirstOne(simpleName);
+                        paramsKey[i] = paramKey;
+                        methodClass[i] = parameterTypes[i];
+                    }
+                    MethodParams methodParams = new MethodParams();
+                    methodParams.setKey(paramsKey);
+                    methodParams.setMethodClass(methodClass);
+                    ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
+                    if (apiOperation != null) {
+                        codeGenerationMethodParams.setApiOperationValue(apiOperation.value());
+                        codeGenerationMethodParams.setApiOperationValueNotes(apiOperation.notes());
+                    }
+                    ApiImplicitParam apiImplicitParam = method.getAnnotation(ApiImplicitParam.class);
+                    if (apiImplicitParam != null) {
+                        codeGenerationMethodParams.setApiImplicitParamName(apiImplicitParam.name());
+                        codeGenerationMethodParams.setApiImplicitParamValue(apiImplicitParam.description());
+                        codeGenerationMethodParams.setApiImplicitParamDataType(apiImplicitParam.dataType());
+                    }
+                    codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " " );
+                    codeGenerationMethodParams.setRequestBodyName(toLowerCaseFirstOne(parameterTypes[0].getSimpleName()));
+                    Package aPackage = parameterTypes[0].getPackage();
+                    String name = aPackage.getName()+"."+ parameterTypes[0].getSimpleName()+";";
+                    codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath()+"\n"+"import "+name);
+                    codeGenerationMethodParamsList.add(codeGenerationMethodParams);
+
+                }
             }
-            if (CollectionUtils.isEmpty(methodParams)) {
-                continue;
-            }
-            String baseCode = CodeGenerationHandler.getBaseCode(isApiClass.getSimpleName(), methodParams);
+            codeGenerationParams.setCodeGenerationMethodParams(codeGenerationMethodParamsList);
+            String baseCode = CodeGenerationHandler.getBaseCode(codeGenerationParams);
             codes.add(baseCode);
         }
         return codes;
@@ -164,5 +206,31 @@ public class SwaggerConfig {
         method.invoke(requestMappingHandlerMapping, simpleName);
     }
 
+    /**
+     * 首字母转大写
+     *
+     * @param s
+     * @return
+     */
+    public static String toUpperCaseFirstOne(String s) {
+        if (Character.isUpperCase(s.charAt(0))) {
+            return s;
+        } else {
+            return (new StringBuilder()).append(Character.isUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
+    /**
+     * 首字母转小写
+     *
+     * @param s
+     * @return
+     */
+    public static String toLowerCaseFirstOne(String s) {
+        if (Character.isLowerCase(s.charAt(0))) {
+            return s;
+        } else {
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
 
 }

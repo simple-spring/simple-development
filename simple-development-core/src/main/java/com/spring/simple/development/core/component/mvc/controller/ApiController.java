@@ -3,6 +3,8 @@ package com.spring.simple.development.core.component.mvc.controller;
 import com.alibaba.fastjson.JSONObject;
 
 import com.spring.simple.development.core.annotation.base.NoLogin;
+import com.spring.simple.development.core.baseconfig.isapiservice.MethodParams;
+import com.spring.simple.development.core.baseconfig.isapiservice.ServerFactory;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_INVALID;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
@@ -65,19 +70,27 @@ public class ApiController {
         RpcRequest rpcRequest = new RpcRequest();
         try {
             if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
-                ReqBody reqBody = JSONObject.parseObject(paramJson, ReqBody.class);
                 rpcRequest.setServiceName(serviceName);
                 rpcRequest.setMethodName(methodName);
+                ReqBody reqBody = new ReqBody();
+                MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+                Map<String, Object> paramsMap = new HashMap<>();
+                paramsMap.put(methodParams.getKey()[0], o);
+                reqBody.setParamsMap(paramsMap);
                 rpcRequest.setReqBody(reqBody);
             } else {
+                // 旧版本调用
                 rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
+                return serviceInvoke.invokeServiceOld(rpcRequest);
             }
+            // invoke
+            return serviceInvoke.invokeService(rpcRequest);
+
         } catch (Exception ex) {
             logger.error(" date:" + DateUtils.getCurrentTime(), ex);
             throw new GlobalException(RES_PARAM_INVALID, "格式错误");
         }
-        // invoke
-        return serviceInvoke.invokeService(rpcRequest, request);
 
     }
 
@@ -108,19 +121,27 @@ public class ApiController {
         RpcRequest rpcRequest = new RpcRequest();
         try {
             if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
-                ReqBody reqBody = JSONObject.parseObject(paramJson, ReqBody.class);
                 rpcRequest.setServiceName(serviceName);
                 rpcRequest.setMethodName(methodName);
+                ReqBody reqBody = new ReqBody();
+                MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+                Map<String, Object> paramsMap = new HashMap<>();
+                paramsMap.put(methodParams.getKey()[0], o);
+                reqBody.setParamsMap(paramsMap);
                 rpcRequest.setReqBody(reqBody);
             } else {
+                // 旧版本调用
                 rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
+                return serviceInvoke.invokeConfigServiceOld(rpcRequest);
             }
+            // invoke
+            return serviceInvoke.invokeConfigService(rpcRequest);
         } catch (Exception ex) {
             logger.error(" date:" + DateUtils.getCurrentTime(), ex);
             throw new GlobalException(RES_PARAM_INVALID, "格式错误");
         }
-        // invoke
-        return serviceInvoke.invokeConfigService(rpcRequest, request);
+
 
     }
 }

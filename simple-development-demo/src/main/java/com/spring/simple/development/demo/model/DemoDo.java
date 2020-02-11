@@ -1,9 +1,11 @@
 package com.spring.simple.development.demo.model;
 
 import com.alibaba.lava.base.LavaDo;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 @Data
+@ApiModel(value = "demoDo", description = "DemoDo用户")
 public class DemoDo extends LavaDo {
     /**
      *

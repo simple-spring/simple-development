@@ -1,11 +1,10 @@
 package com.spring.simple.development.core.baseconfig.isapiservice;
 
-import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
+import com.github.pagehelper.PageInfo;
 import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.PoJoCopyUtils;
-import com.github.pagehelper.PageInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dozer.Mapper;
@@ -213,18 +212,6 @@ public class SimpleService {
                 if (StringUtils.isEmpty(reqBody.getParamsMap().get(str).toString())) {
                     throw new GlobalException(RES_PARAM_IS_EMPTY, "请求参数" + str + "为空");
                 }
-            }
-        }
-        if (isPage == true) {
-            if (reqBody.getPage() == null) {
-                throw new GlobalException(RES_PARAM_IS_EMPTY, "分页参数为空");
-            }
-            ReqPageDTO page = reqBody.getPage();
-            if (page.getStartPage() == null) {
-                throw new GlobalException(RES_PARAM_IS_EMPTY, "分页参数startPage为空");
-            }
-            if (page.getPageSize() == null) {
-                throw new GlobalException(RES_PARAM_IS_EMPTY, "分页参数pageSize为空");
             }
         }
     }
