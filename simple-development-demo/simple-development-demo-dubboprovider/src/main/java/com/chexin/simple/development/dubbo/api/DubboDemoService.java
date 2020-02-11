@@ -1,4 +1,4 @@
-package com.spring.simple.development.service;
+package com.chexin.simple.development.dubbo.api;
 
 /**
  * @author liko.wang

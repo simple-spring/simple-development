@@ -23,8 +23,15 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>jar</packaging>
 
-  <name>simple-development-demo-dubboprovider</name>
+  <name>simple-development-demo</name>
   <groupId>com.spring</groupId>
-  <artifactId>simple-development-demo-dubboprovider</artifactId>
+  <artifactId>simple-development-demo-dubbo-api</artifactId>
   <version>1.0</version>
+<dependencies>
+  <dependency>
+    <groupId>com.spring</groupId>
+    <artifactId>simple-development-demo-dubboprovider</artifactId>
+    <version>1.0</version>
+  </dependency>
+</dependencies>
 </project>
