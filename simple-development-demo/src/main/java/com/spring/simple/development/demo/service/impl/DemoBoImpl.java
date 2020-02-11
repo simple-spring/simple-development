@@ -27,7 +27,7 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
 
     @Override
     @ApiOperation(value = "查询", notes = "查询一亿个订单")
-    @ApiImplicitParam(name = "demoVo", description = "用户vo")
+    @ApiImplicitParam(name = "demoVo", description = "用户vo",resultDataType = DemoVo.class)
     public void getData(DemoVo demoVo) {
 
     }
