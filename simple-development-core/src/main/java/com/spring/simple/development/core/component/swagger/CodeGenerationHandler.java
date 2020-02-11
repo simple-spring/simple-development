@@ -60,7 +60,7 @@ public class CodeGenerationHandler {
             "        RpcRequest rpcRequest = new RpcRequest();\n" +
             "        rpcRequest.setServiceName(\"%s\");\n" +
             "        rpcRequest.setMethodName(\"%s\");\n" +
-            "        ReqBody reqBody = new ReqBody();\n" +
+            "        %s\n" +
             "        Map<String,Object> params= new HashMap<>();\n" +
             "        params.put(\"%s\",%s);\n" +
             "        reqBody.setParamsMap(params);\n" +
@@ -100,6 +100,12 @@ public class CodeGenerationHandler {
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationParams.getServiceName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getMethodName());
+            // 兼容老版本的api方法生成swagger
+            if(codeGenerationMethodParams.getRequestBodyName().equals("reqBody")){
+                baseCodeMethodParams.add("");
+            }else{
+                baseCodeMethodParams.add("ReqBody reqBody = new ReqBody();");
+            }
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getInvokeMethodName());
