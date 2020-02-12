@@ -34,6 +34,8 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_URL, "https://swagger.io/");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, "spring simple team");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, "true");
+            PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_PARAMS, "token");
+            PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_DESCRIPTION, "User unique identifier");
 
             if (!StringUtils.isEmpty(enableSwagger.title())) {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_TITLE, enableSwagger.title());
@@ -52,6 +54,12 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             }
             String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
 
+            if (!StringUtils.isEmpty(enableSwagger.headerParam())) {
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_PARAMS, enableSwagger.headerParam());
+            }
+            if (!StringUtils.isEmpty(enableSwagger.headerParamDescription())) {
+                PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_DESCRIPTION, enableSwagger.headerParamDescription());
+            }
             Class swaggerConfig = ClassLoadUtil.javassistCompileNoParam(SwaggerConfig.class, "springfox.documentation.swagger2.annotations.EnableSwagger2");
 
             if (StringUtils.isEmpty(isEnable)) {

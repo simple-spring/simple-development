@@ -22,9 +22,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -49,15 +52,33 @@ public class SwaggerConfig {
     private String contact = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT);
     private String version = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_VERSION);
     private String url = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_URL);
+    private String headerParams = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_PARAMS);
+    private String headerParamsDescription = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_DESCRIPTION);
 
     @Bean
     public Docket buildDocket() {
+
         // 动态注册controller
         InvokeSwaggerIsApiService();
+        //添加header参数
+        ParameterBuilder ticketPar = new ParameterBuilder();
+        List<Parameter> pars = new ArrayList<>();
+        String[] headerParamsStr = headerParams.split(",");
+        String[] headerParamsDescriptionStr = headerParamsDescription.split(",");
+        if (headerParamsStr.length != headerParamsDescriptionStr.length) {
+            throw new RuntimeException("swagger headerParams size init  fail");
+        }
+        for (int i = 0; i < headerParamsStr.length; i++) {
+            ticketPar.name(headerParamsStr[i]).description(headerParamsDescriptionStr[i])
+                    .modelRef(new ModelRef("string")).parameterType("header")
+                    .required(false).build();
+            pars.add(ticketPar.build());
+        }
+
         Docket build = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-                .paths(PathSelectors.any()) // and by paths
-                .build();
+                .paths(PathSelectors.any())
+                .build().globalOperationParameters(pars);
         return build;
 
     }
@@ -182,13 +203,13 @@ public class SwaggerConfig {
                         codeGenerationMethodParams.setResultDataType(aClass.getSimpleName());
                         String resultPackagePath = aClass.getPackage().getName() + "." + aClass.getSimpleName() + ";";
                         codeGenerationMethodParams.setResultDataTypePackagePath(resultPackagePath);
-                        codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath()+"\n"+"import "+resultPackagePath);
+                        codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + resultPackagePath);
                     }
-                    codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " " );
+                    codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " ");
                     codeGenerationMethodParams.setRequestBodyName(toLowerCaseFirstOne(parameterTypes[0].getSimpleName()));
                     Package aPackage = parameterTypes[0].getPackage();
-                    String name = aPackage.getName()+"."+ parameterTypes[0].getSimpleName()+";";
-                    codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath()+"\n"+"import "+name);
+                    String name = aPackage.getName() + "." + parameterTypes[0].getSimpleName() + ";";
+                    codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + name);
                     codeGenerationMethodParamsList.add(codeGenerationMethodParams);
 
                 }
@@ -224,6 +245,7 @@ public class SwaggerConfig {
             return (new StringBuilder()).append(Character.isUpperCase(s.charAt(0))).append(s.substring(1)).toString();
         }
     }
+
     /**
      * 首字母转小写
      *

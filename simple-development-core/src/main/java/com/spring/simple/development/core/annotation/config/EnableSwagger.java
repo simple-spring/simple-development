@@ -58,4 +58,16 @@ public @interface EnableSwagger {
      * @Description 项目地址
      **/
     String url() default "";
+
+    /**
+     * header 参数数组 默认一个参数：token
+     * @return
+     */
+    String headerParam() default "";
+
+    /**
+     * header 参数描述
+     * @return
+     */
+    String headerParamDescription() default "";
 }
