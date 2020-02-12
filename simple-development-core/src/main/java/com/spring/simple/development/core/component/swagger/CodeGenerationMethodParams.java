@@ -59,6 +59,11 @@ public class CodeGenerationMethodParams {
      * 返回值类型名称
      */
     private String resultDataType;
+
+    /**
+     * page返回值类型名称
+     */
+    private String PageResultDataType;
     /**
      * 返回值类型包路径
      */
@@ -158,6 +163,14 @@ public class CodeGenerationMethodParams {
 
     public void setResultDataType(String resultDataType) {
         this.resultDataType = resultDataType;
+    }
+
+    public String getPageResultDataType() {
+        return PageResultDataType;
+    }
+
+    public void setPageResultDataType(String pageResultDataType) {
+        PageResultDataType = pageResultDataType;
     }
 
     public String getResultDataTypePackagePath() {

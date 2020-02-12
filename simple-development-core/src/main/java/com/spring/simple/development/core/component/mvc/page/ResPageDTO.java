@@ -1,21 +1,29 @@
 package com.spring.simple.development.core.component.mvc.page;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 响应分页对象
  */
-public class ResPageDTO<T> implements Serializable{
+@ApiModel(value="ResPageDTO对象",description="公共返回对分页对象")
+public class ResPageDTO<M> implements Serializable{
 	/**开始页数*/
+	@ApiModelProperty(value = "开始页数",example = "0")
 	private Integer pageNum = 0;
 	/**每页显示数量*/
+	@ApiModelProperty(value = "每页显示数量",example = "10")
 	private Integer pageSize = 10;
-	
+
 	/** 总记录数  */
+	@ApiModelProperty(value = "总记录数",example = "100")
 	private long totalCount;
 	/**  响应数据 */
-	private List<T> list;
+	@ApiModelProperty(value = "响应数据")
+	private List<M> list;
 
 	public Integer getPageNum() {
 		return pageNum;
@@ -41,11 +49,11 @@ public class ResPageDTO<T> implements Serializable{
 		this.totalCount = totalCount;
 	}
 
-	public List<T> getList() {
+	public List<M> getList() {
 		return list;
 	}
 
-	public void setList(List<T> list) {
+	public void setList(List<M> list) {
 		this.list = list;
 	}
 }

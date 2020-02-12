@@ -1,8 +1,11 @@
 package com.spring.simple.development.core.component.mvc.res;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
 import com.spring.simple.development.support.exception.GlobalResponseCode;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
@@ -14,26 +17,33 @@ import static com.spring.simple.development.support.exception.GlobalResponseCode
  *
  * @author liko wang
  */
+@ApiModel(value="ResBody对象",description="响应报文消息")
 public class ResBody<T> implements Serializable {
     /**
      * 请求响应状态
      */
+    @ApiModelProperty(value = "请求响应状态",example = "SYS_OK")
     private int status;
     /**
      * 请求响应码
      */
+    @ApiModelProperty(value = "请求响应码",example = "1")
     private String code;
     /**
      * 请求响应消息
      */
+    @ApiModelProperty(value = "请求响应码",example = "请求成功")
     private String message;
     /**
      * 请求响应数据对象
      */
+    @ApiModelProperty(value = "请求响应数据对象")
     private T content;
+
     /**
      * 请求响应分页数据对象
      */
+    @ApiModelProperty(value = "请求响应分页数据对象")
     private ResPageDTO<T> page;
 
     public ResBody() {

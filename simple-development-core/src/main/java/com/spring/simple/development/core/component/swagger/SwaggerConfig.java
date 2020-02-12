@@ -200,9 +200,13 @@ public class SwaggerConfig {
                         codeGenerationMethodParams.setApiImplicitParamValue(apiImplicitParam.description());
                         codeGenerationMethodParams.setApiImplicitParamDataType(apiImplicitParam.dataType());
                         Class aClass = apiImplicitParam.resultDataType();
+                        Class pageClass = apiImplicitParam.PageResultDataType();
                         codeGenerationMethodParams.setResultDataType(aClass.getSimpleName());
+                        codeGenerationMethodParams.setPageResultDataType(pageClass.getSimpleName());
                         String resultPackagePath = aClass.getPackage().getName() + "." + aClass.getSimpleName() + ";";
+                        String pageResultPackagePath = pageClass.getPackage().getName() + "." + pageClass.getSimpleName() + ";";
                         codeGenerationMethodParams.setResultDataTypePackagePath(resultPackagePath);
+                        codeGenerationMethodParams.setResultDataTypePackagePath(pageResultPackagePath);
                         codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + resultPackagePath);
                     }
                     codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " ");
