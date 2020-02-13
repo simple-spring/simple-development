@@ -2,7 +2,9 @@ package com.spring.simple.development.core.component.swagger;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liko.wang
@@ -10,6 +12,24 @@ import java.util.List;
  * @Description 构造代码模板
  **/
 public class CodeGenerationHandler {
+
+    /**
+     * 兼容参数类型转换成小写与原型数据重合
+     */
+    public static Map<String, String> baseType = new HashMap<>();
+    static  {
+        baseType.put("byte", "simpleByte");
+        baseType.put("short", "simpleShort");
+        baseType.put("int", "simpleInt");
+        baseType.put("long", "simpleLong");
+        baseType.put("float", "simpleFloat");
+        baseType.put("double", "simpleDouble");
+        baseType.put("boolean", "simpleBoolean");
+        baseType.put("char", "simpleChar");
+        baseType.put("character", "simpleCharacter");
+        baseType.put("integer", "simpleInteger");
+
+    }
 
 
     private static String baseCodeTemplate = "package com.spring.simple.development.core.component.mvc.controller;\n" +
@@ -31,10 +51,10 @@ public class CodeGenerationHandler {
             "import io.swagger.annotations.*;\n" +
             "import com.spring.simple.development.core.annotation.base.NoLogin;\n" +
             "\n" +
-            "import javax.servlet.http.HttpServletRequest;"+
+            "import javax.servlet.http.HttpServletRequest;" +
             "import java.util.HashMap;\n" +
-            "import java.util.Map;\n"+
-            "%s"+
+            "import java.util.Map;\n" +
+            "%s" +
             "\n" +
             "\n" +
             "/**\n" +
@@ -50,7 +70,7 @@ public class CodeGenerationHandler {
             "    @Autowired\n" +
             "    private ServiceInvoke serviceInvoke;\n" +
             "\n";
-    private static String methodTemplate = ""+
+    private static String methodTemplate = "" +
             "    %s\n" +
             "    @RequestMapping(value = \"%s\", method = RequestMethod.POST)\n" +
             "    @ApiOperation(value=\"%s\", notes=\"%s\")\n" +
@@ -87,6 +107,9 @@ public class CodeGenerationHandler {
 
         String methodCodes = "";
         for (CodeGenerationMethodParams codeGenerationMethodParams : codeGenerationParams.getCodeGenerationMethodParams()) {
+            if (codeGenerationMethodParams.getRequestBodyName() == "") {
+
+            }
             List<String> baseCodeMethodParams = new ArrayList<>();
             baseCodeMethodParams.add(codeGenerationMethodParams.getIsLogin());
             baseCodeMethodParams.add(codeGenerationMethodParams.getMappingUrl());
@@ -95,23 +118,26 @@ public class CodeGenerationHandler {
             //baseCodeMethodParams.add(codeGenerationMethodParams.getApiImplicitParamName());
             //baseCodeMethodParams.add(codeGenerationMethodParams.getApiImplicitParamValue());
             //baseCodeMethodParams.add(codeGenerationMethodParams.getApiImplicitParamDataType());
-            baseCodeMethodParams.add(codeGenerationMethodParams.getResultDataType()==null?"":"<"+codeGenerationMethodParams.getResultDataType()+">");
+            if (baseType.get(codeGenerationMethodParams.getRequestBodyName()) != null) {
+                codeGenerationMethodParams.setRequestBodyName(baseType.get(codeGenerationMethodParams.getRequestBodyName()));
+            }
+            baseCodeMethodParams.add(codeGenerationMethodParams.getResultDataType() == null ? "" : "<" + codeGenerationMethodParams.getResultDataType() + ">");
             baseCodeMethodParams.add(codeGenerationMethodParams.getMethodName());
-            baseCodeMethodParams.add("@ApiParam(name = \""+codeGenerationMethodParams.getApiImplicitParamName()+"\",value=\""+codeGenerationMethodParams.getApiImplicitParamValue()+"\")@RequestBody "+codeGenerationMethodParams.getRequestBodyType() + codeGenerationMethodParams.getRequestBodyName());
+            baseCodeMethodParams.add("@ApiParam(name = \"" + codeGenerationMethodParams.getApiImplicitParamName() + "\",value=\"" + codeGenerationMethodParams.getApiImplicitParamValue() + "\")@RequestBody " + codeGenerationMethodParams.getRequestBodyType() + codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationParams.getServiceName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getMethodName());
             // 兼容老版本的api方法生成swagger
-            if(codeGenerationMethodParams.getRequestBodyName().equals("reqBody")){
+            if (codeGenerationMethodParams.getRequestBodyName().equals("reqBody")) {
                 baseCodeMethodParams.add("");
-            }else{
+            } else {
                 baseCodeMethodParams.add("ReqBody reqBody = new ReqBody();");
             }
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getRequestBodyName());
             baseCodeMethodParams.add(codeGenerationMethodParams.getInvokeMethodName());
             String[] baseCodeMethodParamsStr = baseCodeMethodParams.toArray(new String[baseCodeParams.size()]);
-            methodCodes += String.format(methodTemplate, baseCodeMethodParamsStr)+"\n";
+            methodCodes += String.format(methodTemplate, baseCodeMethodParamsStr) + "\n";
         }
         return baseCode + "\n" + methodCodes + "\n" + endCode;
 

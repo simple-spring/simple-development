@@ -8,8 +8,14 @@ import com.spring.simple.development.demo.vo.DemoVo;
 public interface DemoBo extends LavaBo<DemoDo, DemoDoExample> {
 
     /**
-     * 查询
+     * 插入
      * @param demoVo
      */
-    void getData(String demoVo);
+    void insertData(DemoVo demoVo);
+
+    /**
+     * 查询
+     * @param id
+     */
+    DemoVo getData(Long id);
 }

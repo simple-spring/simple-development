@@ -6,6 +6,7 @@ import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
+import com.spring.simple.development.core.component.swagger.CodeGenerationHandler;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.exception.GlobalResponseCode;
 import com.spring.simple.development.support.utils.DateUtils;
@@ -86,12 +87,17 @@ public class ServiceInvoke {
                 String[] keys = methodParams.getKey();
                 objects = new Object[keys.length];
                 for (int i = 0; i < keys.length; i++) {
-                    if (request.getReqBody().getParamsMap().get(keys[i]) instanceof JSONObject) {
-                        JSONObject jsonObject = (JSONObject) request.getReqBody().getParamsMap().get(keys[i]);
+                    // 兼容key是原型
+                    String key = keys[i];
+                    if(CodeGenerationHandler.baseType.get(key) != null){
+                        key = CodeGenerationHandler.baseType.get(key);
+                    }
+                    if (request.getReqBody().getParamsMap().get(key) instanceof JSONObject) {
+                        JSONObject jsonObject = (JSONObject) request.getReqBody().getParamsMap().get(key);
                         objects[i] = jsonObject.toJavaObject(parameterTypes[i]);
                     } else {
                         // 兼容swagger类型
-                        String paramJson = JSONObject.toJSONString(request.getReqBody().getParamsMap().get(keys[i]));
+                        String paramJson = JSONObject.toJSONString(request.getReqBody().getParamsMap().get(key));
                         objects[i] = JSONObject.parseObject(paramJson, parameterTypes[i]);
                     }
                 }
