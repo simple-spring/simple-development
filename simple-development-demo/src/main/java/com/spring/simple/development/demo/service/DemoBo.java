@@ -11,5 +11,5 @@ public interface DemoBo extends LavaBo<DemoDo, DemoDoExample> {
      * 查询
      * @param demoVo
      */
-    void getData(DemoVo demoVo);
+    void getData(String demoVo);
 }

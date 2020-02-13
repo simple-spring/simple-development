@@ -69,7 +69,7 @@ public class SwaggerConfig {
             throw new RuntimeException("swagger headerParams size init  fail");
         }
         for (int i = 0; i < headerParamsStr.length; i++) {
-            ticketPar.name(headerParamsStr[i]).description(headerParamsDescriptionStr[i])
+            ticketPar.name(headerParamsStr[i].split(":")[0]).defaultValue(headerParamsStr[i].split(":")[1]).description(headerParamsDescriptionStr[i])
                     .modelRef(new ModelRef("string")).parameterType("header")
                     .required(false).build();
             pars.add(ticketPar.build());

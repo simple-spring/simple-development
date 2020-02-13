@@ -12,7 +12,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
-@EnableSwagger
+@EnableSwagger(headerParam = "token:12345678987654321",headerParamDescription = "用户token")
 @EnableMybatis
 @EnableWebMvc
 @SpringSimpleApplication

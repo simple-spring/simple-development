@@ -60,13 +60,13 @@ public @interface EnableSwagger {
     String url() default "";
 
     /**
-     * header 参数数组 默认一个参数：token
+     * header 参数数组 默认一个参数：token1:tokenData1,token2:tokenData2,token3:tokenData3
      * @return
      */
     String headerParam() default "";
 
     /**
-     * header 参数描述
+     * header 参数描述: Description1,Description2,Description3
      * @return
      */
     String headerParamDescription() default "";

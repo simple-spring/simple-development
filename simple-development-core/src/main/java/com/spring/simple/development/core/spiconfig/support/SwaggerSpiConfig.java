@@ -34,7 +34,7 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerC
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_URL, "https://swagger.io/");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, "spring simple team");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_CONTACT, "true");
-            PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_PARAMS, "token");
+            PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_PARAMS, "token:123456789");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_DESCRIPTION, "User unique identifier");
 
             if (!StringUtils.isEmpty(enableSwagger.title())) {
