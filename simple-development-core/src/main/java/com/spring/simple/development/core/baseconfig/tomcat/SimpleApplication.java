@@ -22,6 +22,15 @@ public class SimpleApplication {
     private static final char ENTER_CHAR = '\n';
     private static final int DEFAULT_PORT = 8000;
     private int port = DEFAULT_PORT;
+    private String projectName = "";
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
     /**
      * 是否启用servlet 3.0 支持，如果启用的话，就需要扫描jar包中是否有Servlet等annotation，这个会影响启动时间，默认不开启
@@ -76,8 +85,8 @@ public class SimpleApplication {
                     " |___/ .__/|_|  |_|_| |_|\\__, | |___/_|_| |_| |_| .__/|_|\\___|  \\___|_| |_|\\__,_|\n" +
                     "     | |                  __/ |                 | |                              \n" +
                     "     |_|                 |___/                  |_|                              \n");
-            if(isWindows()){
-                String command = "cmd /c start http://127.0.0.1:" + port;
+            if (isWindows()) {
+                String command = "cmd /c start http://127.0.0.1:" + port + (StringUtils.isEmpty(projectName) ? "" : "/" + projectName);
                 Runtime.getRuntime().exec(command);
             }
             tomcat.getServer().await();
@@ -110,7 +119,7 @@ public class SimpleApplication {
 
     private void log(long time) {
         System.out.println("********************************************************");
-        System.out.println("启动成功: http://127.0.0.1:" + port + "   in:" + time + "ms");
+        System.out.println("启动成功: http://127.0.0.1:" + port +(StringUtils.isEmpty(projectName) ? "" : "/" + projectName)+ "   in:" + time + "ms");
         System.out.println("********************************************************");
     }
 
@@ -169,8 +178,10 @@ public class SimpleApplication {
         PropertyConfigurer.loadApplicationProperties("application.properties");
         String port = PropertyConfigurer.getProperty("server.port");
         SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
+        tomcatTest.setProjectName(PropertyConfigurer.getProperty("server.path"));
         tomcatTest.start();
     }
+
     public boolean isWindows() {
         return System.getProperties().getProperty("os.name").toUpperCase().indexOf("WINDOWS") != -1;
     }
