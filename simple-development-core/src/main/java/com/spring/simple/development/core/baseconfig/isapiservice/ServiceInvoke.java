@@ -72,7 +72,7 @@ public class ServiceInvoke {
             // 获取方法上的参数类型
             MethodParams methodParams = ServerFactory.serviceMethodMap.get(request.getServiceName() + "-" + request.getMethodName());
             Class<?>[] parameterTypes = null;
-            if (methodParams != null) {
+            if (methodParams != null && methodParams.getKey().length >0 ) {
                 Class<?>[] classesMethodType = methodParams.getMethodClass();
                 parameterTypes = new Class[classesMethodType.length];
                 for (int i = 0; i < classesMethodType.length; i++) {
@@ -106,9 +106,6 @@ public class ServiceInvoke {
                 throw new GlobalException(SERVICE_FAILED);
             }
             if (parameterTypes != null && objects == null) {
-                throw new GlobalException(SERVICE_FAILED);
-            }
-            if (parameterTypes.length != objects.length) {
                 throw new GlobalException(SERVICE_FAILED);
             }
             Object result = serviceFastMethod.invoke(serviceBean, objects);

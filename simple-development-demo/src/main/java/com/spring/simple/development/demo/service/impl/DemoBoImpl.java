@@ -40,8 +40,8 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
     @Override
     @ApiOperation(value = "查询", notes = "查询一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo", resultDataType = DemoVo.class)
-    public DemoVo getData(Long id) {
-        DemoDo demoDo = selectByPrimaryKey(id);
+    public DemoVo getData() {
+        DemoDo demoDo = selectByPrimaryKey(1L);
         return baseSupport.objectCopy(demoDo, DemoVo.class);
     }
 }

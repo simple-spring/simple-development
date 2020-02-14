@@ -209,13 +209,17 @@ public class SwaggerConfig {
                         codeGenerationMethodParams.setResultDataTypePackagePath(pageResultPackagePath);
                         codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + resultPackagePath);
                     }
-                    codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " ");
-                    codeGenerationMethodParams.setRequestBodyName(toLowerCaseFirstOne(parameterTypes[0].getSimpleName()));
-                    Package aPackage = parameterTypes[0].getPackage();
-                    String name = aPackage.getName() + "." + parameterTypes[0].getSimpleName() + ";";
-                    codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + name);
+                    if (parameterTypes.length > 0) {
+                        codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " ");
+                        codeGenerationMethodParams.setRequestBodyName(toLowerCaseFirstOne(parameterTypes[0].getSimpleName()));
+                        Package aPackage = parameterTypes[0].getPackage();
+                        String name = aPackage.getName() + "." + parameterTypes[0].getSimpleName() + ";";
+                        codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + name);
+                    }else{
+                        codeGenerationMethodParams.setRequestBodyType(" ");
+                        codeGenerationMethodParams.setRequestBodyName(" ");
+                    }
                     codeGenerationMethodParamsList.add(codeGenerationMethodParams);
-
                 }
             }
             codeGenerationParams.setCodeGenerationMethodParams(codeGenerationMethodParamsList);

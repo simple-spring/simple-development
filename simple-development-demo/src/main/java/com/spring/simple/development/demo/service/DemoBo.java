@@ -17,5 +17,5 @@ public interface DemoBo extends LavaBo<DemoDo, DemoDoExample> {
      * 查询
      * @param id
      */
-    DemoVo getData(Long id);
+    DemoVo getData();
 }
