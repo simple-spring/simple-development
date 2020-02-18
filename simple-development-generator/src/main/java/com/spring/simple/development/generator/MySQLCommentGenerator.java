@@ -4,12 +4,13 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.internal.DefaultCommentGenerator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class MySQLCommentGenerator extends EmptyCommentGenerator {
+public class MySQLCommentGenerator extends DefaultCommentGenerator {
 
     private Properties properties;
 
@@ -31,7 +32,6 @@ public class MySQLCommentGenerator extends EmptyCommentGenerator {
 
         // 获取表注释
         String remarks = introspectedTable.getRemarks();
-
         topLevelClass.addJavaDocLine("/**");
         topLevelClass.addJavaDocLine(" * " + remarks);
         topLevelClass.addJavaDocLine(" *");
@@ -45,6 +45,14 @@ public class MySQLCommentGenerator extends EmptyCommentGenerator {
         // 获取列注释
         String remarks = introspectedColumn.getRemarks();
         field.addJavaDocLine("/**");
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
+        field.addJavaDocLine(" * " + remarks);
         field.addJavaDocLine(" * " + remarks);
         field.addJavaDocLine(" */");
     }
