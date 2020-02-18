@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 注册api service服务
+ * @author liko
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
