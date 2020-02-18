@@ -17,9 +17,15 @@
         </plugin>
         <plugin type="com.spring.simple.development.generator.plugin.LombokPlugin"/>
 
+        <!-- 自定义注释生成器 -->
+        <commentGenerator type="com.spring.simple.development.generator.MySQLCommentGenerator">
+            <property name="author" value="liko"/>
+            <property name="dateFormat" value="yyyy/MM/dd"/>
+        </commentGenerator>
+
         <!-- 配置连接数据信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://47.96.127.89:5051/insurance?characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/demo?characterEncoding=utf8"
                         userId="root" password="123456">
         </jdbcConnection>
 
