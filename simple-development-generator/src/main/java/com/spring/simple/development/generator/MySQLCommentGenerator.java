@@ -46,14 +46,6 @@ public class MySQLCommentGenerator extends DefaultCommentGenerator {
         String remarks = introspectedColumn.getRemarks();
         field.addJavaDocLine("/**");
         field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
-        field.addJavaDocLine(" * " + remarks);
         field.addJavaDocLine(" */");
     }
 }
