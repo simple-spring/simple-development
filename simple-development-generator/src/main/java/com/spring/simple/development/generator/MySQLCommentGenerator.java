@@ -33,7 +33,7 @@ public class MySQLCommentGenerator extends DefaultCommentGenerator {
         // 获取表注释
         String remarks = introspectedTable.getRemarks();
         topLevelClass.addJavaDocLine("/**");
-        topLevelClass.addJavaDocLine(" * " + remarks);
+        topLevelClass.addJavaDocLine(" * @description MyBatis Generator 自动创建,对应数据表为：" + introspectedTable.getFullyQualifiedTable());
         topLevelClass.addJavaDocLine(" *");
         topLevelClass.addJavaDocLine(" * @author " + author);
         topLevelClass.addJavaDocLine(" * @date   " + dateFormatter.format(new Date()));
