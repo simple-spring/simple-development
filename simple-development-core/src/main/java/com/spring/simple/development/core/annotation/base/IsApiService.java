@@ -19,9 +19,9 @@ public @interface IsApiService {
     String value() default "";
 
     /**
-     * 不需要登录的服务
+     * 是否需要登录的服务
      *
      * @return
      */
-    boolean isLogin() default false;
+    boolean isLogin() default true;
 }
