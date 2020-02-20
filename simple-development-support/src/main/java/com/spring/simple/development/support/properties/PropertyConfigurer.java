@@ -23,7 +23,6 @@ public class PropertyConfigurer {
 
             properties.load(in);
 
-            Map<String, String> map = new HashMap<>();
             for (Object key : properties.keySet()) {
                 configMap.put(key.toString(), properties.getProperty(key.toString()));
             }
