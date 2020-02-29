@@ -3,7 +3,6 @@ package com.spring.simple.development.core.spiconfig.support;
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableElasticSearch;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
-import com.spring.simple.development.core.component.elasticsearch.ElasticSearchConfig;
 
 /**
  * @author ys
@@ -11,12 +10,12 @@ import com.spring.simple.development.core.component.elasticsearch.ElasticSearchC
  * @Description TODO
  */
 @Spi(configName="EnableElasticSearch")
-public class ElasticSearchSpiConfig implements SimpleSpiConfig<EnableElasticSearch, ElasticSearchConfig> {
+public class ElasticSearchSpiConfig implements SimpleSpiConfig<EnableElasticSearch> {
 
 	@Override
-	public Class<ElasticSearchConfig> getConfigClass(EnableElasticSearch t) {
+	public Class getConfigClass(EnableElasticSearch t) {
 		try {
-            return ElasticSearchConfig.class;
+            return Class.forName("component.es.ElasticSearchConfig");
         } catch (Exception ex) {
             throw new RuntimeException("ElasticSearchConfig initialization failed", ex);
         }

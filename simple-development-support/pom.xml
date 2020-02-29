@@ -11,6 +11,14 @@
 
     <artifactId>simple-development-support</artifactId>
     <version>2.2</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>2.5.3</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <packaging>jar</packaging>
     <build>
         <finalName>simple-development-support</finalName>

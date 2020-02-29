@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.component.elasticsearch;
+package component.es;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

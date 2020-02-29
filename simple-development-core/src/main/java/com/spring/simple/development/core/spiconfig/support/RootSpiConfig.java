@@ -15,7 +15,7 @@ import java.util.List;
  * @author Administrator
  */
 @Spi(configName = "SpringSimpleApplication")
-public class RootSpiConfig implements SimpleSpiConfig<SpringSimpleApplication, RootConfig> {
+public class RootSpiConfig implements SimpleSpiConfig<SpringSimpleApplication> {
     @Override
     public Class<RootConfig> getConfigClass(SpringSimpleApplication springSimpleApplication) {
         try {

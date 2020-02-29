@@ -17,7 +17,7 @@ import java.util.List;
  * @author liko wang
  */
 @Spi(configName = "EnableWebMvc")
-public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc, WebConfig> {
+public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
     @Override
     public Class<WebConfig> getConfigClass(EnableWebMvc enableWebMvc) {
         try {

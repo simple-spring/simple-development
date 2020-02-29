@@ -1,5 +1,7 @@
 package com.spring.simple.development.demo.model;
 
+import com.alibaba.lava.base.LavaExample;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -2,19 +2,13 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableSwagger;
-import com.spring.simple.development.core.annotation.config.EnableXxlJob;
-import com.spring.simple.development.core.component.job.XxlJobConfig;
-import com.spring.simple.development.core.component.mvc.WebConfig;
 import com.spring.simple.development.core.component.swagger.SwaggerConfig;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
-import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -23,7 +17,7 @@ import java.util.List;
  * @Description EnableSwagger
  */
 @Spi(configName = "EnableSwagger")
-public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger, SwaggerConfig> {
+public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger> {
 
     @Override
     public Class<SwaggerConfig> getConfigClass(EnableSwagger enableSwagger) {

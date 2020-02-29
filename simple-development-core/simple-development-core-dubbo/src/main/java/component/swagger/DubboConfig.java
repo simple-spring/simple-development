@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.component.dubbo;
+package component.swagger;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ProtocolConfig;

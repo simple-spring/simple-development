@@ -17,7 +17,7 @@ import java.util.List;
  * @author liko wang
  */
 @Spi(configName = "EnableMybatis")
-public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis, DataSourceConfig> {
+public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
     @Override
     public Class<DataSourceConfig> getConfigClass(EnableMybatis enableMybatis) {
         try {

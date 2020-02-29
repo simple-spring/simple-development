@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.component.redis;
+package component.redis;
 
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.JedisPoolUtils;

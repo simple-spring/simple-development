@@ -6,12 +6,12 @@ package com.spring.simple.development.core.spiconfig;
  * @author liko wang
  * @param <T>
  */
-public interface SimpleSpiConfig<T,M> {
+public interface SimpleSpiConfig<T> {
     /**
      * 获取组件配置
      *
      * @param t
      * @return
      */
-    Class<M> getConfigClass(T t);
+    Class getConfigClass(T t);
 }

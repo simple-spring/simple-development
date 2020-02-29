@@ -5,7 +5,6 @@ import com.spring.simple.development.core.annotation.config.EnableDubbo;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
-import com.spring.simple.development.core.component.dubbo.DubboConfig;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang.StringUtils;
@@ -18,9 +17,9 @@ import java.util.List;
  * @author liko wang
  */
 @Spi(configName = "EnableDubbo")
-public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo, DubboConfig> {
+public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
     @Override
-    public Class<DubboConfig> getConfigClass(EnableDubbo enableDubbo) {
+    public Class getConfigClass(EnableDubbo enableDubbo) {
         try {
             // dubbo参数校验
             Assert.notNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_APPLICATION_NAME));
@@ -37,7 +36,8 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo, DubboConfig>
             }
             List<String> mapperPackageNames = new ArrayList<>();
             mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
-            Class dubboConfig = ClassLoadUtil.javassistCompile(DubboConfig.class, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", mapperPackageNames, "basePackages");
+            Class<?> dubboClass = Class.forName("component.dubbo.DubboConfig");
+            Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", mapperPackageNames, "basePackages");
             return dubboConfig;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

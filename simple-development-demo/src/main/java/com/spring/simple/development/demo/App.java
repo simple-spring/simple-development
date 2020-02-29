@@ -1,11 +1,7 @@
 package com.spring.simple.development.demo;
 
 
-import com.alibaba.fastjson.JSONObject;
-import com.spring.simple.development.core.annotation.config.EnableMybatis;
-import com.spring.simple.development.core.annotation.config.EnableSwagger;
-import com.spring.simple.development.core.annotation.config.EnableWebMvc;
-import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
+import com.spring.simple.development.core.annotation.config.*;
 import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 
 /**
@@ -15,6 +11,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  **/
 @EnableSwagger
 @EnableMybatis
+@EnableRedis
 @EnableWebMvc
 @SpringSimpleApplication
 public class App {
