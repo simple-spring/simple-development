@@ -2,10 +2,8 @@ package com.spring.simple.development.core.component.idempotent;
 
 import com.alibaba.fastjson.JSON;
 import com.spring.simple.development.core.annotation.base.Idempotent;
-import com.spring.simple.development.core.baseconfig.Idempotent.IdempotentHandler;
-import com.spring.simple.development.core.baseconfig.Idempotent.IdempotentModel;
 import com.spring.simple.development.support.exception.GlobalException;
-import component.swagger.JedisPoolUtils;
+import com.spring.simple.development.support.utils.JedisPoolUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -42,7 +40,7 @@ public class IdempotentHandlerUtil {
             if (method.isAnnotationPresent(Idempotent.class)) {
                 Idempotent idempotent = method.getAnnotation(Idempotent.class);
                 String value = idempotent.value();
-                IdempotentModel idempotentModel = com.spring.simple.development.core.baseconfig.Idempotent.IdempotentHandler.getIdempotentModel();
+                IdempotentModel idempotentModel = IdempotentHandler.getIdempotentModel();
                 Object paramData = point.getArgs()[0];
                 String data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
                 // 加入分布式锁

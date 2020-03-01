@@ -2,13 +2,11 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableSwagger;
-import com.spring.simple.development.core.component.swagger.SwaggerConfig;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang3.StringUtils;
-
 
 
 /**
@@ -20,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger> {
 
     @Override
-    public Class<SwaggerConfig> getConfigClass(EnableSwagger enableSwagger) {
+    public Class getConfigClass(EnableSwagger enableSwagger) {
         try {
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_TITLE, "spring simple swagger doc");
             PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_DESCRIPTION, "基于ssm javaconfig 零xml配置，常用的三层结构dao，service简化开发,controller层零开发,以组件方式自由搭配，简单灵活");
@@ -54,7 +52,8 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger> {
             if (!StringUtils.isEmpty(enableSwagger.headerParamDescription())) {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_SWAGGER_HEADER_DESCRIPTION, enableSwagger.headerParamDescription());
             }
-            Class swaggerConfig = ClassLoadUtil.javassistCompileNoParam(SwaggerConfig.class, "springfox.documentation.swagger2.annotations.EnableSwagger2");
+            Class<?> swaggerConfigClass = Class.forName("com.spring.simple.development.core.component.swagger.SwaggerConfig");
+            Class swaggerConfig = ClassLoadUtil.javassistCompileNoParam(swaggerConfigClass, "springfox.documentation.swagger2.annotations.EnableSwagger2");
 
             if (StringUtils.isEmpty(isEnable)) {
                 return swaggerConfig;

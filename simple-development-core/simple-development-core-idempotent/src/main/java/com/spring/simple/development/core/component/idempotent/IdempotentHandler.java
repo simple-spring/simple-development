@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.baseconfig.idempotent;
+package com.spring.simple.development.core.component.idempotent;
 
 /**
  * desc:  保留用户请求的标识
