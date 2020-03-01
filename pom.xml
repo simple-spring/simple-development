@@ -9,6 +9,8 @@
     <modules>
         <module>simple-development-core</module>
         <module>simple-development-support</module>
+        <module>simple-development-generator</module>
+        <module>simple-development-build</module>
     </modules>
     <packaging>pom</packaging>
     <url>https://diangc.cn</url>
