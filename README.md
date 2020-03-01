@@ -1,4 +1,4 @@
-### simple-development2.0 介绍
+### simple-development2.3 介绍
     基于ssm javaconfig 零xml配置，常用的三层结构dao，service简化开发,controller层零开发
 
 ### 使用的技术
@@ -10,8 +10,7 @@
             <dependency>
                 <groupId>com.chexin</groupId>
                 <artifactId>simple-development-core</artifactId>
-                <version>2.2</version>
-                <scope>compile</scope>
+                <version>2.3</version>
             </dependency>
         (2)配置环境隔离
              <profiles>
