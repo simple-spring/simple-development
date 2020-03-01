@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.baseconfig.Idempotent;
+package com.spring.simple.development.core.baseconfig.idempotent;
 
 /**
  * @author liko

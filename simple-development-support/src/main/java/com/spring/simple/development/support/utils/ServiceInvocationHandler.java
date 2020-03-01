@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 /**
  * @author liko.wang
  * @Date 2019/12/20/020 16:02
- * @Description //TODO
+ * @Description //MethodInterceptor 实现aop
  **/
 public class ServiceInvocationHandler implements MethodInterceptor {
     private Object target;

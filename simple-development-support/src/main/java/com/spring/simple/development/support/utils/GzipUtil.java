@@ -14,6 +14,7 @@ import static com.spring.simple.development.support.exception.ResponseCode.RES_E
 
 /**
  * 数据压缩
+ * @author li'ko wang
  */
 public class GzipUtil {
     public static String compress(String str) {

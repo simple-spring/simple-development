@@ -1,4 +1,4 @@
-package com.spring.simple.development.support.utils;
+package com.spring.simple.development.core.component.kafka;
 
 import kafka.api.FetchRequest;
 import kafka.api.FetchRequestBuilder;

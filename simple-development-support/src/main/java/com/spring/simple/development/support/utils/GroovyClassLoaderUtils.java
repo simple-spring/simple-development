@@ -5,7 +5,7 @@ import groovy.lang.GroovyClassLoader;
 /**
  * @author liko.wang
  * @Date 2020/1/15/015 15:23
- * @Description //TODO
+ * @Description 动态编译Groovy
  **/
 public class GroovyClassLoaderUtils {
     private static GroovyClassLoader groovyClassLoader = new GroovyClassLoader();

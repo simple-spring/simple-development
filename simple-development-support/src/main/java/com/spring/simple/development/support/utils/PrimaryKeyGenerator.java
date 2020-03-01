@@ -7,9 +7,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * desc:	主键生成类
- * author:	spring.chun
- * date:	2016年9月7日 下午3:41:14
+ * 主键生成类
  */
 public class PrimaryKeyGenerator {
 	private final static Random rd = new Random();
