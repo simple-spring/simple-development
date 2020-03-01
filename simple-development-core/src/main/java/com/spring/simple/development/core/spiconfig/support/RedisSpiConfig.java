@@ -12,7 +12,7 @@ public class RedisSpiConfig implements SimpleSpiConfig<EnableRedis> {
     @Override
     public Class getConfigClass(EnableRedis enableRedis) {
         try {
-            Class<?> aClass = Class.forName("component.redis.RedisConfig");
+            Class<?> aClass = Class.forName("com.spring.simple.development.core.component.redis.RedisConfig");
             return aClass;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

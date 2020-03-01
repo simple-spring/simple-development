@@ -20,7 +20,7 @@ import java.util.Map;
  * @create 2018-09-25 下午2:36
  */
 @Component
-public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, ApplicationContextAware {
+public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>{
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -31,7 +31,9 @@ public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, 
             for (Object bean : beans.values()) {
                 if (bean != null) {
                     try {
-                        ServerFactory.putService(bean);
+                        Class<?> aClass = Class.forName("com.spring.simple.development.core.baseconfig.isapiservice.ServerFactory");
+                        Method putService = aClass.getMethod("putService", Object.class);
+                        putService.invoke(aClass.newInstance(), bean);
                     } catch (Exception e) {
                         System.out.println(e);
                         throw new RuntimeException(bean.getClass().getSimpleName() + "服务加载异常");
@@ -39,10 +41,5 @@ public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>, 
                 }
             }
         }
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ServerFactory.applicationContext = applicationContext;
     }
 }

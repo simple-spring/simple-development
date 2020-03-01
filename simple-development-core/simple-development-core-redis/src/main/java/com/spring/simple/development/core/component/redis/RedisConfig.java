@@ -1,6 +1,7 @@
 package com.spring.simple.development.core.component.redis;
 
 import com.spring.simple.development.support.properties.PropertyConfigurer;
+import com.spring.simple.development.support.utils.JedisPoolUtils;
 import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

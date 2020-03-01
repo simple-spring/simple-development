@@ -1,7 +1,5 @@
 package com.spring.simple.development.core.annotation.base.swagger;
 
-import io.swagger.annotations.ApiOperation;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

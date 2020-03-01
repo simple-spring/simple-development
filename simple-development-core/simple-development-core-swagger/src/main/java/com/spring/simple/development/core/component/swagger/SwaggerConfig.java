@@ -111,7 +111,7 @@ public class SwaggerConfig {
     }
 
     public List<String> getIsApiServiceTransformControllerCodes() {
-
+        System.out.println("reflections IsApiService start");
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 // 指定路径URL
                 .forPackages(System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME))
@@ -119,6 +119,8 @@ public class SwaggerConfig {
                 .addScanners(new MethodAnnotationsScanner())
         );
         Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(IsApiService.class);
+        System.out.println("reflections IsApiService end");
+
         if (CollectionUtils.isEmpty(typesAnnotatedWith)) {
             return null;
         }

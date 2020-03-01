@@ -81,8 +81,10 @@ public class AppInitializer implements WebApplicationInitializer {
             List<Object> configClassList = new ArrayList<>();
 
             // 获取所有的组件注解实现
+            System.out.println("Reflections SimpleSpi start");
             Reflections sipReflections = new Reflections(SimpleSpiConfig.class);
             Set<Class<?>> classes = sipReflections.getTypesAnnotatedWith(Spi.class);
+            System.out.println("Reflections SimpleSpi end");
             if (CollectionUtils.isEmpty(classes)) {
                 throw new RuntimeException("spring simple component is empty");
             }
@@ -141,9 +143,12 @@ public class AppInitializer implements WebApplicationInitializer {
      */
     private void scanEven() throws IllegalAccessException, InstantiationException {
         // 主题
+        System.out.println("reflections scanEven start");
         SimpleApplicationEventSubject simpleApplicationEventSubject = new SimpleComponentEventSubject(AppInitializer.servletContext, AppInitializer.rootContext);
         Reflections reflections = new Reflections("com.spring.simple.development.core");
         Set<Class<? extends SimpleComponentListener>> subTypes = reflections.getSubTypesOf(SimpleComponentListener.class);
+        System.out.println("reflections scanEven end");
+
         if (!CollectionUtils.isEmpty(subTypes)) {
             for (Class aclass : subTypes) {
                 simpleApplicationEventSubject.addObserver(aclass.newInstance());

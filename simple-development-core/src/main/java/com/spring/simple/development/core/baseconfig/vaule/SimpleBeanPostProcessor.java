@@ -8,6 +8,7 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
@@ -17,7 +18,14 @@ import java.util.Set;
 public class SimpleBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
+        Service service = o.getClass().getAnnotation(Service.class);
+        if (service == null) {
+            return o;
+        }
+        System.out.println("Reflections value start");
         Set<Field> fields = new Reflections(o.getClass().getName(), new FieldAnnotationsScanner()).getFieldsAnnotatedWith(Value.class);
+        System.out.println("Reflections value end");
+
         if (CollectionUtils.isEmpty(fields)) {
             return o;
         }

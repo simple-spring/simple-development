@@ -1,6 +1,6 @@
 //package com.spring.simple.development.core.component.mvc.controller;
 //
-//import com.spring.simple.development.core.baseconfig.isapiservice.ServiceInvoke;
+//import com.spring.simple.development.core.baseconfig.com.spring.simple.development.core.baseconfig.isapiservice.ServiceInvoke;
 //import com.spring.simple.development.core.component.mvc.req.ReqBody;
 //import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 //import com.spring.simple.development.core.component.mvc.res.ResBody;

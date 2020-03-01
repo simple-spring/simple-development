@@ -5,7 +5,6 @@ import com.spring.simple.development.core.annotation.config.EnableWebMvc;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
-import com.spring.simple.development.core.component.mvc.WebConfig;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +18,7 @@ import java.util.List;
 @Spi(configName = "EnableWebMvc")
 public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
     @Override
-    public Class<WebConfig> getConfigClass(EnableWebMvc enableWebMvc) {
+    public Class getConfigClass(EnableWebMvc enableWebMvc) {
         try {
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME);
 
@@ -48,7 +47,8 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
             for (String path : paths) {
                 mvcPackageNames.add(path);
             }
-            Class webConfigClass = ClassLoadUtil.javassistCompile(WebConfig.class, "org.springframework.context.annotation.ComponentScan", mvcPackageNames, "basePackages");
+            Class<?> targetWebConfigClass = Class.forName("com.spring.simple.development.core.component.mvc.WebConfig");
+            Class webConfigClass = ClassLoadUtil.javassistCompile(targetWebConfigClass, "org.springframework.context.annotation.ComponentScan", mvcPackageNames, "basePackages");
             return webConfigClass;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

@@ -18,8 +18,11 @@ public class ComponentContainer {
 
     public static void initComponentContainer() {
         // 获取所有的组件注解
+        System.out.println("Reflections SimpleComponent start");
         Reflections configReflections = new Reflections(SimpleComponent.class);
         Set<Class<?>> simpleConfigList = configReflections.getTypesAnnotatedWith(SimpleComponent.class);
+        System.out.println("Reflections SimpleComponent end");
+
         if (CollectionUtils.isEmpty(simpleConfigList) == false) {
             for (Class simpleClass : simpleConfigList) {
                 Components.put(simpleClass.getName(), simpleClass);

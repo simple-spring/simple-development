@@ -5,7 +5,6 @@ import com.spring.simple.development.core.annotation.config.EnableMybatis;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
-import com.spring.simple.development.core.component.jdbc.DataSourceConfig;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +18,7 @@ import java.util.List;
 @Spi(configName = "EnableMybatis")
 public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
     @Override
-    public Class<DataSourceConfig> getConfigClass(EnableMybatis enableMybatis) {
+    public Class getConfigClass(EnableMybatis enableMybatis) {
         try {
             // 默认包路径
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME);
@@ -39,7 +38,7 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MODEL_PATH, enableMybatis.modelPath());
             }
             // 事务表达式
-            String defaultExpression = "execution (* " + basePackageName + PackageNameConstant.SERVICE+"..*.*(..))";
+            String defaultExpression = "execution (* " + basePackageName + PackageNameConstant.SERVICE + "..*.*(..))";
             if (StringUtils.isEmpty(enableMybatis.expression())) {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_EXPRESSION, defaultExpression);
             } else {
@@ -55,7 +54,8 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
             // 添加DataSourceConfig MapperScan扫描包的路径
             List<String> mapperPackageNames = new ArrayList<>();
             mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_PATH));
-            Class dataSourceConfigClass = ClassLoadUtil.javassistCompile(DataSourceConfig.class, "org.mybatis.spring.annotation.MapperScan", mapperPackageNames, "basePackages");
+            Class<?> targetClass = Class.forName("com.spring.simple.development.core.component.jdbc.DataSourceConfig");
+            Class dataSourceConfigClass = ClassLoadUtil.javassistCompile(targetClass, "org.mybatis.spring.annotation.MapperScan", mapperPackageNames, "basePackages");
             return dataSourceConfigClass;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

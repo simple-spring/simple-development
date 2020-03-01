@@ -11,7 +11,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  **/
 @EnableSwagger
 @EnableMybatis
-@EnableRedis
+//@EnableRedis
 @EnableWebMvc
 @SpringSimpleApplication
 public class App {

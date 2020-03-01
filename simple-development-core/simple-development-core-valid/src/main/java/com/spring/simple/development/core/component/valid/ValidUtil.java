@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.annotation.base.ValidHandler;
-import com.spring.simple.development.core.component.mvc.req.ReqBody;
+import com.spring.simple.development.core.component.jdbc.req.ReqBody;
 import com.spring.simple.development.support.exception.GlobalException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;

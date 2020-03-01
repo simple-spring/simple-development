@@ -2,6 +2,8 @@ package com.spring.simple.development.core.component.idempotent;
 
 import com.alibaba.fastjson.JSON;
 import com.spring.simple.development.core.annotation.base.Idempotent;
+import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandler;
+import com.spring.simple.development.core.baseconfig.idempotent.IdempotentModel;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.JedisPoolUtils;
 import org.apache.commons.codec.digest.DigestUtils;

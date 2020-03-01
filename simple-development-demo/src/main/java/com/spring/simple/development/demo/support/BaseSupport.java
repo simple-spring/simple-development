@@ -1,8 +1,9 @@
 package com.spring.simple.development.demo.support;
 
+
 import com.github.pagehelper.PageInfo;
-import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
-import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
+import com.spring.simple.development.core.component.mvc.ReqPageDTO;
+import com.spring.simple.development.core.component.mvc.ResPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.PoJoCopyUtils;

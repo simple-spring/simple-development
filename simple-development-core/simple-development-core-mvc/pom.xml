@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>simple-development-core</artifactId>
+        <groupId>com.spring</groupId>
+        <version>2.3</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.spring</groupId>
+    <artifactId>simple-development-core-mvc</artifactId>
+    <version>1.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-support</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-swagger</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!--servlet-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jasper</groupId>
+            <artifactId>jasper-core</artifactId>
+            <version>6.0.53</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-idempotent</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>manila.releases</id>
+            <name>Internal Releases</name>
+            <url>http://nexus.diangc.cn:8091/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>manila.Snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>http://nexus.diangc.cn:8091/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>

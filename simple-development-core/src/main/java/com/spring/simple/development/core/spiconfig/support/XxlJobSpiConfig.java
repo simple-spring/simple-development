@@ -38,7 +38,7 @@ public class XxlJobSpiConfig implements SimpleSpiConfig<EnableXxlJob> {
             }
             List<String> mapperPackageNames = new ArrayList<>();
             mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_XXLJOB_CONFIG_JOBPACKAGE));
-            Class<?> jobClass = Class.forName("component.job.XxlJobConfig");
+            Class<?> jobClass = Class.forName("com.spring.simple.development.core.component.job.XxlJobConfig");
             Class jobConfig = ClassLoadUtil.javassistCompile(jobClass, "org.springframework.context.annotation.ComponentScan", mapperPackageNames, "basePackages");
             return jobConfig;
         } catch (Exception ex) {
