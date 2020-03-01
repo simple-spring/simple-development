@@ -1,4 +1,4 @@
-package component.job;
+package com.spring.simple.development.core.component.job;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

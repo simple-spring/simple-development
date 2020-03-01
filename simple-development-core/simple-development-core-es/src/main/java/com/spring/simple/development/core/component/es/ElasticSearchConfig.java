@@ -1,4 +1,4 @@
-package component.es;
+package com.spring.simple.development.core.component.es;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

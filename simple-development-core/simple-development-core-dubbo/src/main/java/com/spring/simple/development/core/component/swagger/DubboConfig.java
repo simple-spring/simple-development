@@ -1,4 +1,4 @@
-package component.swagger;
+package com.spring.simple.development.core.component.swagger;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ProtocolConfig;

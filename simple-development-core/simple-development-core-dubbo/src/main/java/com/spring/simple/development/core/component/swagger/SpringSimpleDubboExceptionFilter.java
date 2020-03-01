@@ -1,4 +1,4 @@
-package component.swagger;
+package com.spring.simple.development.core.component.swagger;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
