@@ -1,9 +1,9 @@
 package com.spring.simple.development.core.baseconfig.isapiservice;
 
 import com.alibaba.fastjson.JSONObject;
-import com.spring.simple.development.core.component.mvc.ReqPageDTO;
+import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
-import com.spring.simple.development.core.component.mvc.ResPageDTO;
+import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.core.component.swagger.CodeGenerationHandler;
