@@ -58,9 +58,9 @@ public class ServerFactory {
                     methodName = isApiMethodService.value();
                 }
                 if (isApiService.isLogin()) {
-                    serviceNoLoginMap.put(serviceName + "-" + methodName, serviceBean);
-                } else {
                     serviceMap.put(serviceName + "-" + methodName, serviceBean);
+                } else {
+                    serviceNoLoginMap.put(serviceName + "-" + methodName, serviceBean);
                 }
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 if (parameterTypes != null) {
