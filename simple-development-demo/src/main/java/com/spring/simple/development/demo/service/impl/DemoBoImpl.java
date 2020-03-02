@@ -3,6 +3,7 @@ package com.spring.simple.development.demo.service.impl;
 import com.alibaba.lava.base.AbstractLavaBoImpl;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
+import com.spring.simple.development.core.annotation.base.ValidHandler;
 import com.spring.simple.development.core.annotation.base.swagger.Api;
 import com.spring.simple.development.core.annotation.base.swagger.ApiImplicitParam;
 import com.spring.simple.development.core.annotation.base.swagger.ApiOperation;
@@ -32,6 +33,7 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
     @Override
     @ApiOperation(value = "插入", notes = "插入一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo")
+    @ValidHandler(key = "demoVo",value = DemoVo.class,isReqBody = false)
     public void insertData(DemoVo demoVo) {
         DemoDo demoDo = baseSupport.objectCopy(demoVo, DemoDo.class);
         insert(demoDo);
