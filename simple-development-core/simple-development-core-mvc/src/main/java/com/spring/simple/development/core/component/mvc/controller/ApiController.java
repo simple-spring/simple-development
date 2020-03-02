@@ -69,30 +69,23 @@ public class ApiController {
             throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
         }
         RpcRequest rpcRequest = new RpcRequest();
-        try {
-            if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
-                rpcRequest.setServiceName(serviceName);
-                rpcRequest.setMethodName(methodName);
-                ReqBody reqBody = new ReqBody();
-                MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
-                Map<String, Object> paramsMap = new HashMap<>();
-                paramsMap.put(methodParams.getKey()[0], o);
-                reqBody.setParamsMap(paramsMap);
-                rpcRequest.setReqBody(reqBody);
-            } else {
-                // 旧版本调用
-                rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
-                return serviceInvoke.invokeServiceOld(rpcRequest);
-            }
-            // invoke
-            return serviceInvoke.invokeService(rpcRequest);
-
-        } catch (Exception ex) {
-            logger.error(" date:" + DateUtils.getCurrentTime(), ex);
-            throw new GlobalException(RES_PARAM_INVALID, "格式错误");
+        if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
+            rpcRequest.setServiceName(serviceName);
+            rpcRequest.setMethodName(methodName);
+            ReqBody reqBody = new ReqBody();
+            MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+            Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put(methodParams.getKey()[0], o);
+            reqBody.setParamsMap(paramsMap);
+            rpcRequest.setReqBody(reqBody);
+        } else {
+            // 旧版本调用
+            rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
+            return serviceInvoke.invokeServiceOld(rpcRequest);
         }
-
+        // invoke
+        return serviceInvoke.invokeService(rpcRequest);
     }
 
     /**
@@ -120,29 +113,22 @@ public class ApiController {
             throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
         }
         RpcRequest rpcRequest = new RpcRequest();
-        try {
-            if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
-                rpcRequest.setServiceName(serviceName);
-                rpcRequest.setMethodName(methodName);
-                ReqBody reqBody = new ReqBody();
-                MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
-                Map<String, Object> paramsMap = new HashMap<>();
-                paramsMap.put(methodParams.getKey()[0], o);
-                reqBody.setParamsMap(paramsMap);
-                rpcRequest.setReqBody(reqBody);
-            } else {
-                // 旧版本调用
-                rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
-                return serviceInvoke.invokeConfigServiceOld(rpcRequest);
-            }
-            // invoke
-            return serviceInvoke.invokeConfigService(rpcRequest);
-        } catch (Exception ex) {
-            logger.error(" date:" + DateUtils.getCurrentTime(), ex);
-            throw new GlobalException(RES_PARAM_INVALID, "格式错误");
+        if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
+            rpcRequest.setServiceName(serviceName);
+            rpcRequest.setMethodName(methodName);
+            ReqBody reqBody = new ReqBody();
+            MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+            Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put(methodParams.getKey()[0], o);
+            reqBody.setParamsMap(paramsMap);
+            rpcRequest.setReqBody(reqBody);
+        } else {
+            // 旧版本调用
+            rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
+            return serviceInvoke.invokeConfigServiceOld(rpcRequest);
         }
-
-
+        // invoke
+        return serviceInvoke.invokeConfigService(rpcRequest);
     }
 }
