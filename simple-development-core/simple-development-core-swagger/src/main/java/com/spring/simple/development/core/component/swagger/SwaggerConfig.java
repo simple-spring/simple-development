@@ -169,10 +169,10 @@ public class SwaggerConfig {
                 boolean login = isApiService.isLogin();
                 if (login) {
                     codeGenerationMethodParams.setIsLogin("");
-                    codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
+                    codeGenerationMethodParams.setInvokeMethodName("invokeService");
                 } else {
                     codeGenerationMethodParams.setIsLogin("@NoLogin");
-                    codeGenerationMethodParams.setInvokeMethodName("invokeService");
+                    codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
                 }
                 codeGenerationMethodParams.setMethodName(methodName);
                 codeGenerationMethodParams.setMappingUrl(baseUrl + "/" + className + "/" + methodName);
