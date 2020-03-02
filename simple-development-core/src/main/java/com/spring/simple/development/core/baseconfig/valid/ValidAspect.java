@@ -34,7 +34,7 @@ public class ValidAspect{
     @Around("annotationPointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Class<?> validUtilClass = Class.forName("com.spring.simple.development.core.component.valid.ValidUtil");
-        Method around = validUtilClass.getMethod("around", joinPoint.getClass());
+        Method around = validUtilClass.getDeclaredMethod("around", ProceedingJoinPoint.class);
         Object result = around.invoke(validUtilClass.newInstance(), joinPoint);
         return result;
     }
