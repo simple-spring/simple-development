@@ -1,5 +1,6 @@
 package com.spring.simple.development.core.component.swagger;
 
+import com.google.common.collect.Lists;
 import com.spring.simple.development.core.annotation.base.IsApiMethodService;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
@@ -27,6 +28,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -78,7 +80,8 @@ public class SwaggerConfig {
         Docket build = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
-                .build().globalOperationParameters(pars);
+                .build().globalOperationParameters(pars)
+                .securitySchemes(Lists.newArrayList(apiKey()));
         return build;
 
     }
@@ -91,6 +94,11 @@ public class SwaggerConfig {
                 .contact(contact)
                 .version(version)
                 .build();
+    }
+
+    private ApiKey apiKey() {
+        return new ApiKey("token", "token", "header"
+        );
     }
 
     public void InvokeSwaggerIsApiService() {
