@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.component.valid;
+package com.spring.simple.development.core.baseconfig.valid;
 
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.DateUtils;
