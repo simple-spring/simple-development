@@ -1,5 +1,6 @@
 package com.spring.simple.development.core.component.swagger;
 
+import com.google.common.collect.Lists;
 import com.spring.simple.development.core.annotation.base.IsApiMethodService;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
@@ -26,14 +27,15 @@ import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Parameter;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -78,7 +80,9 @@ public class SwaggerConfig {
         Docket build = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
-                .build().globalOperationParameters(pars);
+                .build().globalOperationParameters(pars)
+                .securitySchemes(Lists.newArrayList(apiKey()))
+                .securityContexts(Arrays.asList(securityContext()));
         return build;
 
     }
@@ -91,6 +95,25 @@ public class SwaggerConfig {
                 .contact(contact)
                 .version(version)
                 .build();
+    }
+
+    private ApiKey apiKey() {
+        return new ApiKey("token", "token", "header"
+        );
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("^((?!login).)+$")).build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope(
+                "global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("token",
+                authorizationScopes));
     }
 
     public void InvokeSwaggerIsApiService() {
@@ -169,10 +192,10 @@ public class SwaggerConfig {
                 boolean login = isApiService.isLogin();
                 if (login) {
                     codeGenerationMethodParams.setIsLogin("");
-                    codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
+                    codeGenerationMethodParams.setInvokeMethodName("invokeService");
                 } else {
                     codeGenerationMethodParams.setIsLogin("@NoLogin");
-                    codeGenerationMethodParams.setInvokeMethodName("invokeService");
+                    codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
                 }
                 codeGenerationMethodParams.setMethodName(methodName);
                 codeGenerationMethodParams.setMappingUrl(baseUrl + "/" + className + "/" + methodName);

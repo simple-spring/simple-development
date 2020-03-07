@@ -34,7 +34,7 @@ public class IdempotentAspect {
     @Before("annotationPointcut()")
     public void before(JoinPoint point) throws Exception {
         Class<?> aClass = Class.forName("com.spring.simple.development.core.component.idempotent.IdempotentHandlerUtil");
-        Method before = aClass.getMethod("before", point.getClass());
+        Method before = aClass.getMethod("before", JoinPoint.class);
         before.invoke(aClass.newInstance(), point);
     }
 
@@ -47,7 +47,7 @@ public class IdempotentAspect {
     @After("annotationPointcut()")
     public void after(JoinPoint point) throws Exception {
         Class<?> aClass = Class.forName("com.spring.simple.development.core.component.idempotent.IdempotentHandlerUtil");
-        Method after = aClass.getMethod("after", point.getClass());
+        Method after = aClass.getMethod("after", JoinPoint.class);
         after.invoke(aClass.newInstance(), point);
     }
 }

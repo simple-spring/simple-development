@@ -1,4 +1,4 @@
-package com.spring.simple.development.core.component.valid;
+package com.spring.simple.development.core.baseconfig.valid;
 
 
 import com.alibaba.fastjson.JSON;
@@ -22,7 +22,7 @@ import static com.spring.simple.development.support.exception.ResponseCode.*;
  * @author liko wang
  */
 public class ValidUtil {
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+    public static Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         // 获得当前访问的class
         Class<?> className = joinPoint.getTarget().getClass();
         // 获得访问的方法名
@@ -100,7 +100,7 @@ public class ValidUtil {
      *
      * @param reqBody
      */
-    public void checkParam(ReqBody reqBody, Boolean isPage, String... strings) {
+    public static void checkParam(ReqBody reqBody, Boolean isPage, String... strings) {
         if (reqBody == null) {
             throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
         }

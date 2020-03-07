@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 @Order(value = 0)
 @Aspect
 @Component
-public class ValidAspect{
+public class ValidAspect {
 
     @Pointcut("@annotation(com.spring.simple.development.core.annotation.base.ValidHandler)")
     public void annotationPointcut() {
@@ -33,9 +33,6 @@ public class ValidAspect{
      */
     @Around("annotationPointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Class<?> validUtilClass = Class.forName("com.spring.simple.development.core.component.valid.ValidUtil");
-        Method around = validUtilClass.getMethod("around", joinPoint.getClass());
-        Object result = around.invoke(validUtilClass.newInstance(), joinPoint);
-        return result;
+        return ValidUtil.around(joinPoint);
     }
 }
