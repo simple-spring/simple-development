@@ -27,10 +27,17 @@ module.exports = {
             },
             {
                 title: '快速入门',
-                sidebarDepth: 1,    // 可选的, 默认值是 1
+                sidebarDepth: 7,    // 可选的, 默认值是 1
                 path: "/simpleDoc/started/started",
                 children: [
-                    {title: "安装", path: "/simpleDoc/started/install/install"}
+                    {title: "构建maven结构", path: "/simpleDoc/started/step1/step1"},
+                    {title: "pom依赖", path: "/simpleDoc/started/step2/step2"},
+                    {title: "配置文件", path: "/simpleDoc/started/step3/step3"},
+                    {title: "环境隔离", path: "/simpleDoc/started/step4/step4"},
+                    {title: "设置启动类", path: "/simpleDoc/started/step5/step5"},
+                    {title: "自动生成代码", path: "/simpleDoc/started/step6/step6"},
+                    {title: "打包", path: "/simpleDoc/started/step7/step7"},
+                    {title: "下载demo项目", path: "http://file.diangc.cn/simple-development-demo.zip"}
                 ]
             },
             {
@@ -40,10 +47,33 @@ module.exports = {
             {
                 title: '基础组件',
                 path: '/simpleDoc/baseComponent/baseComponent',
+                children: [
+                    {title: "IsApiService", path: "/simpleDoc/baseComponent/step1/step1"},
+                    {title: "SimpleInterceptor", path: "/simpleDoc/baseComponent/step2/step2"},
+                    {title: "ValidHandler", path: "/simpleDoc/baseComponent/step3/step3"},
+                    {title: "Value", path: "/simpleDoc/baseComponent/step4/step4"},
+                    {title: "HasPermissions", path: "/simpleDoc/baseComponent/step5/step5"},
+                    {title: "DataSource", path: "/simpleDoc/baseComponent/step6/step6"},
+                    {title: "Idempotent", path: "/simpleDoc/baseComponent/step7/step7"},
+                ]
             },
             {
                 title: '高级组件',
                 path: '/simpleDoc/advancedComponent/advancedComponent',
+                children: [
+                    {title: "SpringSimpleApplication", path: "/simpleDoc/advancedComponent/step1/step1"},
+                    {title: "EnableWebMvc", path: "/simpleDoc/advancedComponent/step2/step2"},
+                    {title: "EnableMybatis", path: "/simpleDoc/advancedComponent/step3/step3"},
+                    {title: "EnableRedis", path: "/simpleDoc/advancedComponent/step4/step4"},
+                    {title: "EnableXxlJob", path: "/simpleDoc/advancedComponent/step5/step5"},
+                    {title: "EnableElasticSearch", path: "/simpleDoc/advancedComponent/step6/step6"},
+                    {title: "EnableDubbo", path: "/simpleDoc/advancedComponent/step7/step7"},
+                    {title: "EnableSwagger", path: "/simpleDoc/advancedComponent/step8/step8"},
+                ]
+            },
+            {
+                title: '配置文件详解',
+                path: '/simpleDoc/configParam/configParam',
             },
             {
                 title: '关于我们',

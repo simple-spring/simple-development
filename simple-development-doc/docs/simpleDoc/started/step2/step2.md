@@ -1,0 +1,65 @@
+#### 1.添加私库仓库
+```
+    <!--添加simple-spring仓库 -->
+    <repositories>
+        <repository>
+            <id>simple-spring</id>
+            <name>simple-spring</name>
+            <url>http://nexus.diangc.cn:8091/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+```
+#### 2.添加simple-spring依赖
+```
+     <dependencies>
+             <dependency>
+                 <groupId>com.spring</groupId>
+                 <artifactId>simple-development-core-mvc</artifactId>
+                 <version>1.0</version>
+             </dependency>
+             <dependency>
+                 <groupId>com.spring</groupId>
+                 <artifactId>simple-development-core-jdbc</artifactId>
+                 <version>1.0</version>
+             </dependency>
+             <dependency>
+                 <groupId>com.spring</groupId>
+                 <artifactId>simple-development-core</artifactId>
+                 <version>2.3</version>
+                 <scope>compile</scope>
+             </dependency>
+         </dependencies>
+```
+#### 3.build配置
+```xml
+<build>
+    <!--生成的文件jar包名-->
+    <finalName>simple-development-demo</finalName>
+    <resources>
+        <resource>
+            <directory>src/main/resources/config/${package.environment}</directory>
+            <filtering>true</filtering>
+        </resource>
+        <resource>
+            <targetPath>${project.build.directory}/classes</targetPath>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+            <excludes>
+                <exclude>generatorConfig.xml</exclude>
+                <exclude>assembly.xml</exclude>
+                <exclude>config/*/*.properties</exclude>
+            </excludes>
+        </resource>
+    </resources>
+</build>
+```
