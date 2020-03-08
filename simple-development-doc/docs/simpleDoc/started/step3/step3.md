@@ -1,19 +1,23 @@
 
 ### application.properties的参数说明
-1.mybatis的配置参数
-参数名 | 说明|
-| --- |     --- |     --- |
-|spring.simple.datasource.driverClassName|数据库驱动|
-|spring.simple.datasource.url|mysql连接地址|
-|spring.simple.datasource.username|mysql账号|
-|spring.simple.datasource.password|mysql密码|
-|spring.simple.datasource.initialSize|mysql初始化连接数|
-|spring.simple.datasource.minIdle|mysql允许的最小连接数|
-|spring.simple.datasource.maxActive|mysql允许的最大连接数|
-|spring.simple.datasource.maxWait|连接超时时间|
-|spring.simple.datasource.timeBetweenEvictionRunsMillis|连接空闲回收每次执行时间|
-|spring.simple.datasource.minEvictableIdleTimeMillis|池中的连接空闲30分钟后被回收|
-|spring.simple.datasource.validationQuery|验证使用的SQL语句|
-|spring.simple.datasource.testWhileIdle|指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除|
-|spring.simple.datasource.testOnBorrow|借出连接时不要测试，否则很影响性能|
-|spring.simple.datasource.testOnReturn|连接归还连接池的时候检测|
+```properties
+#数据源基础信息
+spring.simple.datasource.driverClassName=com.mysql.jdbc.Driver
+spring.simple.datasource.url=jdbc:mysql://172.22.5.243:3306/demo
+spring.simple.datasource.username=root
+spring.simple.datasource.password=123456
+#连接池配置
+spring.simple.datasource.initialSize=20
+spring.simple.datasource.minIdle=20
+spring.simple.datasource.maxActive=150
+#连接等待超时时间
+spring.simple.datasource.maxWait=3000
+#配置隔多久进行一次检测(检测可以关闭的空闲连接)
+spring.simple.datasource.timeBetweenEvictionRunsMillis=3000
+#配置连接在池中的最小生存时间
+spring.simple.datasource.minEvictableIdleTimeMillis=300000
+spring.simple.datasource.validationQuery=SELECT 1 FROM DUAL
+spring.simple.datasource.testWhileIdle=true
+spring.simple.datasource.testOnBorrow=false
+spring.simple.datasource.testOnReturn=false
+```

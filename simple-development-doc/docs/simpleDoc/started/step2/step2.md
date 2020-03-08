@@ -1,4 +1,5 @@
 #### 1.添加私库仓库
+    项目未开源,请添加我公司的私库: http://nexus.diangc.cn:8091/nexus/content/groups/public
 ```
     <!--添加simple-spring仓库 -->
     <repositories>

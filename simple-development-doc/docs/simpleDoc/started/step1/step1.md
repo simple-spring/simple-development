@@ -1,7 +1,7 @@
-#### 1.选择模板
-maven-archetype-quickstart
+#### 1.使用Ieda新建maven 
+    选择模板:maven-archetype-quickstart
 
-#### 2.构建项目文件结构
+#### 2.根据新建的项目构建如下结构
 ```
 src
 └───main

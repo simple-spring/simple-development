@@ -2,6 +2,7 @@
 - 1.在项目结构interceptor包下的类标注@interceptor
 - 2.并且继承HandlerInterceptor 
 - 3.则项目启动自动注册拦截器
+- 4.需要维护@NoLogin 配个@IsApiService组件
 #### 代码样例
 ```java
 @SimpleInterceptor

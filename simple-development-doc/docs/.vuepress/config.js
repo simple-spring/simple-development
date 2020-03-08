@@ -55,6 +55,7 @@ module.exports = {
                     {title: "HasPermissions", path: "/simpleDoc/baseComponent/step5/step5"},
                     {title: "DataSource", path: "/simpleDoc/baseComponent/step6/step6"},
                     {title: "Idempotent", path: "/simpleDoc/baseComponent/step7/step7"},
+                    {title: "tomcat", path: "/simpleDoc/baseComponent/step8/step8"},
                 ]
             },
             {
@@ -72,7 +73,7 @@ module.exports = {
                 ]
             },
             {
-                title: '配置文件详解',
+                title: '系统参数说明',
                 path: '/simpleDoc/configParam/configParam',
             },
             {
