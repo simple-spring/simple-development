@@ -17,18 +17,4 @@ public @interface IsApiMethodService {
      * @return
      */
     String value() default "";
-
-    /**
-     * 方法参数key
-     *
-     * @return
-     */
-    String[] key();
-
-    /**
-     * 方法参数类型
-     *
-     * @return
-     */
-    Class<?>[] methodClass();
 }

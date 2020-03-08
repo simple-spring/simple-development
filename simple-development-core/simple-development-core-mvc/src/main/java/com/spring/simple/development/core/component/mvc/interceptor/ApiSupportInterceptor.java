@@ -1,6 +1,8 @@
 package com.spring.simple.development.core.component.mvc.interceptor;
 
+import com.spring.simple.development.core.annotation.base.NoLogin;
 import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandler;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,6 +31,16 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
         IdempotentHandler.fastSetIdempotentModel(httpServletRequest.getRemoteHost(), httpServletRequest.getRequestURI());
+
+        // 不需要登录的地址
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod method = (HandlerMethod) handler;
+            NoLogin noLogin = method.getMethodAnnotation(NoLogin.class);
+            if (noLogin != null) {
+                return true;
+            }
+        }
+        // 默认通过,用户权限组件未实现
         return true;
     }
 
