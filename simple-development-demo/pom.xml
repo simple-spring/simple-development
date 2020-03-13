@@ -6,6 +6,10 @@
     <groupId>com.spring</groupId>
     <version>1.0</version>
     <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>simple-development-demo-dubboprovider</module>
+        <module>simple-development-demo-dubbo-api</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -37,12 +41,6 @@
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core</artifactId>
             <version>2.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-demo-dubboprovider</artifactId>
-            <version>1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
