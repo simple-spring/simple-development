@@ -24,7 +24,7 @@
         <module>simple-development-build</module>
     </modules>
     <packaging>pom</packaging>
-    <url>https://diangc.cn</url>
+    <url>https://github.com/likowong/spring-simple.git</url>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
