@@ -1,7 +1,13 @@
 package com.spring.simple.development.core.component.mvc.interceptor;
 
+import com.alibaba.lava.privilege.PrivilegeInfo;
 import com.spring.simple.development.core.annotation.base.NoLogin;
 import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandler;
+import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
+import com.spring.simple.development.core.component.mvc.BaseSupport;
+import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
+import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.ResponseCode;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author liko
  * @create 2018-10-09 上午9:13
  */
-public class ApiSupportInterceptor implements HandlerInterceptor {
+public class ApiSupportInterceptor  implements HandlerInterceptor {
     /**
      * 该方法会在控制器方法前执行，其返回值表示是否中断后续操作。当其返回值为true时，表示继续向下执行
      * 当其返回值为false时，会中断后续的所有操作（包括调用下一个拦截器和控制器类中的方法执行等）
@@ -40,7 +46,25 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        // 默认通过,用户权限组件未实现
+        // 获取已实现的接口
+        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        if(simpleSessionProfile == null) {
+            // 未实现接口
+            return true;
+        }
+        // 获取用户
+        Object userProfile = simpleSessionProfile.getPrivilegeInfo(httpServletRequest, httpServletResponse, handler);
+        if(userProfile == null) {
+            // 用户为空
+            throw new GlobalException(ResponseCode.RES_DATA_EXIST, "用戶不存在");
+        }
+        // 获取基础工具
+        BaseSupport baseSupport = SimpleApplication.getBeanByType(BaseSupport.class);
+        // 获取用户对象
+        PrivilegeInfo privilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
+        // 赋值
+        baseSupport.copyObject(userProfile,privilegeInfo);
+        // 通过
         return true;
     }
 

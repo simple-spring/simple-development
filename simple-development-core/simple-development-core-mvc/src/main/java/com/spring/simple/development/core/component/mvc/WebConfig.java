@@ -31,7 +31,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     public WebConfig() {
 
     }
-
+    @Bean
+    public BaseSupport baseSupport() {
+        return new BaseSupport();
+    }
     /**
      * @param
      * @return org.springframework.web.servlet.ViewResolver

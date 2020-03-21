@@ -1,37 +1,28 @@
-package com.spring.simple.development.demo.context;
+package com.spring.simple.development.core.baseconfig.context;
 
-import com.alibaba.lava.privilege.PrivilegeInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
  * @author liko
  * @Date 2019-09-13 21:15
- * @DESCRIPTION TODO
+ * @DESCRIPTION 程序初始化
  */
 @Component
-@Configuration
-public class DemoApplication implements ApplicationContextAware {
+public class SimpleApplication implements ApplicationContextAware {
 
-    private static Logger logger = LogManager.getLogger(DemoApplication.class);
+    private static Logger logger = LogManager.getLogger(SimpleApplication.class);
 
     private static ApplicationContext applicationContext;
 
-    @Bean(name = "lavaPvgInfo")
-    public PrivilegeInfo privilegeInfo() {
-        return new PrivilegeInfo();
-    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        System.out.println("程序入口");
-        DemoApplication.applicationContext = applicationContext;
+        SimpleApplication.applicationContext = applicationContext;
     }
 
     /**
