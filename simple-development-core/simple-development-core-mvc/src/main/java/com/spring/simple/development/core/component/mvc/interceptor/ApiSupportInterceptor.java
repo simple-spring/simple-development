@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author liko
  * @create 2018-10-09 上午9:13
  */
-public class ApiSupportInterceptor  implements HandlerInterceptor {
+public class ApiSupportInterceptor implements HandlerInterceptor {
     /**
      * 该方法会在控制器方法前执行，其返回值表示是否中断后续操作。当其返回值为true时，表示继续向下执行
      * 当其返回值为false时，会中断后续的所有操作（包括调用下一个拦截器和控制器类中的方法执行等）
@@ -47,14 +47,18 @@ public class ApiSupportInterceptor  implements HandlerInterceptor {
             }
         }
         // 获取已实现的接口
+        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+            // 未实现接口
+            return true;
+        }
         SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
-        if(simpleSessionProfile == null) {
+        if (simpleSessionProfile == null) {
             // 未实现接口
             return true;
         }
         // 获取用户
         Object userProfile = simpleSessionProfile.getPrivilegeInfo(httpServletRequest, httpServletResponse, handler);
-        if(userProfile == null) {
+        if (userProfile == null) {
             // 用户为空
             throw new GlobalException(ResponseCode.RES_DATA_EXIST, "用戶不存在");
         }
@@ -63,7 +67,7 @@ public class ApiSupportInterceptor  implements HandlerInterceptor {
         // 获取用户对象
         PrivilegeInfo privilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
         // 赋值
-        baseSupport.copyObject(userProfile,privilegeInfo);
+        baseSupport.copyObject(userProfile, privilegeInfo);
         // 通过
         return true;
     }

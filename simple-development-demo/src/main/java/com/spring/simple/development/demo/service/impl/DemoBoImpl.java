@@ -1,6 +1,7 @@
 package com.spring.simple.development.demo.service.impl;
 
 import com.alibaba.lava.base.AbstractLavaBoImpl;
+import com.spring.simple.development.core.annotation.base.Idempotent;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
 import com.spring.simple.development.core.annotation.base.ValidHandler;
@@ -34,22 +35,22 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
     }
 
     @Override
+    @Idempotent(value = "getData")
     @ApiOperation(value = "插入", notes = "插入一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo")
-    @ValidHandler(key = "demoVo",value = DemoVo.class,isReqBody = false)
+    //@ValidHandler(key = "demoVo",value = DemoVo.class,isReqBody = false)
     public void insertData(DemoVo demoVo) {
-        throw new GlobalException(RES_PARAM_IS_EMPTY, "User code can not be empty");// 用户名不能为空
-
-//        DemoDo demoDo = baseSupport.objectCopy(demoVo, DemoDo.class);
-//        insert(demoDo);
+        DemoDo demoDo = baseSupport.objectCopy(demoVo, DemoDo.class);
+        insert(demoDo);
     }
 
     @Override
+    @Idempotent(value = "getData")
     @ApiOperation(value = "查询", notes = "查询一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo", resultDataType = DemoVo.class)
     public DemoVo getData() {
         throw new GlobalException(RES_PARAM_IS_EMPTY, "User code can not be empty");// 用户名不能为空
         //DemoDo demoDo = selectByPrimaryKey(1L);
-       // return baseSupport.objectCopy(demoDo, DemoVo.class);
+        // return baseSupport.objectCopy(demoDo, DemoVo.class);
     }
 }

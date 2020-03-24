@@ -36,4 +36,15 @@ public class SimpleApplication implements ApplicationContextAware {
     public static <T> T getBeanByType(Class clazz) throws BeansException {
         return (T) applicationContext.getBean(clazz);
     }
+
+    /**
+     * 是否存在bean
+     *
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
+    public static boolean isExistBean(String beanName) throws BeansException {
+        return applicationContext.containsBean(beanName);
+    }
 }
