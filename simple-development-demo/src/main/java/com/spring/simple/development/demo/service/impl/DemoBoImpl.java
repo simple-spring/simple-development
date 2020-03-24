@@ -39,7 +39,12 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
     @ApiOperation(value = "插入", notes = "插入一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo")
     //@ValidHandler(key = "demoVo",value = DemoVo.class,isReqBody = false)
-    public void insertData(DemoVo demoVo) {
+    public void insertData(DemoVo demoVo){
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         DemoDo demoDo = baseSupport.objectCopy(demoVo, DemoDo.class);
         insert(demoDo);
     }

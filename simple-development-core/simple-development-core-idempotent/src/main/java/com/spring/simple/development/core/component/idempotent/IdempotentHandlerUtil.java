@@ -54,7 +54,7 @@ public class IdempotentHandlerUtil {
                 jedis = JedisPoolUtils.getJedis();
                 String idempotentValue = jedis.get(idempotentModel.getUrl() + idempotentModel.getIp() + value + data);
                 if (StringUtils.isEmpty(idempotentValue)) {
-                    jedis.setex(idempotentModel.getUrl() + idempotentModel.getIp() + value + data, 60, idempotentModel.getUrl() + idempotentModel.getIp() + value);
+                    jedis.setex(idempotentModel.getUrl() + idempotentModel.getIp() + value + data, 10, idempotentModel.getUrl() + idempotentModel.getIp() + value);
                     return;
                 }
                 throw new GlobalException(RES_IDEMPOTENT_INVALID, "点击太快了,请稍后重试");

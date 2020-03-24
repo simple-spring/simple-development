@@ -18,6 +18,8 @@ import org.springframework.cglib.reflect.FastMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
+
 import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_FAILED;
 import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NOT_EXIST;
 
@@ -71,7 +73,7 @@ public class ServiceInvoke {
             // 获取方法上的参数类型
             MethodParams methodParams = ServerFactory.serviceMethodMap.get(request.getServiceName() + "-" + request.getMethodName());
             Class<?>[] parameterTypes = null;
-            if (methodParams != null && methodParams.getKey().length >0 ) {
+            if (methodParams != null && methodParams.getKey().length > 0) {
                 Class<?>[] classesMethodType = methodParams.getMethodClass();
                 parameterTypes = new Class[classesMethodType.length];
                 for (int i = 0; i < classesMethodType.length; i++) {
@@ -88,7 +90,7 @@ public class ServiceInvoke {
                 for (int i = 0; i < keys.length; i++) {
                     // 兼容key是原型
                     String key = keys[i];
-                    if(CodeGenerationHandler.baseType.get(key) != null){
+                    if (CodeGenerationHandler.baseType.get(key) != null) {
                         key = CodeGenerationHandler.baseType.get(key);
                     }
                     if (request.getReqBody().getParamsMap().get(key) instanceof JSONObject) {
@@ -117,6 +119,9 @@ public class ServiceInvoke {
             logger.error(DateUtils.getCurrentTime() + "调用" + request.getServiceName() + "的" + request.getMethodName() + "出错:", ex);
             if (ex.getCause() instanceof GlobalException) {
                 throw ex.getCause();
+            }
+            if (((InvocationTargetException) ex).getTargetException().getCause() instanceof GlobalException) {
+                throw ((InvocationTargetException) ex).getTargetException().getCause();
             }
             throw ex.getCause();
         }
