@@ -6,7 +6,11 @@
     <groupId>com.spring</groupId>
     <artifactId>simple-development-core-alert</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>simple-development-core-alert-api</module>
+        <module>simple-development-core-alert-admin</module>
+    </modules>
+    <packaging>pom</packaging>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
