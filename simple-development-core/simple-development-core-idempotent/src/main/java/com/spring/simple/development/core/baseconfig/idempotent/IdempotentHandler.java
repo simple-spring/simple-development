@@ -10,7 +10,7 @@ public class IdempotentHandler {
     private static final ThreadLocal<IdempotentModel> IDEMPOTENT_HANDLER = new ThreadLocal<IdempotentModel>();
 
     public static IdempotentModel getIdempotentModel() {
-        return IDEMPOTENT_HANDLER.get() == null?new IdempotentModel():IDEMPOTENT_HANDLER.get() ;
+        return IDEMPOTENT_HANDLER.get() == null ? new IdempotentModel() : IDEMPOTENT_HANDLER.get();
     }
 
     public static void setIdempotentModel(IdempotentModel idempotentModel) {
@@ -21,10 +21,11 @@ public class IdempotentHandler {
         IDEMPOTENT_HANDLER.remove();
     }
 
-    public static void fastSetIdempotentModel(String ip,String url){
+    public static void fastSetIdempotentModel(String ip, String url) {
         IdempotentModel idempotentModel = new IdempotentModel();
         idempotentModel.setIp(ip);
         idempotentModel.setUrl(url);
+        idempotentModel.setRandomData(System.currentTimeMillis() + "");
         IDEMPOTENT_HANDLER.set(idempotentModel);
     }
 }

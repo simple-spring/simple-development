@@ -1,4 +1,4 @@
-package com.spring.simple.development.demo.support;
+package com.spring.simple.development.core.component.mvc;
 
 
 import com.github.pagehelper.PageInfo;
@@ -15,14 +15,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
 
 /**
  * @author liko.wang
  * @Date 2020/1/9/009 12:32
- * @Description //TODO
+ * @Description 基础支持
  **/
 @Component
 public class BaseSupport {

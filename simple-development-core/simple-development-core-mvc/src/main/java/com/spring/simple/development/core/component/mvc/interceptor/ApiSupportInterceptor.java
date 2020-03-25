@@ -1,7 +1,13 @@
 package com.spring.simple.development.core.component.mvc.interceptor;
 
+import com.alibaba.lava.privilege.PrivilegeInfo;
 import com.spring.simple.development.core.annotation.base.NoLogin;
 import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandler;
+import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
+import com.spring.simple.development.core.component.mvc.BaseSupport;
+import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
+import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.ResponseCode;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +46,29 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        // 默认通过,用户权限组件未实现
+        // 获取已实现的接口
+        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+            // 未实现接口
+            return true;
+        }
+        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        if (simpleSessionProfile == null) {
+            // 未实现接口
+            return true;
+        }
+        // 获取用户
+        Object userProfile = simpleSessionProfile.getPrivilegeInfo(httpServletRequest, httpServletResponse, handler);
+        if (userProfile == null) {
+            // 用户为空
+            throw new GlobalException(ResponseCode.RES_DATA_EXIST, "用戶不存在");
+        }
+        // 获取基础工具
+        BaseSupport baseSupport = SimpleApplication.getBeanByType(BaseSupport.class);
+        // 获取用户对象
+        PrivilegeInfo privilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
+        // 赋值
+        baseSupport.copyObject(userProfile, privilegeInfo);
+        // 通过
         return true;
     }
 

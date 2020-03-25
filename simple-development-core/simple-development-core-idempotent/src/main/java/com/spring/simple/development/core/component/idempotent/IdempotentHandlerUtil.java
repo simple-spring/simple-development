@@ -26,7 +26,7 @@ public class IdempotentHandlerUtil {
      * @param point
      * @throws Exception 请求前置拦截
      */
-    public void before(JoinPoint point) throws Exception {
+    public void before(JoinPoint point) throws NoSuchMethodException {
         Jedis jedis = null;
         try {
             // 获得当前访问的class
@@ -43,8 +43,13 @@ public class IdempotentHandlerUtil {
                 Idempotent idempotent = method.getAnnotation(Idempotent.class);
                 String value = idempotent.value();
                 IdempotentModel idempotentModel = IdempotentHandler.getIdempotentModel();
-                Object paramData = point.getArgs()[0];
-                String data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
+                String data;
+                if (point.getArgs().length == 0) {
+                    data = idempotentModel.getRandomData();
+                } else {
+                    Object paramData = point.getArgs()[0];
+                    data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
+                }
                 // 加入分布式锁
                 jedis = JedisPoolUtils.getJedis();
                 String idempotentValue = jedis.get(idempotentModel.getUrl() + idempotentModel.getIp() + value + data);
@@ -59,7 +64,7 @@ public class IdempotentHandlerUtil {
         }
     }
 
-    public void after(JoinPoint point) throws Exception {
+    public void after(JoinPoint point) throws NoSuchMethodException {
         Jedis jedis = null;
         try {
             // 获得当前访问的class
@@ -76,8 +81,13 @@ public class IdempotentHandlerUtil {
                 IdempotentModel idempotentModel = IdempotentHandler.getIdempotentModel();
                 Idempotent idempotent = method.getAnnotation(Idempotent.class);
                 String value = idempotent.value();
-                Object paramData = point.getArgs()[0];
-                String data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
+                String data;
+                if (point.getArgs().length == 0) {
+                    data = idempotentModel.getRandomData();
+                } else {
+                    Object paramData = point.getArgs()[0];
+                    data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
+                }
                 // 删除缓存
                 jedis = JedisPoolUtils.getJedis();
                 jedis.del(idempotentModel.getUrl() + idempotentModel.getIp() + value + data);

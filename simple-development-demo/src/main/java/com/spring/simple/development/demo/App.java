@@ -9,10 +9,12 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
+//@EnableXxlJob
 @EnableSwagger
 @EnableMybatis
-//@EnableRedis
+@EnableRedis
 @EnableWebMvc
+//@EnableDubbo
 @SpringSimpleApplication
 public class App {
     public static void main(String[] args) {

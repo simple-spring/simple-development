@@ -60,6 +60,9 @@ public class HasPermissionAspect {
 
     private HasPermissionService getHasPermissionService() {
         if (hasPermissionService == null) {
+            if(AppInitializer.rootContext.containsBean("hasPermissionService") == false){
+                throw new RuntimeException("没有权限实现");
+            }
             HasPermissionService hasPermissionServiceBean = AppInitializer.rootContext.getBean(HasPermissionService.class);
             if (hasPermissionServiceBean == null) {
                 throw new RuntimeException("没有权限实现");

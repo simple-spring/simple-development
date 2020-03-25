@@ -2,7 +2,7 @@
 <Configuration status="warn" monitorInterval="120">
 
     <Properties>
-        <Property name="logRoot">/data/logs/simple-development-demo</Property>
+        <Property name="logRoot">/Users/liko/work/</Property>
         <Property name="Log4jContextSelector">org.apache.logging.log4j.core.async.AsyncLoggerContextSelector</Property>
     </Properties>
 

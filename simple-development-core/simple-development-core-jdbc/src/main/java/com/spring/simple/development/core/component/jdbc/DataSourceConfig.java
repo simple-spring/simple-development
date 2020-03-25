@@ -1,6 +1,7 @@
 package com.spring.simple.development.core.component.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.lava.privilege.PrivilegeInfo;
 import com.github.pagehelper.PageHelper;
 import com.spring.simple.development.core.baseconfig.datasource.DynamicDataSource;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -36,6 +37,14 @@ import java.util.Properties;
  **/
 @Configuration
 public class DataSourceConfig {
+    /**
+     * lava用户对象
+     * @return
+     */
+    @Bean(name = "lavaPvgInfo")
+    public PrivilegeInfo privilegeInfo() {
+        return new PrivilegeInfo();
+    }
 
     @Bean(value = "masterDataSource")
     public DataSource masterDataSource() {

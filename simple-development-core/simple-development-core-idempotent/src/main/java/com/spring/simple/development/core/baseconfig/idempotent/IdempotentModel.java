@@ -15,6 +15,11 @@ public class IdempotentModel {
      */
     private String ip;
 
+    /**
+     * 随机数
+     */
+    private String randomData;
+
     public String getUrl() {
         return url;
     }
@@ -29,5 +34,13 @@ public class IdempotentModel {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getRandomData() {
+        return randomData;
+    }
+
+    public void setRandomData(String randomData) {
+        this.randomData = randomData;
     }
 }
