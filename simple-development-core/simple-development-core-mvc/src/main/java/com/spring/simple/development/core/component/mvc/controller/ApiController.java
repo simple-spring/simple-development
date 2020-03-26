@@ -2,12 +2,15 @@ package com.spring.simple.development.core.component.mvc.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.annotation.base.NoLogin;
+import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
 import com.spring.simple.development.core.baseconfig.isapiservice.MethodParams;
+import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.support.constant.VersionConstant;
 import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.GlobalResponseCode;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.HttpRequestUtil;
 import com.spring.simple.development.core.baseconfig.isapiservice.ServerFactory;
@@ -23,9 +26,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NOT_EXIST;
+import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NO_FOUND;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_INVALID;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
 
@@ -130,5 +136,52 @@ public class ApiController {
         }
         // invoke
         return serviceInvoke.invokeConfigService(rpcRequest);
+    }
+
+    /**
+     * 用户登录接口
+     *
+     * @param request
+     * @return
+     * @throws Throwable
+     */
+    @NoLogin
+    @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
+    @ResponseBody
+    public ResBody privilegeInfoLogin(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // 获取已实现的接口
+        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+            // 未实现接口
+            throw new GlobalException(SERVICE_NOT_EXIST);
+        }
+        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        if (simpleSessionProfile == null) {
+            throw new GlobalException(SERVICE_NOT_EXIST);
+        }
+        String token = simpleSessionProfile.privilegeInfoLogin(request, response);
+        return new ResBody().buildSuccessResBody(token, null, GlobalResponseCode.SYS_SUCCESS);
+    }
+
+    /**
+     * 用户注销接口
+     *
+     * @param request
+     * @return
+     * @throws Throwable
+     */
+    @RequestMapping(value = {"/logout"}, method = RequestMethod.POST)
+    @ResponseBody
+    public ResBody privilegeInfoLogout(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // 获取已实现的接口
+        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+            // 未实现接口
+            throw new GlobalException(SERVICE_NOT_EXIST);
+        }
+        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        if (simpleSessionProfile == null) {
+            throw new GlobalException(SERVICE_NOT_EXIST);
+        }
+        simpleSessionProfile.privilegeInfoLogout(request, response);
+        return new ResBody().buildSuccessResBody(null, null, GlobalResponseCode.SYS_SUCCESS);
     }
 }
