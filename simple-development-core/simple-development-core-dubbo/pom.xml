@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.spring</groupId>
     <artifactId>simple-development-core-dubbo</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <properties>
         <dubbo.version>2.6.2</dubbo.version>
