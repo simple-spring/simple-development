@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NOT_EXIST;
-import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NO_FOUND;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_INVALID;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
 
