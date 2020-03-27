@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author liko wang
  */
-public interface SimpleSessionProfile<T extends PrivilegeInfo> {
+public interface SimpleSessionProfile {
 
     /**
      * 获取用户信息
@@ -20,7 +20,7 @@ public interface SimpleSessionProfile<T extends PrivilegeInfo> {
      * @param handler
      * @return
      */
-    T getPrivilegeInfo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler);
+    PrivilegeInfo getPrivilegeInfo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler);
 
     /**
      * @param httpServletRequest

@@ -57,17 +57,17 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
             return true;
         }
         // 获取用户
-        Object userProfile = simpleSessionProfile.getPrivilegeInfo(httpServletRequest, httpServletResponse, handler);
-        if (userProfile == null) {
+        PrivilegeInfo privilegeInfo = simpleSessionProfile.getPrivilegeInfo(httpServletRequest, httpServletResponse, handler);
+        if (privilegeInfo == null) {
             // 用户为空
             throw new GlobalException(ResponseCode.RES_DATA_EXIST, "用戶不存在");
         }
         // 获取基础工具
         BaseSupport baseSupport = SimpleApplication.getBeanByType(BaseSupport.class);
         // 获取用户对象
-        PrivilegeInfo privilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
+        PrivilegeInfo sessionPrivilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
         // 赋值
-        baseSupport.copyObject(userProfile, privilegeInfo);
+        baseSupport.copyObject(privilegeInfo, sessionPrivilegeInfo);
         // 通过
         return true;
     }
