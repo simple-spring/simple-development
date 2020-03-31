@@ -17,7 +17,7 @@ import java.util.Date;
  **/
 public class AlertLogger {
     private static Logger logger = LoggerFactory.getLogger(AlertLogger.class);
-    private static SimpleDateFormat xxlJobLoggerFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   // TODO，concurrent issue
+    private static SimpleDateFormat loggerFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   // TODO，concurrent issue
 
     /**
      * append log
@@ -33,7 +33,7 @@ public class AlertLogger {
         StackTraceElement callInfo = stackTraceElements[1];*/
 
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(xxlJobLoggerFormat.format(new Date())).append(" ")
+        stringBuffer.append(loggerFormat.format(new Date())).append(" ")
                 .append("[" + callInfo.getClassName() + "#" + callInfo.getMethodName() + "]").append("-")
                 .append("[" + callInfo.getLineNumber() + "]").append("-")
                 .append("[" + Thread.currentThread().getName() + "]").append(" ")

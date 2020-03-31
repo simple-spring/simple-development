@@ -1,19 +1,19 @@
 package com.spring.simple.development.core.component.alertsdk.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.component.alertsdk.log.AlertFileAppender;
 import com.spring.simple.development.core.component.alertsdk.log.AlertLogger;
+import com.spring.simple.development.core.component.alertsdk.utls.HttpClientUtils;
 import com.spring.simple.development.support.utils.DateUtils;
+import com.spring.simple.development.support.utils.GzipUtil;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -33,11 +33,9 @@ public class AlertThread extends Thread {
     private String alertUrl;
     private String logBasePath;
     // 存储队列
-    private LinkedBlockingQueue<String> alertQueue = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<MessageDto> alertQueue = new LinkedBlockingQueue<>();
 
     private boolean toStop = false;
-
-    private boolean running = false;    // if running AlertThread
 
 
     public AlertThread(String applicationToken, String applicationCode, String alertUrl, String logBasePath) {
@@ -58,41 +56,48 @@ public class AlertThread extends Thread {
         // 保存错误日志重试
         AlertFileAppender.contextHolder.set(errorLogFileName);
         while (true) {
-            String exceptionMessage = alertQueue.poll(3L, TimeUnit.SECONDS);
+            MessageDto exceptionMessage = alertQueue.poll(3L, TimeUnit.SECONDS);
             if (StringUtils.isEmpty(exceptionMessage)) {
                 break;
             }
-            AlertLogger.log(exceptionMessage);
+            AlertLogger.log(JSONObject.toJSONString(exceptionMessage));
         }
         this.toStop = true;
     }
 
-    public void joinQueue(String message){
-		alertQueue.add(message);
-	}
+    public void joinQueue(MessageDto messageDto) {
+        alertQueue.add(messageDto);
+    }
 
     @SneakyThrows
     @Override
     public void run() {
         // 重启先读取本地保存的文件
         errorMessageJoinQueue();
+
+        Long time = System.currentTimeMillis();
         // execute
         while (!toStop) {
-            running = false;
-            String message = null;
+            MessageDto message = null;
             try {
                 // to check toStop signal, we need cycle, so wo cannot use queue.take(), instand of poll(timeout)
                 message = alertQueue.poll(3L, TimeUnit.SECONDS);
                 if (!StringUtils.isEmpty(message)) {
-                    running = true;
                     // log filename, like "logPath/yyyy-MM-dd/9999.log"
-                    String logFileName = AlertFileAppender.makeLogFileName(new Date(), Integer.valueOf(DateUtils.getCurrentDate()));
+                    String logFileName = AlertFileAppender.makeLogFileName(new Date(), Integer.valueOf(DateUtils.getStringByDate(new Date())));
                     AlertFileAppender.contextHolder.set(logFileName);
                     // execute
-                    AlertLogger.log("<br>-----------  execute start -----------<br>-----------date:" + DateUtils.getCurrentTime() + " Param:" + message);
+                    AlertLogger.log("  execute start -----------date:" + DateUtils.getCurrentTime() + " Param:" + message);
                     // invoke http
-                    AlertLogger.log("<br>-----------  execute end -----------<br>----------- date:" + DateUtils.getCurrentTime());
-                } else {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("applicationCode", applicationCode);
+                    headers.put("applicationToken", applicationToken);
+                    HttpClientUtils.doPostHttp(alertUrl, headers, GzipUtil.compressBase64(JSONObject.toJSONString(message)));
+                    AlertLogger.log("  execute end ----------- date:" + DateUtils.getCurrentTime());
+                }
+                // 重试
+                if (System.currentTimeMillis() - time > 60 * 100 * 5) {
+                    time = System.currentTimeMillis();
                     errorMessageJoinQueue();
                 }
             } catch (Throwable e) {
@@ -101,11 +106,10 @@ public class AlertThread extends Thread {
                 e.printStackTrace(new PrintWriter(stringWriter));
                 String errorMsg = stringWriter.toString();
 
-                AlertLogger.log("<br>----------- AlertThread Exception:" + errorMsg + "<br>-----------AlertThread job execute end(error) -----------");
+                AlertLogger.log(" AlertThread Exception:" + errorMsg + "AlertThread job execute end(error) -----------");
 
                 // 保存错误日志重试
-                AlertFileAppender.contextHolder.set(errorLogFileName);
-                AlertLogger.log(message);
+                AlertFileAppender.appendLog(this.logBasePath + "/" + errorLogFileName + ".log", JSONObject.toJSONString(message));
             }
         }
     }
@@ -121,7 +125,7 @@ public class AlertThread extends Thread {
             return;
         }
         for (String message : messages) {
-            alertQueue.add(message);
+            alertQueue.add(JSONObject.parseObject(message, MessageDto.class));
         }
         // 清楚本地文件
         FileWriter fileWriter = null;

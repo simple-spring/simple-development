@@ -42,6 +42,6 @@ public class SimpleAlertConfig {
         messageDto.setApplicationToken(applicationToken);
         messageDto.setMessage(message);
         messageDto.setMessageLevel(messageLevel);
-        alertThread.joinQueue(message);
+        alertThread.joinQueue(messageDto);
     }
 }

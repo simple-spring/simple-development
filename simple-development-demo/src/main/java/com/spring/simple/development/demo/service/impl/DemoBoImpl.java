@@ -8,6 +8,7 @@ import com.spring.simple.development.core.annotation.base.ValidHandler;
 import com.spring.simple.development.core.annotation.base.swagger.Api;
 import com.spring.simple.development.core.annotation.base.swagger.ApiImplicitParam;
 import com.spring.simple.development.core.annotation.base.swagger.ApiOperation;
+import com.spring.simple.development.core.component.alertsdk.SimpleAlertExecutor;
 import com.spring.simple.development.core.component.mvc.BaseSupport;
 import com.spring.simple.development.demo.cassandra.repository.AlertMessageRepository;
 import com.spring.simple.development.demo.cassandra.table.AlertMessage;
@@ -65,10 +66,11 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
     }
 
     @Override
-    @Idempotent(value = "getData")
+    //@Idempotent(value = "getData")
     @ApiOperation(value = "查询", notes = "查询一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo", resultDataType = DemoVo.class)
     public DemoVo getData() {
+        SimpleAlertExecutor.sendLowMessage("1234");
         throw new GlobalException(RES_PARAM_IS_EMPTY, "User code can not be empty");// 用户名不能为空
         //DemoDo demoDo = selectByPrimaryKey(1L);
         // return baseSupport.objectCopy(demoDo, DemoVo.class);
