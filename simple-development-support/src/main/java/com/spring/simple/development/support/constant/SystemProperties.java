@@ -109,4 +109,10 @@ public class SystemProperties {
     public static final String APPLICATION_ALERT_CONFIG_APPLICATION_TOKEN = "spring.simple.alert.applicationToken";
     public static final String APPLICATION_ALERT_CONFIG_APPLICATION_LOG_PATH = "spring.simple.alert.logPath";
 
+    /**
+     * 是否开启用户登录接口
+     **/
+    public static final String APPLICATION_USER_LOGIN_IS_OPEN = "application.user.login.is.open";
+
+
 }

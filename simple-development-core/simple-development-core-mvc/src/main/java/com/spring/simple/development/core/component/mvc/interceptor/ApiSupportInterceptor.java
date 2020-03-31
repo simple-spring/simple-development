@@ -6,8 +6,10 @@ import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandle
 import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
 import com.spring.simple.development.core.component.mvc.BaseSupport;
 import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
+import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.exception.ResponseCode;
+import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,6 +40,11 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
         IdempotentHandler.fastSetIdempotentModel(httpServletRequest.getRemoteHost(), httpServletRequest.getRequestURI());
 
+        String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_USER_LOGIN_IS_OPEN);
+        boolean isEnableBoolean = Boolean.parseBoolean(isEnable);
+        if(isEnableBoolean == false) {
+            return true;
+        }
         // 不需要登录的地址
         if (handler instanceof HandlerMethod) {
             HandlerMethod method = (HandlerMethod) handler;
