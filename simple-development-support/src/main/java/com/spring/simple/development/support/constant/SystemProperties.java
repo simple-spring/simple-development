@@ -88,4 +88,17 @@ public class SystemProperties {
     public static final String APPLICATION_SWAGGER_HEADER_PARAMS = "spring.simple.swagger.header.params";
     public static final String APPLICATION_SWAGGER_HEADER_DESCRIPTION = "spring.simple.swagger.header.description";
 
+
+
+    /**
+     * cassandra组件
+     */
+    public static final String APPLICATION_CASSANDRA_CONFIG_CASSANDRA_PACKAGE = "spring.simple.cassandra.cassandraPackage";
+    public static final String APPLICATION_CASSANDRA_CONFIG_CASSANDRA_NAME= "spring.simple.cassandra.cassandraName";
+    public static final String APPLICATION_CASSANDRA_CONFIG_ADDRESS = "spring.simple.cassandra.address";
+    public static final String APPLICATION_CASSANDRA_CONFIG_PORT = "spring.simple.cassandra.port";
+    public static final String APPLICATION_CASSANDRA_CONFIG_KEY_SPACES_NAME = "spring.simple.cassandra.keySpaces.name";
+    public static final String APPLICATION_CASSANDRA_CONFIG_USERNAME = "spring.simple.cassandra.userName";
+    public static final String APPLICATION_CASSANDRA_CONFIG_PASSWORD = "spring.simple.cassandra.password";
+
 }

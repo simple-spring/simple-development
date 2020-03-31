@@ -11,43 +11,52 @@
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-valid</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-redis</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-swagger</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-mvc</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-jdbc</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-job</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-dubbo</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <artifactId>simple-development-core-cassandra</artifactId>
+            <groupId>com.spring</groupId>
             <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core</artifactId>
             <version>2.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-core-job</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-core-dubbo</artifactId>
-            <version>1.0</version>
         </dependency>
     </dependencies>
     <profiles>

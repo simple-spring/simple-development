@@ -19,6 +19,7 @@
         <module>simple-development-core/simple-development-core-redis</module>
         <module>simple-development-core/simple-development-core-swagger</module>
         <module>simple-development-core/simple-development-core-valid</module>
+        <module>simple-development-core/simple-development-core-cassandra</module>
         <module>simple-development-support</module>
         <module>simple-development-generator</module>
         <module>simple-development-build</module>

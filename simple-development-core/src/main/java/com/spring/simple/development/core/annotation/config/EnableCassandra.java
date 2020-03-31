@@ -6,13 +6,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * redis组件
+ * cassandra组件
  *
  * @author liko wang
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @SimpleComponent
-public @interface EnableRedis {
+public @interface EnableCassandra {
+
+    /**
+     * cassandra组件扫描包路径
+     *
+     * @return
+     */
+    String cassandraPackage() default "";
 
 }

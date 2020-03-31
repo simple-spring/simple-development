@@ -34,10 +34,10 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
             } else {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE, enableDubbo.dubboPackage());
             }
-            List<String> mapperPackageNames = new ArrayList<>();
-            mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
+            List<String> dubboPackageNames = new ArrayList<>();
+            dubboPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
             Class<?> dubboClass = Class.forName("com.spring.simple.development.core.component.dubbo.DubboConfig");
-            Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", mapperPackageNames, "basePackages");
+            Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", dubboPackageNames, "basePackages");
             return dubboConfig;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

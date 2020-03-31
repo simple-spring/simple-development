@@ -9,12 +9,15 @@ import com.spring.simple.development.core.annotation.base.swagger.Api;
 import com.spring.simple.development.core.annotation.base.swagger.ApiImplicitParam;
 import com.spring.simple.development.core.annotation.base.swagger.ApiOperation;
 import com.spring.simple.development.core.component.mvc.BaseSupport;
+import com.spring.simple.development.demo.cassandra.repository.AlertMessageRepository;
+import com.spring.simple.development.demo.cassandra.table.AlertMessage;
 import com.spring.simple.development.demo.mapper.DemoDoMapperExt;
 import com.spring.simple.development.demo.model.DemoDo;
 import com.spring.simple.development.demo.model.DemoDoExample;
 import com.spring.simple.development.demo.service.DemoBo;
 import com.spring.simple.development.demo.vo.DemoVo;
 import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.utils.PrimaryKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,17 +32,29 @@ public class DemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, Demo
     private BaseSupport baseSupport;
 
     @Autowired
+    private AlertMessageRepository alertMessageRepository;
+
+    @Autowired
     @NoApiMethod
     public void setBaseMapper(DemoDoMapperExt mapper) {
         setMapper(mapper);
     }
 
     @Override
-    @Idempotent(value = "getData")
     @ApiOperation(value = "插入", notes = "插入一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo")
     //@ValidHandler(key = "demoVo",value = DemoVo.class,isReqBody = false)
     public void insertData(DemoVo demoVo){
+        AlertMessage alertMessage = new AlertMessage();
+        alertMessage.setId(PrimaryKeyGenerator.getInstance().nextId().toString());
+        alertMessage.setApplicationcode("123");
+        alertMessage.setApplicationname("123");
+        alertMessage.setApplicationtype("1");
+        alertMessage.setCreatetime("2020-03-31 12:00:00");
+        alertMessage.setIspush("1");
+        alertMessage.setMessage("alert data");
+        alertMessage.setPushtype("2");
+        alertMessageRepository.save(alertMessage);
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

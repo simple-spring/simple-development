@@ -12,10 +12,11 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 //@EnableXxlJob
 @EnableSwagger
 @EnableMybatis
-@EnableRedis
+//@EnableRedis
 @EnableWebMvc
 //@EnableDubbo
 @SpringSimpleApplication
+@EnableCassandra
 public class App {
     public static void main(String[] args) {
         SimpleApplication.run(App.class);
