@@ -94,6 +94,7 @@ public class ServiceInvoke {
                         key = CodeGenerationHandler.baseType.get(key);
                     }
                     if (request.getReqBody().getParamsMap().get(key) instanceof JSONObject) {
+                        logger.error("jsonObject:"+request.getReqBody().getParamsMap().get(key));
                         JSONObject jsonObject = (JSONObject) request.getReqBody().getParamsMap().get(key);
                         objects[i] = jsonObject.toJavaObject(parameterTypes[i]);
                     } else {
@@ -230,7 +231,8 @@ public class ServiceInvoke {
         if (paramClass.newInstance() instanceof Float) {
             return Float.valueOf(paramJson.toString());
         }
-        return JSONObject.parseObject(paramJson.toString(), paramClass);
+        String data = JSONObject.toJSONString(paramJson);
+        return JSONObject.parseObject(data, paramClass);
 
     }
 
