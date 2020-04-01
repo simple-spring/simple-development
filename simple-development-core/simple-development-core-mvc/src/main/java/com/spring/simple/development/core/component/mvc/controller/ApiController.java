@@ -72,22 +72,26 @@ public class ApiController {
         String paramJson = HttpRequestUtil.readStringFromRequestBody(request);
 
         logger.info("requestJson:" + paramJson + " date:" + DateUtils.getCurrentTime());
-        // 解析
-        if (StringUtils.isEmpty(paramJson)) {
-            throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
-        }
+
         RpcRequest rpcRequest = new RpcRequest();
         if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
             rpcRequest.setServiceName(serviceName);
             rpcRequest.setMethodName(methodName);
             ReqBody reqBody = new ReqBody();
-            MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-            Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
-            Map<String, Object> paramsMap = new HashMap<>();
-            paramsMap.put(methodParams.getKey()[0], o);
-            reqBody.setParamsMap(paramsMap);
+            // 解析
+            if (!StringUtils.isEmpty(paramJson)) {
+                MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+                Map<String, Object> paramsMap = new HashMap<>();
+                paramsMap.put(methodParams.getKey()[0], o);
+                reqBody.setParamsMap(paramsMap);
+            }
             rpcRequest.setReqBody(reqBody);
         } else {
+            // 解析
+            if (StringUtils.isEmpty(paramJson)) {
+                throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
+            }
             // 旧版本调用
             rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
             return serviceInvoke.invokeServiceOld(rpcRequest);
@@ -117,22 +121,26 @@ public class ApiController {
         // 读取参数
         String paramJson = HttpRequestUtil.readStringFromRequestBody(request);
         logger.info("requestJson:" + paramJson + " date:" + DateUtils.getCurrentTime());
-        // 解析
-        if (StringUtils.isEmpty(paramJson)) {
-            throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
-        }
+
         RpcRequest rpcRequest = new RpcRequest();
         if (!StringUtils.isEmpty(serviceName) && !StringUtils.isEmpty(methodName)) {
             rpcRequest.setServiceName(serviceName);
             rpcRequest.setMethodName(methodName);
             ReqBody reqBody = new ReqBody();
-            MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-            Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
-            Map<String, Object> paramsMap = new HashMap<>();
-            paramsMap.put(methodParams.getKey()[0], o);
-            reqBody.setParamsMap(paramsMap);
+            // 解析
+            if (!StringUtils.isEmpty(paramJson)) {
+                MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+                Map<String, Object> paramsMap = new HashMap<>();
+                paramsMap.put(methodParams.getKey()[0], o);
+                reqBody.setParamsMap(paramsMap);
+            }
             rpcRequest.setReqBody(reqBody);
         } else {
+            // 解析
+            if (StringUtils.isEmpty(paramJson)) {
+                throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
+            }
             // 旧版本调用
             rpcRequest = JSONObject.parseObject(paramJson, RpcRequest.class);
             return serviceInvoke.invokeConfigServiceOld(rpcRequest);
