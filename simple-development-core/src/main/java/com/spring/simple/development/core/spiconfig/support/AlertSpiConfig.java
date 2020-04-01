@@ -22,6 +22,11 @@ public class AlertSpiConfig implements SimpleSpiConfig<EnableAlert> {
     @Override
     public Class getConfigClass(EnableAlert enableAlert) {
         try {
+            boolean isOpen = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_IS_OPEN));
+            if (!isOpen) {
+                return null;
+            }
+
             Assert.notNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_COLLECTION_URL));
             Assert.notNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_APPLICATION_CODE));
             Assert.notNull(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_APPLICATION_TOKEN));

@@ -104,6 +104,7 @@ public class SystemProperties {
     /**
      * alert 组件
      **/
+    public static final String APPLICATION_ALERT_CONFIG_IS_OPEN = "application.alert.is.open";
     public static final String APPLICATION_ALERT_CONFIG_COLLECTION_URL = "spring.simple.alert.url";
     public static final String APPLICATION_ALERT_CONFIG_APPLICATION_CODE = "spring.simple.alert.applicationCode";
     public static final String APPLICATION_ALERT_CONFIG_APPLICATION_TOKEN = "spring.simple.alert.applicationToken";
