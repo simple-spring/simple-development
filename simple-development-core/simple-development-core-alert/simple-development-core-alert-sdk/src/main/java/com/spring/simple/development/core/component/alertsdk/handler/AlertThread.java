@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.component.alertsdk.log.AlertFileAppender;
 import com.spring.simple.development.core.component.alertsdk.log.AlertLogger;
 import com.spring.simple.development.core.component.alertsdk.utls.HttpClientUtils;
+import com.spring.simple.development.support.constant.CommonConstant;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.GzipUtil;
 import lombok.SneakyThrows;
@@ -92,7 +93,12 @@ public class AlertThread extends Thread {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("applicationCode", applicationCode);
                     headers.put("applicationToken", applicationToken);
-                    HttpClientUtils.doPostHttp(alertUrl, headers, GzipUtil.compressBase64(JSONObject.toJSONString(message)));
+                    String resultData = HttpClientUtils.doPostHttp(alertUrl, headers, GzipUtil.compressBase64(JSONObject.toJSONString(message)));
+                    JSONObject jsonObject = JSONObject.parseObject(resultData);
+                    String code = jsonObject.getString("code");
+                    if(!CommonConstant.CODE1.equals(code)) {
+                        throw new RuntimeException(DateUtils.getCurrentTime()+"data:"+message+ "message send fail");
+                    }
                     AlertLogger.log("  execute end ----------- date:" + DateUtils.getCurrentTime());
                 }
                 // 重试
