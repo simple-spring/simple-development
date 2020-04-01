@@ -115,5 +115,12 @@ public class SystemProperties {
      **/
     public static final String APPLICATION_USER_LOGIN_IS_OPEN = "application.user.login.is.open";
 
+    /**
+     * kafka组件
+     */
+    public static final String KAFKA_GET_CONSUMER_METHOD_NAME  = "getConsumerMessage";
+    public static final String APPLICATION_KAFKA_BOOTSTRAP_SERVERS = "spring.simple.kafka.bootstrap.servers";
+    public static final String APPLICATION_KAFKA_CONFIG_PACKAGE = "spring.simple.kafka.package";
+
 
 }

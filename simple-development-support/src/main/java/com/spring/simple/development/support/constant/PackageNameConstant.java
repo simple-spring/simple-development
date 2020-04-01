@@ -15,5 +15,5 @@ public class PackageNameConstant {
     public final static String DUBBO = ".dubbo";
     public final static String JOBHANDLER = ".jobhandler";
     public final static String CASSANDRA = ".cassandra";
-
+    public final static String KAFKA = ".kafka";
 }
