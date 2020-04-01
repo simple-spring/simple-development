@@ -37,6 +37,9 @@ public class SimpleAlertConfig {
 
     // 添加消息
     public static void putMessage(String message, String messageLevel) {
+        if (alertThread == null) {
+            return;
+        }
         MessageDto messageDto = new MessageDto();
         messageDto.setApplicationCode(applicationCode);
         messageDto.setApplicationToken(applicationToken);

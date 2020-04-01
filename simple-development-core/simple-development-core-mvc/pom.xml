@@ -33,6 +33,11 @@
             <artifactId>simple-development-core-swagger</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <artifactId>simple-development-core-alert-sdk</artifactId>
+            <groupId>com.spring</groupId>
+            <version>1.0</version>
+        </dependency>
         <!--servlet-->
         <dependency>
             <groupId>javax.servlet</groupId>
