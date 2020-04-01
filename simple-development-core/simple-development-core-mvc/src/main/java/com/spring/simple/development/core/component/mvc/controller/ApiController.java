@@ -2,17 +2,14 @@ package com.spring.simple.development.core.component.mvc.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.annotation.base.NoLogin;
-import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
 import com.spring.simple.development.core.baseconfig.isapiservice.MethodParams;
 import com.spring.simple.development.core.baseconfig.isapiservice.ServerFactory;
 import com.spring.simple.development.core.baseconfig.isapiservice.ServiceInvoke;
-import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
 import com.spring.simple.development.core.component.mvc.req.RpcRequest;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
 import com.spring.simple.development.support.constant.VersionConstant;
 import com.spring.simple.development.support.exception.GlobalException;
-import com.spring.simple.development.support.exception.GlobalResponseCode;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.HttpRequestUtil;
 import io.swagger.annotations.Api;
@@ -28,11 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NOT_EXIST;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_INVALID;
 import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
 
@@ -59,9 +54,9 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @ApiOperation(value = "HttpServletRequest",notes ="登录后接口服务")
+    @ApiOperation(value = "HttpServletRequest", notes = "登录后接口服务")
     @RequestMapping(value = {"/api/{version}/{serviceName}/{methodName}", "/api", "/api/{version}"}, method = RequestMethod.POST)
-    public ResBody api(@ApiParam("登录后接口服务请求参数")HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
+    public ResBody api(@ApiParam("登录后接口服务请求参数") HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
 
         if (StringUtils.isEmpty(version)) {
             throw new GlobalException(RES_PARAM_IS_EMPTY, "版本号为空");
@@ -81,9 +76,9 @@ public class ApiController {
             // 解析
             if (!StringUtils.isEmpty(paramJson)) {
                 MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+                Object paramData = ServiceInvoke.getParamData(methodParams.getMethodClass()[0], paramJson);
                 Map<String, Object> paramsMap = new HashMap<>();
-                paramsMap.put(methodParams.getKey()[0], o);
+                paramsMap.put(methodParams.getKey()[0], paramData);
                 reqBody.setParamsMap(paramsMap);
             }
             rpcRequest.setReqBody(reqBody);
@@ -107,11 +102,11 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @ApiOperation(value = "HttpServletRequest",notes ="非登录接口服务")
+    @ApiOperation(value = "HttpServletRequest", notes = "非登录接口服务")
     @ApiParam(name = "请求参数")
     @NoLogin
     @RequestMapping(value = {"/config/{version}/{serviceName}/{methodName}", "/config", "/config/{version}"}, method = RequestMethod.POST)
-    public ResBody config(@ApiParam("非登录接口服务请求参数")HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
+    public ResBody config(@ApiParam("非登录接口服务请求参数") HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
         if (StringUtils.isEmpty(version)) {
             throw new GlobalException(RES_PARAM_IS_EMPTY, "版本号为空");
         }
@@ -130,9 +125,9 @@ public class ApiController {
             // 解析
             if (!StringUtils.isEmpty(paramJson)) {
                 MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-                Object o = JSONObject.parseObject(paramJson, methodParams.getMethodClass()[0]);
+                Object paramData = ServiceInvoke.getParamData(methodParams.getMethodClass()[0], paramJson);
                 Map<String, Object> paramsMap = new HashMap<>();
-                paramsMap.put(methodParams.getKey()[0], o);
+                paramsMap.put(methodParams.getKey()[0], paramData);
                 reqBody.setParamsMap(paramsMap);
             }
             rpcRequest.setReqBody(reqBody);
@@ -149,52 +144,5 @@ public class ApiController {
         return serviceInvoke.invokeConfigService(rpcRequest);
     }
 
-    /**
-     * 用户登录接口
-     *
-     * @param request
-     * @return
-     * @throws Throwable
-     */
-    @ApiOperation(value = "HttpServletRequest",notes ="用户登录接口")
-    @ApiParam(name = "请求参数")
-    @NoLogin
-    @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
-    public ResBody privilegeInfoLogin(@ApiParam("用户登录接口请求参数")HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // 获取已实现的接口
-        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
-            // 未实现接口
-            throw new GlobalException(SERVICE_NOT_EXIST);
-        }
-        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
-        if (simpleSessionProfile == null) {
-            throw new GlobalException(SERVICE_NOT_EXIST);
-        }
-        String token = simpleSessionProfile.privilegeInfoLogin(request, response);
-        return new ResBody().buildSuccessResBody(token, null, GlobalResponseCode.SYS_SUCCESS);
-    }
 
-    /**
-     * 用户注销接口
-     *
-     * @param request
-     * @return
-     * @throws Throwable
-     */
-    @ApiOperation(value = "HttpServletRequest",notes ="用户注销接口")
-    @ApiParam(name = "请求参数")
-    @RequestMapping(value = {"/logout"}, method = RequestMethod.POST)
-    public ResBody privilegeInfoLogout(@ApiParam("用户注销接口请求参数")HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // 获取已实现的接口
-        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
-            // 未实现接口
-            throw new GlobalException(SERVICE_NOT_EXIST);
-        }
-        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
-        if (simpleSessionProfile == null) {
-            throw new GlobalException(SERVICE_NOT_EXIST);
-        }
-        simpleSessionProfile.privilegeInfoLogout(request, response);
-        return new ResBody().buildSuccessResBody(null, null, GlobalResponseCode.SYS_SUCCESS);
-    }
 }
