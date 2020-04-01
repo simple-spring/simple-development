@@ -98,8 +98,8 @@ public class ServiceInvoke {
                         objects[i] = jsonObject.toJavaObject(parameterTypes[i]);
                     } else {
                         // 兼容swagger类型
-                        String paramJson = JSONObject.toJSONString(request.getReqBody().getParamsMap().get(key));
-                        objects[i] = JSONObject.parseObject(paramJson, parameterTypes[i]);
+                        Object paramData = getParamData(parameterTypes[i], request.getReqBody().getParamsMap().get(key));
+                        objects[i] = paramData;
                     }
                 }
             }
@@ -212,6 +212,26 @@ public class ServiceInvoke {
             }
             throw ex.getCause();
         }
+    }
+
+    public static Object getParamData(Class paramClass, Object paramJson) throws IllegalAccessException, InstantiationException {
+        if (paramClass.newInstance() instanceof String) {
+            return paramJson;
+        }
+        if (paramClass.newInstance() instanceof Long) {
+            return Long.valueOf(paramJson.toString());
+        }
+        if (paramClass.newInstance() instanceof Integer) {
+            return Long.valueOf(paramJson.toString()).intValue();
+        }
+        if (paramClass.newInstance() instanceof Double) {
+            return Double.valueOf(paramJson.toString());
+        }
+        if (paramClass.newInstance() instanceof Float) {
+            return Float.valueOf(paramJson.toString());
+        }
+        return JSONObject.parseObject(paramJson.toString(), paramClass);
+
     }
 
 }
