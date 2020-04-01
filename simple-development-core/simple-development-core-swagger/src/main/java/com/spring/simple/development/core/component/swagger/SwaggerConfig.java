@@ -194,6 +194,7 @@ public class SwaggerConfig {
                     codeGenerationMethodParams.setIsLogin("");
                     codeGenerationMethodParams.setInvokeMethodName("invokeService");
                 } else {
+                    baseUrl = "/data/config/v1";
                     codeGenerationMethodParams.setIsLogin("@NoLogin");
                     codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
                 }
