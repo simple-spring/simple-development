@@ -9,14 +9,15 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
-@EnableAlert
+//@EnableAlert
 //@EnableXxlJob
-@EnableSwagger
-@EnableMybatis
+//@EnableSwagger
+//@EnableMybatis
 //@EnableRedis
-@EnableWebMvc
+//@EnableWebMvc
 //@EnableDubbo
-@EnableCassandra
+//@EnableCassandra
+@EnableKafka
 @SpringSimpleApplication
 public class App {
     public static void main(String[] args) {

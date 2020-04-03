@@ -23,11 +23,6 @@
             <groupId>com.spring</groupId>
             <version>${simple.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-support</artifactId>
-            <version>${simple.version}</version>
-        </dependency>
         <!--kafka-->
         <dependency>
             <groupId>org.apache.kafka</groupId>

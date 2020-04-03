@@ -1,12 +1,12 @@
 package com.spring.simple.development.core.component.kafka.service;
 
-import com.spring.simple.development.core.component.kafka.config.KafkaConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -45,7 +45,13 @@ public class KafkaConsumerThread implements Runnable {
                 ConsumerRecords<String, String> records = consumer.poll(100);
                 for (ConsumerRecord<String, String> record : records) {
                     logger.info("topic:" + topic + ",offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
-                    method.invoke(configObject, record.value());
+                    // 不是json格式跳过处理
+                    String message = record.value();
+                    if (StringUtils.isEmpty(message) || !message.contains("{")) {
+                        continue;
+                    }
+                    message = message.substring(message.indexOf("{"));
+                    method.invoke(configObject, message);
                 }
             }
         } catch (Exception e) {
