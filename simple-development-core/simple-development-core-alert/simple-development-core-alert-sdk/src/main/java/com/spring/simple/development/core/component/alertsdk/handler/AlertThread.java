@@ -96,8 +96,8 @@ public class AlertThread extends Thread {
                     String resultData = HttpClientUtils.doPostHttp(alertUrl, headers, GzipUtil.compressBase64(JSONObject.toJSONString(message)));
                     JSONObject jsonObject = JSONObject.parseObject(resultData);
                     String code = jsonObject.getString("status");
-                    if(!CommonConstant.CODE1.equals(code)) {
-                        throw new RuntimeException(DateUtils.getCurrentTime()+"data:"+message+ "message send fail");
+                    if (!CommonConstant.CODE1.equals(code)) {
+                        throw new RuntimeException(DateUtils.getCurrentTime() + "data:" + message + "message send fail");
                     }
                     AlertLogger.log("  execute end ----------- date:" + DateUtils.getCurrentTime());
                 }
@@ -107,15 +107,18 @@ public class AlertThread extends Thread {
                     errorMessageJoinQueue();
                 }
             } catch (Throwable e) {
+                try {
+                    StringWriter stringWriter = new StringWriter();
+                    e.printStackTrace(new PrintWriter(stringWriter));
+                    String errorMsg = stringWriter.toString();
 
-                StringWriter stringWriter = new StringWriter();
-                e.printStackTrace(new PrintWriter(stringWriter));
-                String errorMsg = stringWriter.toString();
+                    AlertLogger.log(" AlertThread Exception:" + errorMsg + "AlertThread job execute end(error) -----------");
 
-                AlertLogger.log(" AlertThread Exception:" + errorMsg + "AlertThread job execute end(error) -----------");
-
-                // 保存错误日志重试
-                AlertFileAppender.appendLog(this.logBasePath + "/" + errorLogFileName + ".log", JSONObject.toJSONString(message));
+                    // 保存错误日志重试
+                    AlertFileAppender.appendLog(this.logBasePath + "/" + errorLogFileName + ".log", JSONObject.toJSONString(message));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
