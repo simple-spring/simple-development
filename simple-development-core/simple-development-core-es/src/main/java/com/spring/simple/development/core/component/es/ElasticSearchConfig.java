@@ -70,7 +70,7 @@ public class ElasticSearchConfig {
                     new TransportAddress(InetAddress.getByName(host), port));
         } catch (UnknownHostException e) {
             System.out.println("创建elasticsearch客户端失败");
-            e.printStackTrace();
+            throw new RuntimeException("创建elasticsearch客户端失败",e);
         }
         System.out.println("创建elasticsearch客户端成功");
         return transportClient;
