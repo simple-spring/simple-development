@@ -1,5 +1,6 @@
 package com.spring.simple.development.core.baseconfig.isapiservice;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
@@ -218,6 +219,9 @@ public class ServiceInvoke {
     public static Object getParamData(Class paramClass, Object paramJson) throws IllegalAccessException, InstantiationException {
         if (paramClass.isPrimitive()) {
             return paramJson;
+        }
+        if (paramJson instanceof JSON) {
+            return paramClass;
         }
         String data = JSONObject.toJSONString(paramJson);
         return JSONObject.parseObject(data, paramClass);
