@@ -39,8 +39,11 @@ public class KafkaConfig {
         // 通过spi找到组件
         for (Class configClass : classes) {
             SimpleTopic simpleTopic = (SimpleTopic) configClass.getAnnotation(SimpleTopic.class);
-            executorService.submit(new KafkaConsumerThread(simpleTopic.value(), configClass, getProps(simpleTopic.groupName())) {
-            });
+            int cnt = simpleTopic.threadCnt();
+            for (int i = 1; i <= cnt; i++) {
+                executorService.submit(new KafkaConsumerThread(simpleTopic.value(), configClass, getProps(simpleTopic.groupName(), i)) {
+                });
+            }
         }
     }
 
@@ -49,12 +52,14 @@ public class KafkaConfig {
      *
      * @return
      */
-    public Properties getProps(String groupName) {
+    public Properties getProps(String groupName, int i) {
         Properties props = new Properties();
         // 消费者需要连接的服务器集群地址
         props.put("bootstrap.servers", PropertyConfigurer.getProperty(SystemProperties.APPLICATION_KAFKA_BOOTSTRAP_SERVERS));
         // 消费组ID
         props.put("group.id", groupName);
+        // 消费者id
+        props.put("consumer.id", groupName + i);
         // 是否开启自动提交offset
         props.put("enable.auto.commit", "true");
         // 配置项配置了每次自动提交的时间间隔：毫秒

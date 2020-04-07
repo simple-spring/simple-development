@@ -29,4 +29,14 @@ public @interface SimpleTopic {
      * @Description 组名
      **/
     String groupName();
+
+    /**
+     * @param
+     * @return int
+     * @author hjs
+     * @Date 2020/4/7/007 17.03
+     * @Description 线程数量
+     **/
+    int threadCnt() default 1;
+
 }
