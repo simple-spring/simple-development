@@ -95,7 +95,7 @@ public class AlertThread extends Thread {
                     headers.put("applicationToken", applicationToken);
                     String resultData = HttpClientUtils.doPostHttp(alertUrl, headers, GzipUtil.compressBase64(JSONObject.toJSONString(message)));
                     JSONObject jsonObject = JSONObject.parseObject(resultData);
-                    String code = jsonObject.getString("code");
+                    String code = jsonObject.getString("status");
                     if(!CommonConstant.CODE1.equals(code)) {
                         throw new RuntimeException(DateUtils.getCurrentTime()+"data:"+message+ "message send fail");
                     }
