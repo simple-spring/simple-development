@@ -1,6 +1,7 @@
 package com.spring.simple.development.core.component.mvc.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.lava.privilege.PrivilegeInfo;
 import com.spring.simple.development.core.annotation.base.NoLogin;
 import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
 import com.spring.simple.development.core.baseconfig.isapiservice.MethodParams;
@@ -196,5 +197,28 @@ public class ApiController {
         }
         simpleSessionProfile.privilegeInfoLogout(request, response);
         return new ResBody().buildSuccessResBody(null, null, GlobalResponseCode.SYS_SUCCESS);
+    }
+    /**
+     * 获取用户信息
+     *
+     * @param request
+     * @return
+     * @throws Throwable
+     */
+    @ApiOperation(value = "HttpServletRequest",notes ="获取用户信息")
+    @ApiParam(name = "请求参数")
+    @RequestMapping(value = {"/getUser"}, method = RequestMethod.POST)
+    public ResBody privilegeInfoGetUser(@ApiParam("获取用户信息请求参数")HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // 获取已实现的接口
+        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+            // 未实现接口
+            throw new GlobalException(SERVICE_NOT_EXIST);
+        }
+        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        if (simpleSessionProfile == null) {
+            throw new GlobalException(SERVICE_NOT_EXIST);
+        }
+        PrivilegeInfo privilegeInfo = simpleSessionProfile.getPrivilegeInfo(request, response, null);
+        return new ResBody().buildSuccessResBody(privilegeInfo, null, GlobalResponseCode.SYS_SUCCESS);
     }
 }
