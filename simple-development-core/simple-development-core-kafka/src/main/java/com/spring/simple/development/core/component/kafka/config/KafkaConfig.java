@@ -49,7 +49,7 @@ public class KafkaConfig {
      *
      * @return
      */
-    private Properties getProps(String groupName) {
+    public Properties getProps(String groupName) {
         Properties props = new Properties();
         // 消费者需要连接的服务器集群地址
         props.put("bootstrap.servers", PropertyConfigurer.getProperty(SystemProperties.APPLICATION_KAFKA_BOOTSTRAP_SERVERS));
