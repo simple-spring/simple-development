@@ -5,6 +5,10 @@ import java.net.UnknownHostException;
 
 import javax.annotation.PostConstruct;
 
+import com.spring.simple.development.core.component.es.service.BulkProcessorService;
+import com.spring.simple.development.core.component.es.service.ElasticSearchService;
+import com.spring.simple.development.core.component.es.service.impl.BulkProcessorServiceImpl;
+import com.spring.simple.development.core.component.es.service.impl.ElasticSearchServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -27,43 +31,43 @@ import com.spring.simple.development.support.properties.PropertyConfigurer;
 /**
  * @author ys
  * @Date 2019年12月27日
- * @Description TODO
+ * @Description es组件
  */
 @Configuration
 public class ElasticSearchConfig {
 
-	/**
-	 * 地址
-	 */
-	private String host = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_HOST);
-	
-	/**
-	 * 端口
-	 */
-	private Integer port = Integer.valueOf(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_PORT));
-	
-	/**
-	 * 集群
-	 */
-	private String clusterName = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_CLUSTER_NAME);
-	
-	private TransportClient transportClient;
-	
-	public ElasticSearchConfig() {
-		System.out.println("elasticsearch initialized...");
-		Assert.notNull(host, "elasticsearch host is empty");
-		Assert.notNull(port, "elasticsearch port is empty");
-	}
-	
-	@Bean
-    public TransportClient transportClient(){
+    /**
+     * 地址
+     */
+    private String host = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_HOST);
+
+    /**
+     * 端口
+     */
+    private Integer port = Integer.valueOf(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_PORT));
+
+    /**
+     * 集群
+     */
+    private String clusterName = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ELASTICSEARCH_CLUSTER_NAME);
+
+    private TransportClient transportClient;
+
+    public ElasticSearchConfig() {
+        System.out.println("elasticsearch initialized...");
+        Assert.notNull(host, "elasticsearch host is empty");
+        Assert.notNull(port, "elasticsearch port is empty");
+    }
+
+    @Bean
+    public TransportClient transportClient() {
         Settings settings = Settings.EMPTY;
-        if(StringUtils.isNotEmpty(clusterName)){
+        if (StringUtils.isNotEmpty(clusterName)) {
             settings = Settings.builder().put("cluster.name", clusterName).build();
         }
         try {
             transportClient = new PreBuiltTransportClient(settings).addTransportAddress(
-            		new TransportAddress(InetAddress.getByName(host), port));
+                    new TransportAddress(InetAddress.getByName(host), port));
         } catch (UnknownHostException e) {
             System.out.println("创建elasticsearch客户端失败");
             e.printStackTrace();
@@ -76,13 +80,13 @@ public class ElasticSearchConfig {
     public BulkProcessor bulkProcessor() throws UnknownHostException {
 
         Settings settings = Settings.EMPTY;
-        if(StringUtils.isNotEmpty(clusterName)){
+        if (StringUtils.isNotEmpty(clusterName)) {
             settings = Settings.builder().put("cluster.name", clusterName).build();
         }
 
         TransportClient transportClient = new PreBuiltTransportClient(settings).addTransportAddress(new TransportAddress
                 (InetAddress.getByName(host), port));
-                
+
 
         return BulkProcessor.builder(transportClient, new BulkProcessor.Listener() {
             @Override
@@ -112,4 +116,15 @@ public class ElasticSearchConfig {
     void init() {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
     }
+
+    @Bean
+    public ElasticSearchService getElasticSearchService() {
+        return new ElasticSearchServiceImpl();
+    }
+
+    @Bean
+    public BulkProcessorService getBulkProcessorService() {
+        return new BulkProcessorServiceImpl();
+    }
+
 }
