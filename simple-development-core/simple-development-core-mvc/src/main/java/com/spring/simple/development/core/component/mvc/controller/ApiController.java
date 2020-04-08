@@ -82,7 +82,7 @@ public class ApiController {
             // 解析
             if (!StringUtils.isEmpty(paramJson)) {
                 MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-                Object paramData = ServiceInvoke.getParamData(methodParams.getMethodClass()[0], paramJson);
+                Object paramData = getParamData(methodParams.getMethodClass()[0], paramJson);
                 Map<String, Object> paramsMap = new HashMap<>();
                 paramsMap.put(methodParams.getKey()[0], paramData);
                 reqBody.setParamsMap(paramsMap);
@@ -131,7 +131,7 @@ public class ApiController {
             // 解析
             if (!StringUtils.isEmpty(paramJson)) {
                 MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
-                Object paramData = ServiceInvoke.getParamData(methodParams.getMethodClass()[0], paramJson);
+                Object paramData = getParamData(methodParams.getMethodClass()[0], paramJson);
                 Map<String, Object> paramsMap = new HashMap<>();
                 paramsMap.put(methodParams.getKey()[0], paramData);
                 reqBody.setParamsMap(paramsMap);
@@ -157,11 +157,11 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @ApiOperation(value = "HttpServletRequest",notes ="用户登录接口")
+    @ApiOperation(value = "HttpServletRequest", notes = "用户登录接口")
     @ApiParam(name = "请求参数")
     @NoLogin
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
-    public ResBody privilegeInfoLogin(@ApiParam("用户登录接口请求参数")HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    public ResBody privilegeInfoLogin(@ApiParam("用户登录接口请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
         if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
@@ -182,10 +182,10 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @ApiOperation(value = "HttpServletRequest",notes ="用户注销接口")
+    @ApiOperation(value = "HttpServletRequest", notes = "用户注销接口")
     @ApiParam(name = "请求参数")
     @RequestMapping(value = {"/logout"}, method = RequestMethod.POST)
-    public ResBody privilegeInfoLogout(@ApiParam("用户注销接口请求参数")HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    public ResBody privilegeInfoLogout(@ApiParam("用户注销接口请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
         if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
@@ -198,6 +198,7 @@ public class ApiController {
         simpleSessionProfile.privilegeInfoLogout(request, response);
         return new ResBody().buildSuccessResBody(null, null, GlobalResponseCode.SYS_SUCCESS);
     }
+
     /**
      * 获取用户信息
      *
@@ -205,10 +206,10 @@ public class ApiController {
      * @return
      * @throws Throwable
      */
-    @ApiOperation(value = "HttpServletRequest",notes ="获取用户信息")
+    @ApiOperation(value = "HttpServletRequest", notes = "获取用户信息")
     @ApiParam(name = "请求参数")
     @RequestMapping(value = {"/getUser"}, method = RequestMethod.POST)
-    public ResBody privilegeInfoGetUser(@ApiParam("获取用户信息请求参数")HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    public ResBody privilegeInfoGetUser(@ApiParam("获取用户信息请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
         if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
@@ -220,5 +221,20 @@ public class ApiController {
         }
         PrivilegeInfo privilegeInfo = simpleSessionProfile.getPrivilegeInfo(request, response, null);
         return new ResBody().buildSuccessResBody(privilegeInfo, null, GlobalResponseCode.SYS_SUCCESS);
+    }
+    
+    /**
+     * @author liko.wang
+     * @Date 2020/4/8/008 14:46
+     * @param paramClass
+     * @param paramJson 
+     * @return java.lang.Object
+     * @Description 类型转换
+     **/
+    private Object getParamData(Class paramClass, Object paramJson){
+        if (paramClass.isPrimitive()) {
+            return paramJson;
+        }
+        return JSONObject.parseObject((String)paramJson, paramClass);
     }
 }
