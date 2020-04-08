@@ -64,7 +64,7 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setLogPath("/data/logs/simple-development-core/error/error.log");
             errorMessage.setDate(DateUtils.getCurrentTime());
             errorMessage.setContent(GzipUtil.compressBase64(JSON.toJSONString(e)));
-            errorMessage.setDescription(e + "");
+            errorMessage.setDescription(e.getMessage());
             errorMessage.setUrl(request.getRequestURI());
             errorMessage.setRemoteIp(request.getRemoteHost());
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
