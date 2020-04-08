@@ -63,13 +63,13 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setIp(IpUtil.getIp());
             errorMessage.setLogPath("/data/logs/simple-development-core/error/error.log");
             errorMessage.setDate(DateUtils.getCurrentTime());
-            errorMessage.setContent(GzipUtil.compressBase64(JSON.toJSONString(e)));
+            errorMessage.setContent(JSON.toJSONString(e));
             errorMessage.setDescription(e.getMessage());
             errorMessage.setUrl(request.getRequestURI());
             errorMessage.setRemoteIp(request.getRemoteHost());
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
             // 添加报警信息
-            SimpleAlertExecutor.sendHighMessage(JSON.toJSONString(errorMessage));
+            SimpleAlertExecutor.sendHighMessage(GzipUtil.compressBase64(JSON.toJSONString(errorMessage)));
         } catch (Exception ex) {
             logger.error("收集错误日志错误:", e);
         }
