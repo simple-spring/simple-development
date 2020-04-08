@@ -69,7 +69,7 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setRemoteIp(request.getRemoteHost());
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
             // 添加报警信息
-            SimpleAlertExecutor.sendHighMessage(GzipUtil.compressBase64(JSON.toJSONString(errorMessage)));
+            SimpleAlertExecutor.sendHighMessage(JSON.toJSONString(errorMessage));
         } catch (Exception ex) {
             logger.error("收集错误日志错误:", e);
         }
