@@ -23,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * 全局异常处理，由spring mvc拦截异常，做统一的处理
@@ -56,6 +58,11 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
 
     private void collectionLog(HttpServletRequest request, Throwable e) {
         try {
+            // 日志转转
+            StringWriter stringWriter = new StringWriter();
+            e.printStackTrace(new PrintWriter(stringWriter));
+            String errorMsg = stringWriter.toString();
+            // 记录日志内容
             ErrorMessage errorMessage = new ErrorMessage();
             errorMessage.setLogId(PrimaryKeyGenerator.getInstance().nextId().toString());
             errorMessage.setProjectType("api");
@@ -63,13 +70,13 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setIp(IpUtil.getIp());
             errorMessage.setLogPath("/data/logs/simple-development-core/error/error.log");
             errorMessage.setDate(DateUtils.getCurrentTime());
-            errorMessage.setContent(JSON.toJSONString(e));
+            errorMessage.setContent(errorMsg);
             errorMessage.setDescription(e.getMessage());
             errorMessage.setUrl(request.getRequestURI());
             errorMessage.setRemoteIp(request.getRemoteHost());
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
             // 添加报警信息
-            SimpleAlertExecutor.sendHighMessage(JSON.toJSONString(errorMessage));
+            SimpleAlertExecutor.sendHighMessage(errorMessage.toString());
         } catch (Exception ex) {
             logger.error("收集错误日志错误:", e);
         }
