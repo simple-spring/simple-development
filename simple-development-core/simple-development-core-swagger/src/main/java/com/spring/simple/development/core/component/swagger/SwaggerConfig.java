@@ -148,8 +148,7 @@ public class SwaggerConfig {
             return null;
         }
         List<String> codes = new ArrayList<>();
-        // 类上面的地址默认
-        String baseUrl = "/data/api/v1";
+
         for (Class isApiClass : typesAnnotatedWith) {
             Method[] declaredMethods = isApiClass.getDeclaredMethods();
             if (declaredMethods == null || declaredMethods.length == 0) {
@@ -189,6 +188,8 @@ public class SwaggerConfig {
                         methodName = defaultMethodValue;
                     }
                 }
+                // 类上面的地址默认
+                String baseUrl = "/data/api/v1";
                 boolean login = isApiService.isLogin();
                 if (login) {
                     codeGenerationMethodParams.setIsLogin("");
