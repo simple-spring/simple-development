@@ -11,13 +11,13 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  **/
 //@EnableAlert
 //@EnableXxlJob
-//@EnableSwagger
+@EnableSwagger
 //@EnableMybatis
 //@EnableRedis
-//@EnableWebMvc
-//@EnableDubbo
+@EnableWebMvc
+@EnableDubbo
 //@EnableCassandra
-@EnableKafka
+@EnableShiroCas
 @SpringSimpleApplication
 public class App {
     public static void main(String[] args) {

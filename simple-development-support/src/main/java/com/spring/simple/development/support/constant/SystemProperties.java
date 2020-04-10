@@ -89,12 +89,11 @@ public class SystemProperties {
     public static final String APPLICATION_SWAGGER_HEADER_DESCRIPTION = "spring.simple.swagger.header.description";
 
 
-
     /**
      * cassandra组件
      */
     public static final String APPLICATION_CASSANDRA_CONFIG_CASSANDRA_PACKAGE = "spring.simple.cassandra.cassandraPackage";
-    public static final String APPLICATION_CASSANDRA_CONFIG_CASSANDRA_NAME= "spring.simple.cassandra.cassandraName";
+    public static final String APPLICATION_CASSANDRA_CONFIG_CASSANDRA_NAME = "spring.simple.cassandra.cassandraName";
     public static final String APPLICATION_CASSANDRA_CONFIG_ADDRESS = "spring.simple.cassandra.address";
     public static final String APPLICATION_CASSANDRA_CONFIG_PORT = "spring.simple.cassandra.port";
     public static final String APPLICATION_CASSANDRA_CONFIG_KEY_SPACES_NAME = "spring.simple.cassandra.keySpaces.name";
@@ -118,9 +117,23 @@ public class SystemProperties {
     /**
      * kafka组件
      */
-    public static final String KAFKA_GET_CONSUMER_METHOD_NAME  = "getConsumerMessage";
+    public static final String KAFKA_GET_CONSUMER_METHOD_NAME = "getConsumerMessage";
     public static final String APPLICATION_KAFKA_BOOTSTRAP_SERVERS = "spring.simple.kafka.bootstrap.servers";
     public static final String APPLICATION_KAFKA_CONFIG_PACKAGE = "spring.simple.kafka.package";
+
+    /**
+     * shiro
+     **/
+    public static final String SPRING_SIMPLE_SHIRO_ISOPEN = "spring.simple.shiro.isOpen";
+    public static final String SPRING_SIMPLE_SHIRO_SUCCESSURL = "spring.simple.shiro.successurl";
+    public static final String SPRING_SIMPLE_SHIRO_SKIPAUTHENTICATE = "spring.simple.shiro.skipauthenticate";
+    public static final String SPRING_SIMPLE_SHIRO_UNAUTHORIZEDURL = "spring.simple.shiro.unauthorizedurl";
+    public static final String SPRING_SIMPLE_SHIRO_BIZSITEURLPREFIX = "spring.simple.shiro.bizsiteurlprefix";
+    public static final String SPRING_SIMPLE_SHIRO_CASSERVERURLPREFIX = "spring.simple.shiro.casserverurlprefix";
+    public static final String SPRING_SIMPLE_SHIRO_REDIS_HOST = "spring.simple.shiro.redis_host";
+    public static final String SPRING_SIMPLE_SHIRO_REDIS_PORT = "spring.simple.shiro.redis_port";
+    public static final String SPRING_SIMPLE_SHIRO_REDIS_DATABASE = "spring.simple.shiro.redis.database";
+    public static final String SPRING_SIMPLE_SHIRO_REDIS_PASSWORD = "spring.simple.shiro.redis.password";
 
 
 }

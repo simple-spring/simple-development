@@ -35,6 +35,11 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE, enableDubbo.dubboPackage());
             }
             List<String> dubboPackageNames = new ArrayList<>();
+            // 启动shiro
+            boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
+            if(isEnableBoolean){
+                dubboPackageNames.add("com.jc.support.auth.web.authz");
+            }
             dubboPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
             Class<?> dubboClass = Class.forName("com.spring.simple.development.core.component.dubbo.DubboConfig");
             Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", dubboPackageNames, "basePackages");

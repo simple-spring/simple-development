@@ -1,5 +1,7 @@
 package com.spring.simple.development.core.component.mvc;
 
+import com.jc.support.auth.web.interceptor.DefaultBizAuthenticationHandlerInterceptor;
+import com.jc.xauth.web.interceptor.AuthenticationHandlerInterceptor;
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
 import com.spring.simple.development.core.component.mvc.interceptor.ApiSupportInterceptor;
 import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
@@ -73,6 +75,13 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         excludes[2] = "/swagger-resources";
         excludes[3] = "/swagger-resources/configuration/ui";
         excludes[4] = "/swagger-resources/configuration/security";
+        // 启动shiro
+        boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
+        if(isEnableBoolean){
+            registry.addInterceptor(new DefaultBizAuthenticationHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns(excludes);;
+            registry.addInterceptor(new AuthenticationHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns(excludes);;
+
+        }
         registry.addInterceptor(new ApiSupportInterceptor()).excludePathPatterns(excludes);
         try {
             System.out.println("reflections SimpleInterceptor start");

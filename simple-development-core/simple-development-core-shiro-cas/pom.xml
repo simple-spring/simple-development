@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>simple-development-core-shiro-cas</artifactId>
+    <groupId>com.spring</groupId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <tomcat-version>8.0.53</tomcat-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <simple.version>2.4</simple.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <artifactId>simple-development-core</artifactId>
+            <groupId>com.spring</groupId>
+            <version>${simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-support</artifactId>
+            <version>${simple.version}</version>
+        </dependency>
+        <!--acl dubbo服务-->
+        <dependency>
+            <groupId>com.acl</groupId>
+            <artifactId>acl-user-support</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!--  acl shiro cas      -->
+        <dependency>
+            <groupId>com.acl</groupId>
+            <artifactId>support-auth-web</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jasig.cas.client</groupId>
+            <artifactId>cas-client-core</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+    </dependencies>
+
+</project>

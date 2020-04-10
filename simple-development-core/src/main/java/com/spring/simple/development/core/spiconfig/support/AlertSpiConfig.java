@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Administrator
+ * @author liko wang
  */
 @Spi(configName = "EnableAlert")
 public class AlertSpiConfig implements SimpleSpiConfig<EnableAlert> {

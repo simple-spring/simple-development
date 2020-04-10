@@ -43,6 +43,11 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
             List<String> mvcPackageNames = new ArrayList<>();
             // 支持isApiConfig,默认注册
             mvcPackageNames.add("com.spring.simple.development.core.component.mvc.controller");
+            // 启动shiro
+            boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
+            if(isEnableBoolean){
+                mvcPackageNames.add("com.jc.xauth.web.bean");
+            }
             String[] paths = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_PACKAGE_PATH).split(",");
             for (String path : paths) {
                 mvcPackageNames.add(path);

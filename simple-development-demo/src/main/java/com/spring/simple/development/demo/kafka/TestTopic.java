@@ -8,7 +8,7 @@ import com.spring.simple.development.core.component.kafka.service.SpringSimpleKa
  * @Date 2020/4/3/003 9:08
  * @Description //TODO
  **/
-@SimpleTopic(value = "message")
+@SimpleTopic(value = "message",groupName = "messageGroup")
 public class TestTopic implements SpringSimpleKafkaService {
 
     @Override
