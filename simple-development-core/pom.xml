@@ -10,10 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>simple-development-core</artifactId>
     <version>${simple.version}</version>
-    <modules>
-        <module>simple-development-core-shiro-cas</module>
-    </modules>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.spring</groupId>
