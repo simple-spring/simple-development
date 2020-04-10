@@ -39,11 +39,6 @@
             <artifactId>support-auth-web</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.jasig.cas.client</groupId>
-            <artifactId>cas-client-core</artifactId>
-            <version>3.2.2</version>
-        </dependency>
     </dependencies>
     <distributionManagement>
         <repository>

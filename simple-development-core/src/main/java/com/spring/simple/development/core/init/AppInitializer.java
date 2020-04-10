@@ -44,6 +44,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+
         AppInitializer.servletContext = servletContext;
         try {
             System.out.println("spring simple start");
@@ -97,7 +98,7 @@ public class AppInitializer implements WebApplicationInitializer {
                     Object configObject = configClass.newInstance();
                     Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME, annotationMap.get(configName).annotationType());
                     Object resultClass = method.invoke(configObject, annotationMap.get(configName));
-                    if(resultClass == null){
+                    if (resultClass == null) {
                         continue;
                     }
                     configClassList.add(resultClass);
@@ -115,6 +116,21 @@ public class AppInitializer implements WebApplicationInitializer {
             characterEncoding.addMappingForUrlPatterns(null, true, "/*");
             servletContext.addListener(RequestContextListener.class);
 
+            // 启动shiro
+            boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
+            if(isEnableBoolean){
+                AppInitializer.servletContext.addListener("org.jasig.cas.client.session.SingleSignOutHttpSessionListener");
+
+                FilterRegistration.Dynamic filterRegistration = AppInitializer.servletContext.addFilter("shiroFilter", "org.springframework.web.filter.DelegatingFilterProxy");
+                filterRegistration.setInitParameter("targetFilterLifecycle", "true");
+                //配置mapping
+                filterRegistration.addMappingForUrlPatterns(null, false, "/**");
+
+                //cas filter
+                javax.servlet.FilterRegistration.Dynamic filter = AppInitializer.servletContext.addFilter("CAS Single Sign Out Filter", "org.jasig.cas.client.session.SingleSignOutFilter");
+                //配置mapping
+                filter.addMappingForUrlPatterns(null, false, "/shiro-cas");
+            }
 
             // 创建Spring的root配置环境
             rootContext = new AnnotationConfigWebApplicationContext();

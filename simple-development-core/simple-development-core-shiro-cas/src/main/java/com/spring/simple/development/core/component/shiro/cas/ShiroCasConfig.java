@@ -1,30 +1,15 @@
 package com.spring.simple.development.core.component.shiro.cas;
 
+import com.jc.support.auth.web.authz.DefaultBizAuthorizationSupporter;
 import com.jc.support.auth.web.mgt.DefaultBizWebSecurityManager;
 import com.jc.xauth.web.filter.XauthFilterFactoryBean;
-import com.spring.simple.development.core.handler.listener.SimpleApplicationListener;
-import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.jasig.cas.client.session.SingleSignOutFilter;
-import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
-
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * @author liko.wang
@@ -32,21 +17,14 @@ import java.util.Collection;
  * @Description shiro cas 实现
  **/
 @Configuration
-@ComponentScan(basePackages = {"com.jc.support.auth.web.authz"})
-@Component
-public class ShiroCasConfig implements SimpleApplicationListener {
+public class ShiroCasConfig {
     public ShiroCasConfig() {
+        System.out.println("shiro cas init");
+    }
 
-    }
     @Bean
-    public DelegatingFilterProxy getDelegatingFilterProxy(){
+    public DelegatingFilterProxy getDelegatingFilterProxy() {
         return new DelegatingFilterProxy();
-    }
-    @Bean
-    public SingleSignOutFilter getSingleSignOutFilter(){
-        SingleSignOutFilter singleSignOutFilter = new SingleSignOutFilter();
-        singleSignOutFilter.setIgnoreInitConfiguration(true);
-        return singleSignOutFilter;
     }
 
     @Bean(value = "shiroFilter")
@@ -79,23 +57,15 @@ public class ShiroCasConfig implements SimpleApplicationListener {
     }
 
     @Bean
+    public DefaultBizAuthorizationSupporter getDefaultBizAuthorizationSupporter() {
+        return new DefaultBizAuthorizationSupporter();
+    }
+
+    @Bean
     public MethodInvokingFactoryBean getMethodInvokingFactoryBean() {
         MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
         methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
         methodInvokingFactoryBean.setArguments(getDefaultBizWebSecurityManager());
         return methodInvokingFactoryBean;
-    }
-
-    @Override
-    public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
-        AppInitializer.servletContext.addListener(SingleSignOutHttpSessionListener.class);
-
-        FilterRegistration.Dynamic filterRegistration = AppInitializer.servletContext.addFilter("shiroFilter", getDelegatingFilterProxy());
-        filterRegistration.setInitParameter("targetFilterLifecycle", "true");
-        //配置mapping
-        filterRegistration.addMappingForUrlPatterns(null, false, "/**");
-
-        FilterRegistration.Dynamic casSingleSignOutFilter = AppInitializer.servletContext.addFilter("CAS Single Sign Out Filter", getSingleSignOutFilter());
-        casSingleSignOutFilter.addMappingForUrlPatterns(null, false, "/shiro-cas");
     }
 }
