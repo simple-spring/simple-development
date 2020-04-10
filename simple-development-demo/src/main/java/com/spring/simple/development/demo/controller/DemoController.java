@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 public class DemoController {
-    @RequestMapping("/home")
+    @RequestMapping("/")
     public String home() {
         return "hello world";
     }

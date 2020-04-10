@@ -12,7 +12,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 //@EnableAlert
 //@EnableXxlJob
 @EnableSwagger
-//@EnableMybatis
+@EnableMybatis
 //@EnableRedis
 @EnableWebMvc
 @EnableDubbo

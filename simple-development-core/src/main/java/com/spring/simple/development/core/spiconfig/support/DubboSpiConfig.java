@@ -39,6 +39,7 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
             boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
             if(isEnableBoolean){
                 dubboPackageNames.add("com.jc.support.auth.web.authz");
+                dubboPackageNames.add("com.jc.support.auth.web.interceptor");
             }
             dubboPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
             Class<?> dubboClass = Class.forName("com.spring.simple.development.core.component.dubbo.DubboConfig");
