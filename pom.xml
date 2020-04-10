@@ -6,6 +6,7 @@
     <groupId>com.spring</groupId>
     <artifactId>simple-development</artifactId>
     <version>2.4</version>
+    <packaging>pom</packaging>
     <modules>
         <module>simple-development-core</module>
         <module>simple-development-core/simple-development-core-alert</module>
@@ -25,7 +26,6 @@
         <module>simple-development-generator</module>
         <module>simple-development-build</module>
     </modules>
-    <packaging>pom</packaging>
     <url>https://github.com/likowong/spring-simple.git</url>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
