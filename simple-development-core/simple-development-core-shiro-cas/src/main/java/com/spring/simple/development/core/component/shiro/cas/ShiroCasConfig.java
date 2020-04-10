@@ -29,17 +29,23 @@ public class ShiroCasConfig {
     public ShiroCasConfig() {
         AppInitializer.servletContext.addListener(SingleSignOutHttpSessionListener.class);
 
-        FilterRegistration.Dynamic filterRegistration = AppInitializer.servletContext.addFilter("shiroFilter", DelegatingFilterProxy.class);
+        FilterRegistration.Dynamic filterRegistration = AppInitializer.servletContext.addFilter("shiroFilter", getDelegatingFilterProxy());
         filterRegistration.setInitParameter("targetFilterLifecycle", "true");
         //配置mapping
-        filterRegistration.addMappingForUrlPatterns(
-                EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD),
-                false, "/**");
+        filterRegistration.addMappingForUrlPatterns(null, false, "/**");
 
+        FilterRegistration.Dynamic casSingleSignOutFilter = AppInitializer.servletContext.addFilter("CAS Single Sign Out Filter", getSingleSignOutFilter());
+        casSingleSignOutFilter.addMappingForUrlPatterns(null, false, "/shiro-cas");
+    }
+    @Bean
+    public DelegatingFilterProxy getDelegatingFilterProxy(){
+        return new DelegatingFilterProxy();
+    }
+    @Bean
+    public SingleSignOutFilter getSingleSignOutFilter(){
         SingleSignOutFilter singleSignOutFilter = new SingleSignOutFilter();
         singleSignOutFilter.setIgnoreInitConfiguration(true);
-        FilterRegistration.Dynamic casSingleSignOutFilter = AppInitializer.servletContext.addFilter("CAS Single Sign Out Filter", singleSignOutFilter);
-        casSingleSignOutFilter.addMappingForUrlPatterns(null, false, "/shiro-cas");
+        return singleSignOutFilter;
     }
 
     @Bean(value = "shiroFilter")
