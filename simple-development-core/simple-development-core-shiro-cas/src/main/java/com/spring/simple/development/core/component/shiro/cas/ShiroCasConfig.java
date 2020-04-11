@@ -1,8 +1,8 @@
 package com.spring.simple.development.core.component.shiro.cas;
 
-import com.jc.support.auth.web.authz.DefaultBizAuthorizationSupporter;
-import com.jc.support.auth.web.mgt.DefaultBizWebSecurityManager;
-import com.jc.xauth.web.filter.XauthFilterFactoryBean;
+import com.acl.support.auth.web.authz.DefaultBizAuthorizationSupporter;
+import com.acl.support.auth.web.mgt.DefaultBizWebSecurityManager;
+import com.acl.xauth.web.filter.XauthFilterFactoryBean;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;

@@ -1,6 +1,6 @@
 package com.spring.simple.development.demo.controller;
 
-import com.jc.xauth.anno.authc.NoAuth;
+import com.acl.xauth.anno.authc.NoAuth;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

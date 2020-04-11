@@ -4,9 +4,11 @@ package com.spring.simple.development.core.component.mvc.controller;
 import com.alibaba.fastjson.JSON;
 import com.spring.simple.development.core.component.alertsdk.SimpleAlertExecutor;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
+import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.exception.GlobalResponseCode;
 import com.spring.simple.development.support.exception.NoPermissionException;
+import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.GzipUtil;
 import com.spring.simple.development.support.utils.IpUtil;
@@ -75,8 +77,12 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setUrl(request.getRequestURI());
             errorMessage.setRemoteIp(request.getRemoteHost());
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
-            // 添加报警信息
-            SimpleAlertExecutor.sendHighMessage(errorMessage.toString());
+            boolean isOpen = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_IS_OPEN));
+            if (isOpen) {
+                // 添加报警信息
+                SimpleAlertExecutor.sendHighMessage(errorMessage.toString());
+            }
+
         } catch (Exception ex) {
             logger.error("收集错误日志错误:", e);
         }

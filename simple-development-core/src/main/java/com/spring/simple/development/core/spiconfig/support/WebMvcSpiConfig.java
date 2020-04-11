@@ -46,7 +46,7 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
             // 启动shiro
             boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
             if(isEnableBoolean){
-                mvcPackageNames.add("com.jc.xauth.web.bean");
+                mvcPackageNames.add("com.acl.xauth.web.bean");
             }
             String[] paths = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_PACKAGE_PATH).split(",");
             for (String path : paths) {
