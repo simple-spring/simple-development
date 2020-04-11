@@ -75,5 +75,10 @@ public class ShiroLavaSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
+        // 获取用户对象
+        PrivilegeInfo sessionPrivilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
+        // 通过
+        sessionPrivilegeInfo.setUserId(null);
+        sessionPrivilegeInfo.setOpenAccount(null);
     }
 }
