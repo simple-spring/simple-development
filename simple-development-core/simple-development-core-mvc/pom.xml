@@ -38,6 +38,11 @@
             <groupId>com.spring</groupId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <artifactId>simple-development-core-shiro-cas</artifactId>
+            <groupId>com.spring</groupId>
+            <version>1.0</version>
+        </dependency>
         <!--servlet-->
         <dependency>
             <groupId>javax.servlet</groupId>

@@ -1,6 +1,7 @@
 package com.spring.simple.development.core.component.mvc.controller;
 
 
+import com.acl.xauth.exception.authc.NoLoginException;
 import com.alibaba.fastjson.JSON;
 import com.spring.simple.development.core.component.alertsdk.SimpleAlertExecutor;
 import com.spring.simple.development.core.component.mvc.res.ResBody;
@@ -41,18 +42,26 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
     @ResponseBody
     public ResBody processUnauthenticatedException(HttpServletRequest request, HttpServletResponse response, Throwable e) {
         logger.error(DateUtils.getCurrentTime() + e.getMessage(), e);
-        // 无权限处理,重定向至无权限页面,
-        if (e instanceof NoPermissionException) {
-            //告诉ajax我是重定向
-            response.setHeader("REDIRECT", "PERMISSION");
-            //告诉ajax我重定向的路径
-            response.setHeader("URL", request.getContextPath() + "/static/noPermission.html");
-            return ResBody.buildFailResBody(new GlobalResponseCode(((NoPermissionException) e).getErrorStatus(), ((NoPermissionException) e).getErrorCode(), ((NoPermissionException) e).getContent()));
-        }
         // 业务异常处理
         if (e instanceof GlobalException) {
             return ResBody.buildFailResBody(new GlobalResponseCode(((GlobalException) e).getErrorStatus(), ((GlobalException) e).getErrorCode(), ((GlobalException) e).getContent()));
         }
+        // 无权限处理,重定向至无权限页面,
+        if (e instanceof NoPermissionException || e instanceof com.acl.xauth.exception.authz.NoPermissionException) {
+            //告诉ajax我是重定向
+            response.setHeader("REDIRECT", "PERMISSION");
+            //告诉ajax我重定向的路径
+            response.setHeader("URL", request.getContextPath() + "/noPermission.html");
+            return ResBody.buildFailResBody(GlobalResponseCode.NO_PERMISSION);
+        }
+        if (e instanceof NoLoginException) {
+            //告诉ajax我是重定向
+            response.setHeader("REDIRECT", "NoLogin");
+            //告诉ajax我重定向的路径
+            response.setHeader("URL", request.getContextPath() + "/login.html");
+            return ResBody.buildFailResBody(GlobalResponseCode.SYS_NO_LOGIN);
+        }
+
         // 收集错误日志
         collectionLog(request, e);
         return ResBody.buildFailResBody();
