@@ -3,13 +3,25 @@ package com.spring.simple.development.core.component.shiro.cas;
 import com.acl.support.auth.web.authz.DefaultBizAuthorizationSupporter;
 import com.acl.support.auth.web.mgt.DefaultBizWebSecurityManager;
 import com.acl.xauth.web.filter.XauthFilterFactoryBean;
+import com.spring.simple.development.core.handler.listener.SimpleApplicationListener;
+import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
+import org.jasig.cas.client.session.SingleSignOutFilter;
+import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import java.util.EnumSet;
 
 /**
  * @author liko.wang
@@ -17,10 +29,12 @@ import org.springframework.web.filter.DelegatingFilterProxy;
  * @Description shiro cas 实现
  **/
 @Configuration
-public class ShiroCasConfig {
+@ComponentScan(basePackages = "com.acl.support.auth.web.authz")
+public class ShiroCasConfig implements SimpleApplicationListener {
     public ShiroCasConfig() {
         System.out.println("shiro cas init");
     }
+
 
     @Bean
     public DelegatingFilterProxy getDelegatingFilterProxy() {
@@ -46,6 +60,25 @@ public class ShiroCasConfig {
 
     @Bean(value = "securityManager")
     public DefaultBizWebSecurityManager getDefaultBizWebSecurityManager() {
+
+        // CAS 监听器
+        AppInitializer.servletContext.addListener(SingleSignOutHttpSessionListener.class);
+
+        // shiro 过滤
+        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
+        delegatingFilterProxy.setTargetFilterLifecycle(true);
+        FilterRegistration.Dynamic shiroFilter = AppInitializer.servletContext.addFilter("shiroFilter", delegatingFilterProxy);
+        //配置mapping
+        //REQUEST：普通模式，来自客户端的请求,ASYNC:来自AsyncContext的异步请求
+        // false则是在web.xml定义的filter后代码设置的
+        shiroFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC), false, "/*");
+
+        // cas 过滤
+        FilterRegistration.Dynamic casFilter = AppInitializer.servletContext.addFilter("CAS Single Sign Out Filter", SingleSignOutFilter.class);
+        //配置mapping
+        casFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC), false, "/shiro-cas");
+
+
         DefaultBizWebSecurityManager defaultBizWebSecurityManager = new DefaultBizWebSecurityManager();
         defaultBizWebSecurityManager.setSkipAuthenticate(Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_SKIPAUTHENTICATE)));
         defaultBizWebSecurityManager.setSuccessUrl(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_SUCCESSURL));
@@ -57,15 +90,15 @@ public class ShiroCasConfig {
     }
 
     @Bean
-    public DefaultBizAuthorizationSupporter getDefaultBizAuthorizationSupporter() {
-        return new DefaultBizAuthorizationSupporter();
-    }
-
-    @Bean
     public MethodInvokingFactoryBean getMethodInvokingFactoryBean() {
         MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
         methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
         methodInvokingFactoryBean.setArguments(getDefaultBizWebSecurityManager());
         return methodInvokingFactoryBean;
+    }
+
+    @Override
+    public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
+
     }
 }
