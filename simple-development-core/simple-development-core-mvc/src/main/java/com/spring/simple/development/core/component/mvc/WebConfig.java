@@ -2,6 +2,8 @@ package com.spring.simple.development.core.component.mvc;
 
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
 import com.spring.simple.development.core.component.mvc.interceptor.ApiSupportInterceptor;
+import com.spring.simple.development.core.component.shiro.cas.ShiroCasInterceptor;
+import com.spring.simple.development.core.component.shiro.cas.ShiroLavaSupportInterceptor;
 import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
 import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -82,39 +84,25 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) rootContext.getAutowireCapableBeanFactory();
         // 默认拦截器
         String[] excludes = new String[5];
-        String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_SWAGGER_IS_ENABLE);
-        boolean isEnableSwaggerBoolean = Boolean.parseBoolean(isEnable);
-        // 启动swagger
-        if (isEnableSwaggerBoolean) {
-            excludes[0] = "/swagger-ui.html";
-            excludes[1] = "/webjars/**";
-            excludes[2] = "/swagger-resources";
-            excludes[3] = "/swagger-resources/configuration/ui";
-            excludes[4] = "/swagger-resources/configuration/security";
-        }
+        excludes[0] = "/swagger-ui.html";
+        excludes[1] = "/webjars/**";
+        excludes[2] = "/swagger-resources";
+        excludes[3] = "/swagger-resources/configuration/ui";
+        excludes[4] = "/swagger-resources/configuration/security";
 
         // 启动shiro
         try {
             boolean isEnableShiroCASBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
             if (isEnableShiroCASBoolean) {
-                // jar包解耦
-                Class<?> aClass = Class.forName("com.spring.simple.development.core.component.shiro.cas.ShiroCasInterceptor");
-                Class<?> shiroLavaaClass = Class.forName("com.spring.simple.development.core.component.shiro.cas.ShiroLavaSupportInterceptor");
-                Object shiroCasInterceptor = aClass.newInstance();
-                Object shiroLavaaClassnewInstance = shiroLavaaClass.newInstance();
-                // 拿到对应的class
-                Method methodBeanDefaultBizAuthenticationHandlerInterceptor = aClass.getMethod("getDefaultBizAuthenticationHandlerInterceptor", null);
-                Object beanDefaultBizAuthenticationHandlerInterceptor = methodBeanDefaultBizAuthenticationHandlerInterceptor.invoke(shiroCasInterceptor, null);
-
-                // 拿到对应的class
-                Method methodBeanAuthenticationHandlerInterceptor = aClass.getMethod("getAuthenticationHandlerInterceptor", null);
-                Object beanAuthenticationHandlerInterceptor = methodBeanAuthenticationHandlerInterceptor.invoke(shiroCasInterceptor, null);
 
                 // shiro-lava支持
-                registry.addInterceptor((HandlerInterceptor)shiroLavaaClassnewInstance);
+                registry.addInterceptor(new ShiroLavaSupportInterceptor()).addPathPatterns("/**").excludePathPatterns(excludes);
+
+                ShiroCasInterceptor shiroCasInterceptor = new ShiroCasInterceptor();
                 // 添加mvc拦截器
-                registry.addInterceptor((HandlerInterceptor) beanDefaultBizAuthenticationHandlerInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
-                registry.addInterceptor((HandlerInterceptor) beanAuthenticationHandlerInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
+                registry.addInterceptor(shiroCasInterceptor.getDefaultBizAuthenticationHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns(excludes);
+                registry.addInterceptor(shiroCasInterceptor.getAuthenticationHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns(excludes);
+                registry.addInterceptor((shiroCasInterceptor.getAuthorizationHandlerInterceptor())).addPathPatterns("/**").excludePathPatterns(excludes);
             }
         } catch (Exception e) {
             throw new RuntimeException("shiro cas interptor 加载失败");

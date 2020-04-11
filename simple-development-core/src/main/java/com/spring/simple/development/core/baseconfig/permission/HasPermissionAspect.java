@@ -3,6 +3,9 @@ package com.spring.simple.development.core.baseconfig.permission;
 import com.spring.simple.development.core.annotation.base.HasPermissions;
 import com.spring.simple.development.core.commonenum.Logical;
 import com.spring.simple.development.core.init.AppInitializer;
+import com.spring.simple.development.support.constant.SystemProperties;
+import com.spring.simple.development.support.exception.NoPermissionException;
+import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 
@@ -52,15 +56,30 @@ public class HasPermissionAspect {
         if (method.isAnnotationPresent(HasPermissions.class)) {
             HasPermissions hasPermissions = method.getAnnotation(HasPermissions.class);
 
-            String[] keys = hasPermissions.value();
-            Logical logical = hasPermissions.LOGICAL();
-            getHasPermissionService().checkPermission(keys, logical);
+
+            getHasPermissionService(hasPermissions);
         }
     }
 
-    private HasPermissionService getHasPermissionService() {
+    private void getHasPermissionService(HasPermissions hasPermissions)  {
+        // shiro优先
+        boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
+        if (isEnableBoolean) {
+            try {
+                Class<?> aClass = Class.forName("com.acl.xauth.web.interceptor.AuthorizationHandlerInterceptor");
+                Object o = aClass.newInstance();
+                Method simpleDoAuthorization = aClass.getMethod("simpleDoAuthorization", HasPermissions.class);
+                simpleDoAuthorization.invoke(o, hasPermissions);
+                return;
+            }catch (Exception e){
+                throw new NoPermissionException();
+            }
+        }
+        // 普通permission组件
+        String[] keys = hasPermissions.value();
+        Logical logical = hasPermissions.logical();
         if (hasPermissionService == null) {
-            if(AppInitializer.rootContext.containsBean("hasPermissionService") == false){
+            if (AppInitializer.rootContext.containsBean("hasPermissionService") == false) {
                 throw new RuntimeException("没有权限实现");
             }
             HasPermissionService hasPermissionServiceBean = AppInitializer.rootContext.getBean(HasPermissionService.class);
@@ -69,6 +88,6 @@ public class HasPermissionAspect {
             }
             hasPermissionService = hasPermissionServiceBean;
         }
-        return hasPermissionService;
+        hasPermissionService.checkPermission(keys, logical);
     }
 }

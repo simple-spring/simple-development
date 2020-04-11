@@ -12,7 +12,6 @@ import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -35,6 +34,15 @@ public class ShiroCasConfig implements SimpleApplicationListener {
         System.out.println("shiro cas init");
     }
 
+    @Bean
+    public DefaultBizAuthorizationSupporter getDefaultBizAuthorizationSupporter(){
+        return new DefaultBizAuthorizationSupporter();
+    }
+
+    @Bean
+    public ShiroLavaSupportInterceptor getShiroLavaSupportInterceptor() {
+        return new ShiroLavaSupportInterceptor();
+    }
 
     @Bean
     public DelegatingFilterProxy getDelegatingFilterProxy() {

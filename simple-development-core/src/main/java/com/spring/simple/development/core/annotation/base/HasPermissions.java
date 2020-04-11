@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 
 /**
  * 权限注解
- * 
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -17,13 +16,19 @@ public @interface HasPermissions {
 
     /**
      * 权限字符串集合
-     * 
+     *
      * @return
+     * @author liko.wang
+     * @date 2017年11月23日下午6:06:24
      */
-    String[] value() default { };
+    String[] value() default {};
 
     /**
-     * 逻辑关系
+     * 权限逻辑关系
+     *
+     * @return
+     * @author liko.wang
+     * @date 2017年11月23日下午6:06:30
      */
-    Logical LOGICAL() default Logical.Or;
+    Logical logical() default Logical.And;
 }

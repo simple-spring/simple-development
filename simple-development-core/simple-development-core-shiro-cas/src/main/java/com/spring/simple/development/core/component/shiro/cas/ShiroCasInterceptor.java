@@ -2,6 +2,7 @@ package com.spring.simple.development.core.component.shiro.cas;
 
 import com.acl.support.auth.web.interceptor.DefaultBizAuthenticationHandlerInterceptor;
 import com.acl.xauth.web.interceptor.AuthenticationHandlerInterceptor;
+import com.acl.xauth.web.interceptor.AuthorizationHandlerInterceptor;
 import com.spring.simple.development.core.init.AppInitializer;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -29,5 +30,14 @@ public class ShiroCasInterceptor {
         defaultListableBeanFactory.registerBeanDefinition(AuthenticationHandlerInterceptor.class.getSimpleName(), definitionBuilderAuthenticationHandlerInterceptor.getBeanDefinition());
         AuthenticationHandlerInterceptor beanAuthenticationHandlerInterceptor = (AuthenticationHandlerInterceptor) AppInitializer.rootContext.getBean(AuthenticationHandlerInterceptor.class.getSimpleName());
         return beanAuthenticationHandlerInterceptor;
+    }
+    public AuthorizationHandlerInterceptor getAuthorizationHandlerInterceptor() {
+        // 解决自定义拦截器中无法注入bean
+        //创建bean信息
+        BeanDefinitionBuilder definitionBuilderAuthorizationHandlerInterceptor = BeanDefinitionBuilder.genericBeanDefinition(AuthorizationHandlerInterceptor.class);
+        //动态注册bean
+        defaultListableBeanFactory.registerBeanDefinition(AuthorizationHandlerInterceptor.class.getSimpleName(), definitionBuilderAuthorizationHandlerInterceptor.getBeanDefinition());
+        AuthorizationHandlerInterceptor beanAuthorizationHandlerInterceptor = (AuthorizationHandlerInterceptor) AppInitializer.rootContext.getBean(AuthorizationHandlerInterceptor.class.getSimpleName());
+        return beanAuthorizationHandlerInterceptor;
     }
 }
