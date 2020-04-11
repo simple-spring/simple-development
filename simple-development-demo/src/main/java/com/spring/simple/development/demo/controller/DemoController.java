@@ -1,6 +1,7 @@
 package com.spring.simple.development.demo.controller;
 
 import com.jc.xauth.anno.authc.NoAuth;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,12 @@ public class DemoController {
     @NoAuth
     @RequestMapping("/noPermission")
     public String noPermission() {
+        return "noPermission";
+    }
+    @NoAuth
+    @RequestMapping("/tologin")
+    public String tologin(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        WebUtils.issueRedirect(request, response, "/login.do", null);
         return "noPermission";
     }
 }
