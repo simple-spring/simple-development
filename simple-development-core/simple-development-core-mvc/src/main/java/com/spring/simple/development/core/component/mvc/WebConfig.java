@@ -99,7 +99,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
             if (isEnableShiroCASBoolean) {
                 // jar包解耦
                 Class<?> aClass = Class.forName("com.spring.simple.development.core.component.shiro.cas.ShiroCasInterceptor");
+                Class<?> shiroLavaaClass = Class.forName("com.spring.simple.development.core.component.shiro.cas.ShiroLavaSupportInterceptor");
                 Object shiroCasInterceptor = aClass.newInstance();
+                Object shiroLavaaClassnewInstance = shiroLavaaClass.newInstance();
                 // 拿到对应的class
                 Method methodBeanDefaultBizAuthenticationHandlerInterceptor = aClass.getMethod("getDefaultBizAuthenticationHandlerInterceptor", null);
                 Object beanDefaultBizAuthenticationHandlerInterceptor = methodBeanDefaultBizAuthenticationHandlerInterceptor.invoke(shiroCasInterceptor, null);
@@ -108,6 +110,8 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
                 Method methodBeanAuthenticationHandlerInterceptor = aClass.getMethod("getAuthenticationHandlerInterceptor", null);
                 Object beanAuthenticationHandlerInterceptor = methodBeanAuthenticationHandlerInterceptor.invoke(shiroCasInterceptor, null);
 
+                // shiro-lava支持
+                registry.addInterceptor((HandlerInterceptor)shiroLavaaClassnewInstance);
                 // 添加mvc拦截器
                 registry.addInterceptor((HandlerInterceptor) beanDefaultBizAuthenticationHandlerInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
                 registry.addInterceptor((HandlerInterceptor) beanAuthenticationHandlerInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
