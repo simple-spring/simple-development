@@ -27,16 +27,10 @@
             <artifactId>simple-development-support</artifactId>
             <version>${simple.version}</version>
         </dependency>
-        <!--acl dubbo服务-->
-        <dependency>
-            <groupId>com.acl</groupId>
-            <artifactId>acl-user-support</artifactId>
-            <version>1.0</version>
-        </dependency>
         <!--  acl shiro cas      -->
         <dependency>
             <groupId>com.acl</groupId>
-            <artifactId>support-auth-web</artifactId>
+            <artifactId>acl-auth-support-web</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>
