@@ -44,7 +44,7 @@ public class DemoController {
     }
     @RequestMapping("/testPermission")
     public String testPermission(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        testDemoBo.getData();
+        testDemoBo.getData("1");
         return "testPermission";
     }
 }

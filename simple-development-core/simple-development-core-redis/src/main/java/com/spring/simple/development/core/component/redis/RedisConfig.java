@@ -1,20 +1,34 @@
 package com.spring.simple.development.core.component.redis;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.JedisPoolUtils;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * redis组件
  *
  * @author liko wang
  */
+@EnableCaching
 public class RedisConfig {
     private String host = PropertyConfigurer.getProperty("spring.simple.redisHost");
-    private String post = PropertyConfigurer.getProperty("spring.simple.redisPort");
+    private String port = PropertyConfigurer.getProperty("spring.simple.redisPort");
     private String pwd = PropertyConfigurer.getProperty("spring.simple.redisPwd");
     private Long maxTotal = Long.valueOf(PropertyConfigurer.getProperty("spring.simple.maxTotal"));
     private Long maxWaitMillis = Long.valueOf(PropertyConfigurer.getProperty("spring.simple.maxWaitMillis"));
@@ -24,13 +38,13 @@ public class RedisConfig {
     public RedisConfig() {
         System.out.println("redis initialized...");
         Assert.notNull(host, "redis host is empty");
-        Assert.notNull(post, "redis post is empty");
+        Assert.notNull(port, "redis post is empty");
         Assert.notNull(pwd, "redis pwd is empty");
         Assert.notNull(maxTotal, "redis maxTotal is empty");
         Assert.notNull(maxWaitMillis, "redis maxWaitMillis is empty");
         Assert.notNull(maxIdle, "redis maxIdle is empty");
         Assert.notNull(timeout, "redis timeout is empty");
-        init(host, post, pwd, maxTotal, maxWaitMillis, maxIdle, timeout);
+        init(host, port, pwd, maxTotal, maxWaitMillis, maxIdle, timeout);
         System.out.println("redis initialized successfully");
     }
 
@@ -66,4 +80,48 @@ public class RedisConfig {
         }
         System.out.println("redis Connection successful");
     }
+
+    @Bean(value = "simpleRedisConnectionFactory")
+    public JedisConnectionFactory getJedisConnectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+        jedisConnectionFactory.setUsePool(true);
+        jedisConnectionFactory.setHostName(host);
+        jedisConnectionFactory.setPort(Long.valueOf(port).intValue());
+        jedisConnectionFactory.setDatabase(0);
+        jedisConnectionFactory.setPassword(pwd);
+        jedisConnectionFactory.afterPropertiesSet();
+        return jedisConnectionFactory;
+    }
+
+    @Bean(value = "cacheRedisTemplate")
+    public RedisTemplate<String, String> getRedisTemplate(RedisConnectionFactory simpleRedisConnectionFactory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(simpleRedisConnectionFactory);
+
+        // 使用Jackson2JsonRedisSerialize 替换默认序列化(默认采用的是JDK序列化)
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+
+        redisTemplate.setKeySerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisCacheManager getRedisCacheManager(RedisTemplate cacheRedisTemplate) {
+        RedisCacheManager redisCacheManager = new RedisCacheManager(cacheRedisTemplate);
+        redisCacheManager.setUsePrefix(true);
+        redisCacheManager.setDefaultExpiration(3600);
+        Map<String, Long> expiresMap = new HashMap<>();
+        expiresMap.put("order", 600L);
+        redisCacheManager.setExpires(expiresMap);
+        redisCacheManager.afterPropertiesSet();
+        return redisCacheManager;
+    }
+
 }
