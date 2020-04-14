@@ -117,9 +117,6 @@ public class RedisConfig {
         RedisCacheManager redisCacheManager = new RedisCacheManager(cacheRedisTemplate);
         redisCacheManager.setUsePrefix(true);
         redisCacheManager.setDefaultExpiration(3600);
-        Map<String, Long> expiresMap = new HashMap<>();
-        expiresMap.put("order", 600L);
-        redisCacheManager.setExpires(expiresMap);
         redisCacheManager.afterPropertiesSet();
         return redisCacheManager;
     }
