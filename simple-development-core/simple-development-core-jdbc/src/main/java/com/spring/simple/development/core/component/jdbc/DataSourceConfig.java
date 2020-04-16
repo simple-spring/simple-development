@@ -2,6 +2,7 @@ package com.spring.simple.development.core.component.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.lava.privilege.PrivilegeInfo;
+import com.alibaba.lava.util.SpringUtil;
 import com.github.pagehelper.PageHelper;
 import com.spring.simple.development.core.baseconfig.datasource.DynamicDataSource;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -14,6 +15,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -37,12 +39,19 @@ import java.util.Properties;
  **/
 @Configuration
 public class DataSourceConfig {
+
+    @Bean
+    public SpringUtil getSpringUtil() {
+        return new SpringUtil();
+    }
     /**
      * lava用户对象
      * @return
      */
     @Bean(name = "lavaPvgInfo")
     public PrivilegeInfo privilegeInfo() {
+        PrivilegeInfo privilegeInfo = new PrivilegeInfo();
+        privilegeInfo.setAesKey("acl-auth-support-dubbo-service");
         return new PrivilegeInfo();
     }
 
