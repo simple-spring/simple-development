@@ -97,13 +97,13 @@ public class ShiroCasConfig implements SimpleApplicationListener {
         return defaultBizWebSecurityManager;
     }
 
-    @Bean
-    public MethodInvokingFactoryBean getMethodInvokingFactoryBean() {
-        MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
-        methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
-        methodInvokingFactoryBean.setArguments(getDefaultBizWebSecurityManager());
-        return methodInvokingFactoryBean;
-    }
+//    @Bean
+//    public MethodInvokingFactoryBean getMethodInvokingFactoryBean() {
+//        MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
+//        methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
+//        methodInvokingFactoryBean.setArguments(getDefaultBizWebSecurityManager());
+//        return methodInvokingFactoryBean;
+//    }
 
     @Override
     public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
