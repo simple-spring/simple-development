@@ -13,7 +13,7 @@ import redis.clients.jedis.JedisPoolConfig;
  *
  * @author liko wang
  */
-@EnableCaching
+//@EnableCaching
 public class RedisConfig {
     private String host = PropertyConfigurer.getProperty("spring.simple.redisHost");
     private String port = PropertyConfigurer.getProperty("spring.simple.redisPort");
