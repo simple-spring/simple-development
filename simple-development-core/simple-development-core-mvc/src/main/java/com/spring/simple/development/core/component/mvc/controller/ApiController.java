@@ -82,6 +82,9 @@ public class ApiController {
             // 解析
             if (!StringUtils.isEmpty(paramJson)) {
                 MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+                if(methodParams == null){
+                    throw new GlobalException(SERVICE_NOT_EXIST);
+                }
                 Object paramData = getParamData(methodParams.getMethodClass()[0], paramJson);
                 Map<String, Object> paramsMap = new HashMap<>();
                 paramsMap.put(methodParams.getKey()[0], paramData);
@@ -131,6 +134,9 @@ public class ApiController {
             // 解析
             if (!StringUtils.isEmpty(paramJson)) {
                 MethodParams methodParams = ServerFactory.serviceMethodMap.get(serviceName + "-" + methodName);
+                if(methodParams == null){
+                    throw new GlobalException(SERVICE_NOT_EXIST);
+                }
                 Object paramData = getParamData(methodParams.getMethodClass()[0], paramJson);
                 Map<String, Object> paramsMap = new HashMap<>();
                 paramsMap.put(methodParams.getKey()[0], paramData);
