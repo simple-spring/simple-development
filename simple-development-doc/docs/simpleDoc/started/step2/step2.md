@@ -1,12 +1,12 @@
 #### 1.添加私库仓库
-    项目未开源,请添加我公司的私库: http://nexus.diangc.cn:8091/nexus/content/groups/public
+    项目未开源,请添加我公司的私库: http://47.115.89.120:8081/nexus/content/groups/public
 ```
     <!--添加simple-spring仓库 -->
     <repositories>
         <repository>
             <id>simple-spring</id>
             <name>simple-spring</name>
-            <url>http://nexus.diangc.cn:8091/nexus/content/groups/public/</url>
+            <url>http://47.115.89.120:8081/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

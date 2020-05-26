@@ -76,12 +76,12 @@
         <repository>
             <id>manila.releases</id>
             <name>Internal Releases</name>
-            <url>http://nexus.diangc.cn:8091/nexus/content/repositories/releases/</url>
+            <url>http://47.115.89.120:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>manila.Snapshots</id>
             <name>Internal Snapshots</name>
-            <url>http://nexus.diangc.cn:8091/nexus/content/repositories/snapshots/</url>
+            <url>http://47.115.89.120:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
