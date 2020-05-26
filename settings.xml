@@ -122,7 +122,7 @@ under the License.
             <id>nexus</id>
             <mirrorOf>central</mirrorOf>
             <name>manila Nexus Mirror</name>
-            <url>http://47.115.89.120:8081/nexus//nexus/content/groups/public/</url>
+            <url>http://47.115.89.120:8081/nexus/content/groups/public/</url>
         </mirror>
         <mirror>
             <id>alimaven</id>
@@ -137,7 +137,7 @@ under the License.
             <repositories>
                 <repository>
                     <id>central</id>
-                    <url>http://47.115.89.120:8081/nexus//nexus/content/groups/public/</url>
+                    <url>http://47.115.89.120:8081/nexus/content/groups/public/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -149,7 +149,7 @@ under the License.
             <pluginRepositories>
                 <pluginRepository>
                     <id>central</id>
-                    <url>http://47.115.89.120:8081/nexus//nexus/content/groups/public/</url>
+                    <url>http://47.115.89.120:8081/nexus/content/groups/public/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
