@@ -22,9 +22,11 @@
         <module>simple-development-core/simple-development-core-valid</module>
         <module>simple-development-core/simple-development-core-cassandra</module>
         <module>simple-development-core/simple-development-core-shiro-cas</module>
+        <module>simple-development-core/simple-development-core-mongodb</module>
         <module>simple-development-support</module>
         <module>simple-development-generator</module>
         <module>simple-development-build</module>
+
     </modules>
     <url>https://github.com/likowong/spring-simple.git</url>
     <properties>
