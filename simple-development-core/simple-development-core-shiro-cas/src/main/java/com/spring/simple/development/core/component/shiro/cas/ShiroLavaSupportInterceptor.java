@@ -46,7 +46,7 @@ public class ShiroLavaSupportInterceptor implements HandlerInterceptor {
         // 获取用户对象
         PrivilegeInfo sessionPrivilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
         // 通过
-        sessionPrivilegeInfo.setUserId(currentAccount.getId());
+        sessionPrivilegeInfo.setUserId(currentAccount.getAccountCode());
         sessionPrivilegeInfo.setOpenAccount(currentAccount.getAccountCode());
         return true;
     }
