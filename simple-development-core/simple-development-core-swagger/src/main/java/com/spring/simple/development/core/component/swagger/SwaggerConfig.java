@@ -227,7 +227,7 @@ public class SwaggerConfig {
                         codeGenerationMethodParams.setApiImplicitParamValue(apiImplicitParam.description());
                         codeGenerationMethodParams.setApiImplicitParamDataType(apiImplicitParam.dataType());
                         Class aClass = apiImplicitParam.resultDataType();
-                        Class pageClass = apiImplicitParam.PageResultDataType();
+                        Class pageClass = apiImplicitParam.pageResultDataType();
                         codeGenerationMethodParams.setResultDataType(aClass.getSimpleName());
                         codeGenerationMethodParams.setPageResultDataType(pageClass.getSimpleName());
                         String resultPackagePath = aClass.getPackage().getName() + "." + aClass.getSimpleName() + ";";

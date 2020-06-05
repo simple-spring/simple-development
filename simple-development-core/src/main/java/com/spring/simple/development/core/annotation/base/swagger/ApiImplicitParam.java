@@ -58,6 +58,6 @@ public @interface ApiImplicitParam {
      * 分页返回值类型，默认String
      * @return
      */
-    Class PageResultDataType() default Object.class;
+    Class pageResultDataType() default Object.class;
 
 }
