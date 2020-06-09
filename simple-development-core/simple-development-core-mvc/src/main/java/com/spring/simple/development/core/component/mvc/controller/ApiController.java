@@ -3,7 +3,7 @@ package com.spring.simple.development.core.component.mvc.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.lava.privilege.PrivilegeInfo;
 import com.spring.simple.development.core.annotation.base.NoLogin;
-import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
+import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
 import com.spring.simple.development.core.baseconfig.isapiservice.MethodParams;
 import com.spring.simple.development.core.baseconfig.isapiservice.ServerFactory;
 import com.spring.simple.development.core.baseconfig.isapiservice.ServiceInvoke;
@@ -169,11 +169,11 @@ public class ApiController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
     public ResBody privilegeInfoLogin(@ApiParam("用户登录接口请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
-        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+        if (SimpleContentApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
-        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        SimpleSessionProfile simpleSessionProfile = SimpleContentApplication.getBeanByType(SimpleSessionProfile.class);
         if (simpleSessionProfile == null) {
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
@@ -193,11 +193,11 @@ public class ApiController {
     @RequestMapping(value = {"/logout"}, method = RequestMethod.POST)
     public ResBody privilegeInfoLogout(@ApiParam("用户注销接口请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
-        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+        if (SimpleContentApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
-        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        SimpleSessionProfile simpleSessionProfile = SimpleContentApplication.getBeanByType(SimpleSessionProfile.class);
         if (simpleSessionProfile == null) {
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
@@ -217,11 +217,11 @@ public class ApiController {
     @RequestMapping(value = {"/getUser"}, method = RequestMethod.POST)
     public ResBody privilegeInfoGetUser(@ApiParam("获取用户信息请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
-        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+        if (SimpleContentApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
             throw new GlobalException(SERVICE_NOT_EXIST);
         }
-        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        SimpleSessionProfile simpleSessionProfile = SimpleContentApplication.getBeanByType(SimpleSessionProfile.class);
         if (simpleSessionProfile == null) {
             throw new GlobalException(SERVICE_NOT_EXIST);
         }

@@ -5,7 +5,7 @@ import com.spring.simple.development.core.annotation.base.NoLogin;
 import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandler;
 import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
 import com.spring.simple.development.core.component.mvc.BaseSupport;
-import com.spring.simple.development.core.baseconfig.context.SimpleApplication;
+import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.exception.ResponseCode;
@@ -54,11 +54,11 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
             }
         }
         // 获取已实现的接口
-        if (SimpleApplication.isExistBean("simpleSessionProfile") == false) {
+        if (SimpleContentApplication.isExistBean("simpleSessionProfile") == false) {
             // 未实现接口
             return true;
         }
-        SimpleSessionProfile simpleSessionProfile = SimpleApplication.getBeanByType(SimpleSessionProfile.class);
+        SimpleSessionProfile simpleSessionProfile = SimpleContentApplication.getBeanByType(SimpleSessionProfile.class);
         if (simpleSessionProfile == null) {
             // 未实现接口
             return true;
@@ -70,9 +70,9 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
             throw new GlobalException(ResponseCode.RES_DATA_EXIST, "用戶不存在");
         }
         // 获取基础工具
-        BaseSupport baseSupport = SimpleApplication.getBeanByType(BaseSupport.class);
+        BaseSupport baseSupport = SimpleContentApplication.getBeanByType(BaseSupport.class);
         // 获取用户对象
-        PrivilegeInfo sessionPrivilegeInfo = SimpleApplication.getBeanByType(PrivilegeInfo.class);
+        PrivilegeInfo sessionPrivilegeInfo = SimpleContentApplication.getBeanByType(PrivilegeInfo.class);
         // 赋值
         baseSupport.copyObject(privilegeInfo, sessionPrivilegeInfo);
         // 通过

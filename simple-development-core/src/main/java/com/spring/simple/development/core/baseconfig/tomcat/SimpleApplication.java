@@ -95,6 +95,28 @@ public class SimpleApplication {
         }
 
     }
+    public void startTest() {
+        try {
+            long begin = System.currentTimeMillis();
+            Tomcat tomcat = new Tomcat();
+            configTomcat(tomcat);
+            tomcat.start();
+            long end = System.currentTimeMillis();
+            log(end - begin);
+            System.out.println("\n" +
+                    "                 _                   _                 _                       _ \n" +
+                    "                (_)                 (_)               | |                     | |\n" +
+                    "  ___ _ __  _ __ _ _ __   __ _   ___ _ _ __ ___  _ __ | | ___    ___ _ __   __| |\n" +
+                    " / __| '_ \\| '__| | '_ \\ / _` | / __| | '_ ` _ \\| '_ \\| |/ _ \\  / _ \\ '_ \\ / _` |\n" +
+                    " \\__ \\ |_) | |  | | | | | (_| | \\__ \\ | | | | | | |_) | |  __/ |  __/ | | | (_| |\n" +
+                    " |___/ .__/|_|  |_|_| |_|\\__, | |___/_|_| |_| |_| .__/|_|\\___|  \\___|_| |_|\\__,_|\n" +
+                    "     | |                  __/ |                 | |                              \n" +
+                    "     |_|                 |___/                  |_|                              \n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void configTomcat(final Tomcat tomcat) throws ServletException {
         tomcat.setBaseDir("target");
@@ -180,6 +202,51 @@ public class SimpleApplication {
         SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
         tomcatTest.setProjectName(PropertyConfigurer.getProperty("server.path"));
         tomcatTest.start();
+    }
+
+    public static void runTest(Class appClass) {
+        String banner = "              (_)                 (_)               | |      | |          | |  \n" +
+                " ___ _ __  _ __ _ _ __   __ _   ___ _ _ __ ___  _ __ | | ___  | |_ ___  ___| |_ \n" +
+                "/ __| '_ \\| '__| | '_ \\ / _` | / __| | '_ ` _ \\| '_ \\| |/ _ \\ | __/ _ \\/ __| __|\n" +
+                "\\__ \\ |_) | |  | | | | | (_| | \\__ \\ | | | | | | |_) | |  __/ | ||  __/\\__ \\ |_ \n" +
+                "|___/ .__/|_|  |_|_| |_|\\__, | |___/_|_| |_| |_| .__/|_|\\___|  \\__\\___||___/\\__|\n" +
+                "    | |                  __/ |                 | |                              \n" +
+                "    |_|                 |___/                  |_|                            ";
+
+        System.out.println(banner);
+        // check system properties
+        Annotation[] annotations = appClass.getAnnotations();
+        if (annotations.length == 0) {
+            return;
+        }
+        Boolean isBaseConfig = false;
+        for (Annotation annotation : annotations) {
+            AppInitializer.annotationSet.add(annotation);
+            if (annotation instanceof com.spring.simple.development.core.annotation.config.SpringSimpleApplication) {
+                com.spring.simple.development.core.annotation.config.SpringSimpleApplication springSimpleApplication = (com.spring.simple.development.core.annotation.config.SpringSimpleApplication) annotation;
+                // 启动类名
+                System.setProperty(SystemProperties.SPRING_APPLICATION_CLASS_NAME, appClass.getName());
+                // 应用名
+                System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME, springSimpleApplication.applicationName());
+                // 系统包名
+                if (StringUtils.isEmpty(springSimpleApplication.appPackagePathName())) {
+                    System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME, appClass.getPackage().getName());
+                } else {
+                    System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME, springSimpleApplication.appPackagePathName());
+                }
+                isBaseConfig = true;
+            }
+        }
+        // 是否有基础组件
+        if (!isBaseConfig) {
+            throw new RuntimeException(" no SpringSimpleApplication Component");
+        }
+        // 读取项目配置文件
+        PropertyConfigurer.loadApplicationProperties("application.properties");
+        String port = PropertyConfigurer.getProperty("server.port");
+        SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
+        tomcatTest.setProjectName(PropertyConfigurer.getProperty("server.path"));
+        tomcatTest.startTest();
     }
 
     public boolean isWindows() {

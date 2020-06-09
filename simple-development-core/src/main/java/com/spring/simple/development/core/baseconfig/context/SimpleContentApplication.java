@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
  * @DESCRIPTION 程序初始化
  */
 @Component
-public class SimpleApplication implements ApplicationContextAware {
+public class SimpleContentApplication implements ApplicationContextAware {
 
-    private static Logger logger = LogManager.getLogger(SimpleApplication.class);
+    private static Logger logger = LogManager.getLogger(SimpleContentApplication.class);
 
     private static ApplicationContext applicationContext;
 
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SimpleApplication.applicationContext = applicationContext;
+        SimpleContentApplication.applicationContext = applicationContext;
     }
 
     /**

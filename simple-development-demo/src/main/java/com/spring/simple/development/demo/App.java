@@ -3,6 +3,9 @@ package com.spring.simple.development.demo;
 
 import com.spring.simple.development.core.annotation.config.*;
 import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
+import com.spring.simple.development.demo.service.TestDemoBo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.testng.annotations.Test;
 
 /**
  * @author liko.wang
@@ -20,7 +23,12 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 //@EnableShiroCas
 @SpringSimpleApplication
 public class App {
-    public static void main(String[] args) {
-        SimpleApplication.run(App.class);
+    @Autowired
+    private TestDemoBo testDemoBo;
+
+    @Test
+    public void test() {
+        SimpleApplication.runTest(App.class);
+        testDemoBo.getData("1");
     }
 }
