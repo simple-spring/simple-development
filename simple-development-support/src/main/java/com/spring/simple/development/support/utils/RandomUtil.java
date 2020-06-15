@@ -1,6 +1,6 @@
 package com.spring.simple.development.support.utils;
 
-import java.util.Random;
+import java.util.*;
 
 /**
  * desc:    随机数工具类
@@ -50,6 +50,21 @@ public class RandomUtil {
         INT,
         STRING,
         ALL
+    }
+
+    /**
+     * @return java.util.List<java.lang.String>
+     * @Author luke
+     * @Description 获取批量的随机数
+     * @Date 11:17 2020/6/15 0015
+     * @Param [length, number]
+     **/
+    public static List<String> randoms(int length, int number,RndType rndType) {
+        Set<String> randoms = new HashSet<>();
+        for (int i = 0; i < number; i++) {
+            randoms.add(random(length, rndType));
+        }
+        return new ArrayList<>(randoms);
     }
 
 }
