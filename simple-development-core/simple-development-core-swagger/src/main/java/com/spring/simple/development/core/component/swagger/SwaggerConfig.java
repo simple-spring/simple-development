@@ -181,6 +181,12 @@ public class SwaggerConfig {
                 CodeGenerationMethodParams codeGenerationMethodParams = new CodeGenerationMethodParams();
 
                 String methodName = method.getName();
+                // lamda表达式兼容
+                if (methodName.contains("$")) {
+                    int start = methodName.indexOf("$");
+                    int end = methodName.lastIndexOf("$");
+                    methodName = methodName.substring(start + 1, end);
+                }
                 IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
                 if (isApiMethodService != null) {
                     String defaultMethodValue = isApiMethodService.value();
@@ -242,7 +248,7 @@ public class SwaggerConfig {
                         Package aPackage = parameterTypes[0].getPackage();
                         String name = aPackage.getName() + "." + parameterTypes[0].getSimpleName() + ";";
                         codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + name);
-                    }else{
+                    } else {
                         codeGenerationMethodParams.setRequestBodyType(" ");
                         codeGenerationMethodParams.setRequestBodyName(" ");
                     }
