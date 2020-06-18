@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -15,10 +16,12 @@ import java.util.List;
 @ApiModel(description = "分页对象")
 public class Pager<T> {
 
-    @ApiModelProperty(value = "页数",example = "1")
+    @ApiModelProperty(value = "页数", example = "1")
+    @NotNull(message = "分页参数不能为空")
     private int pageNo;
 
-    @ApiModelProperty(value = "记录总数",example = "15")
+    @ApiModelProperty(value = "记录总数", example = "15")
+    @NotNull(message = "分页参数不能为空")
     private int total;
 
     /**
@@ -26,7 +29,7 @@ public class Pager<T> {
      */
     private List<T> data;
 
-    @ApiModelProperty(value = "每页展示数",example = "15")
+    @ApiModelProperty(value = "每页展示数", example = "15")
     private int limit = 15;
 
     public int getStart() {
