@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.spring.simple.development.core.component.mvc.page.ReqPageDTO;
 import com.spring.simple.development.core.component.mvc.page.ResPageDTO;
 import com.spring.simple.development.core.component.mvc.req.ReqBody;
+import com.spring.simple.development.core.component.mvc.utils.Pager;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.PoJoCopyUtils;
 import org.apache.log4j.LogManager;
@@ -58,6 +59,19 @@ public class BaseSupport {
         resPageDTO.setList(listCopy(pageInfo.getList(), destinationClass));
         return resPageDTO;
     }
+
+    public <T> ResPageDTO<T> pagerCopy(Pager pager, Class<T> destinationClass) {
+        if (pager == null) {
+            return null;
+        }
+        ResPageDTO<T> resPageDTO = new ResPageDTO<T>();
+        resPageDTO.setPageNum(pager.getPageNo());
+        resPageDTO.setPageSize(pager.getLimit());
+        resPageDTO.setTotalCount(pager.getTotal());
+        resPageDTO.setList(listCopy(pager.getData(), destinationClass));
+        return resPageDTO;
+    }
+
 
     /**
      * 设置已存在对象全量信息
