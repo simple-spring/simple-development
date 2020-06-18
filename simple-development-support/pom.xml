@@ -203,6 +203,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.47</version>
         </dependency>
+        <!--异常基础包-->
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-exception</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
     <build>
