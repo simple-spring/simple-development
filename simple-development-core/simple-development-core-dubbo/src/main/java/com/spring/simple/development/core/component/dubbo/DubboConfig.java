@@ -57,6 +57,7 @@ public class DubboConfig {
     public ProviderConfig providerConfig() {
         ProviderConfig providerConfig = new ProviderConfig();
         providerConfig.setTimeout(10000);
+        providerConfig.setFilter("springDubboExceptionFilter");
         return providerConfig;
     }
 

@@ -10,6 +10,10 @@ import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Assert;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,16 +41,42 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
             List<String> dubboPackageNames = new ArrayList<>();
             // 启动shiro
             boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
-            if(isEnableBoolean){
+            if (isEnableBoolean) {
                 dubboPackageNames.add("com.acl.support.auth.web.authz");
                 dubboPackageNames.add("com.acl.support.auth.web.interceptor");
             }
             dubboPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
+            // 添加自定义拦截器spi文件
+            createDubboFilter();
             Class<?> dubboClass = Class.forName("com.spring.simple.development.core.component.dubbo.DubboConfig");
             Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", dubboPackageNames, "basePackages");
             return dubboConfig;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);
         }
+    }
+
+    private void createDubboFilter() throws IOException {
+        String path = this.getClass().getClassLoader().getResource("").getPath();
+        File resourceFile = new File(path);
+        if (resourceFile.exists() == false) {
+            throw new RuntimeException("createDubboFilter file failed");
+        }
+        File filterFile = new File(path + "/META-INF/dubbo/com.alibaba.dubbo.rpc.Filter");
+        if (filterFile.exists()) {
+            return;
+        }
+        File metaInfFile = new File(path + "/META-INF");
+        if (metaInfFile.exists() == false) {
+            metaInfFile.mkdirs();
+        }
+        File dubboFile = new File(path + "/META-INF/dubbo");
+        if (dubboFile.exists() == false) {
+            dubboFile.mkdirs();
+        }
+        BufferedWriter out = new BufferedWriter(new FileWriter(path + "/META-INF/dubbo/com.alibaba.dubbo.rpc.Filter"));
+        out.write("springDubboExceptionFilter=com.spring.simple.development.core.component.dubbo.SpringSimpleDubboExceptionFilter");
+        out.close();
+
     }
 }
