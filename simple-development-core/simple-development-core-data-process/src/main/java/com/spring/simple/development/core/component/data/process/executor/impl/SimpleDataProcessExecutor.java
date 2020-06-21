@@ -6,7 +6,6 @@ import com.spring.simple.development.core.component.data.process.annotation.inte
 import com.spring.simple.development.core.component.data.process.executor.DataProcessExecutor;
 import com.spring.simple.development.core.component.data.process.executor.mapper.SimpleMapper;
 import com.spring.simple.development.core.component.data.process.extension.common.utils.StringUtils;
-import com.spring.simple.development.core.component.mvc.BaseSupport;
 import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.utils.DeclaredFieldsUtil;
 
@@ -28,9 +27,9 @@ public class SimpleDataProcessExecutor implements DataProcessExecutor {
             String sql = "";
             Field[] fields = dpaClass.getDeclaredFields();
             if (fields == null) {
-                sql = "select id as id,create_time as createTime,create_owner as createOwner,account_code as accountCode from " + simpleDpo.tableName();
+                sql = "select channelname,channelcode,channeltype,creditcode,legalname from " + simpleDpo.tableName();
             } else {
-                sql = "select id as id,create_time as createTime,create_owner as createOwner,account_code as accountCode from " + simpleDpo.tableName() + " where 1=1 ";
+                sql = "select channelname,channelcode,channeltype,creditcode,legalname from " + simpleDpo.tableName() + " where 1=1 ";
                 for (Field field : fields) {
                     Condition annotation = field.getAnnotation(Condition.class);
                     if (annotation != null) {

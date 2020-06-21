@@ -18,14 +18,14 @@ import java.util.Properties;
 
 /**
  * 动态设置 MyBatis 返回值类型，该拦截器需要配置在第一个
- *
+ * <p>
  * 在写接口方法或者用Map传参数时，需要有一个key=resultType的值，类型可以是Class或者类的全限定名称字符串
- *
+ * <p>
  * 接口如：Object selectById(@Param("id")Long id, @Param("resultType")String resultType);
  * 接口如：Object selectById(@Param("id")Long id, @Param("resultType")Class resultType);
- *
+ * <p>
  * 调用方法参考：City city = (City) mapper.selectById(1L, City.class);
- *
+ * <p>
  * 插件提供一个resultType属性，可以修改默认的key的名称
  *
  * @author liuzh
@@ -41,11 +41,15 @@ public class ResultTypeInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        // 只有数据转换mapper动态修改返回类型
+        if (!((MappedStatement) invocation.getArgs()[0]).getId().equals("com.spring.simple.development.core.component.data.process.executor.mapper.SimpleMapper.executorSql")) {
+            return invocation.proceed();
+        }
         final Object[] args = invocation.getArgs();
         MappedStatement ms = (MappedStatement) args[0];
         Object parameterObject = args[1];
         Class resultType = getResultType(parameterObject);
-        if(resultType == null){
+        if (resultType == null) {
             return invocation.proceed();
         }
         //复制ms，重设类型
@@ -88,7 +92,7 @@ public class ResultTypeInterceptor implements Interceptor {
         return builder.build();
     }
 
-    private String getShortName(Class clazz){
+    private String getShortName(Class clazz) {
         String className = clazz.getCanonicalName();
         return className.substring(className.lastIndexOf(".") + 1);
     }
@@ -99,15 +103,15 @@ public class ResultTypeInterceptor implements Interceptor {
      * @param parameterObject
      * @return
      */
-    private Class getResultType(Object parameterObject){
+    private Class getResultType(Object parameterObject) {
         if (parameterObject == null) {
             return null;
         } else if (parameterObject instanceof Class) {
-            return (Class)parameterObject;
+            return (Class) parameterObject;
         } else if (parameterObject instanceof Map) {
             //解决不可变Map的情况
-            if(((Map)(parameterObject)).containsKey(resultType)){
-                Object result = ((Map)(parameterObject)).get(resultType);
+            if (((Map) (parameterObject)).containsKey(resultType)) {
+                Object result = ((Map) (parameterObject)).get(resultType);
                 return objectToClass(result);
             } else {
                 return null;
@@ -125,15 +129,15 @@ public class ResultTypeInterceptor implements Interceptor {
      * @param object
      * @return
      */
-    private Class objectToClass(Object object){
-        if(object == null){
+    private Class objectToClass(Object object) {
+        if (object == null) {
             return null;
-        } else if(object instanceof Class){
-            return (Class)object;
-        } else if(object instanceof String){
+        } else if (object instanceof Class) {
+            return (Class) object;
+        } else if (object instanceof String) {
             try {
-                return Class.forName((String)object);
-            } catch (Exception e){
+                return Class.forName((String) object);
+            } catch (Exception e) {
                 throw new RuntimeException("非法的全限定类名字符串:" + object);
             }
         } else {
@@ -149,7 +153,7 @@ public class ResultTypeInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
         String resultType = properties.getProperty("resultType");
-        if(resultType != null && resultType.length() > 0){
+        if (resultType != null && resultType.length() > 0) {
             this.resultType = resultType;
         }
     }

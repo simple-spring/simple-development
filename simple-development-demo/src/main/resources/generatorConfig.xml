@@ -25,7 +25,7 @@
 
         <!-- 配置连接数据信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/acl?characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/insurance?characterEncoding=utf8"
                         userId="root" password="123456">
         </jdbcConnection>
 
@@ -49,16 +49,16 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="tt_sso_account" domainObjectName="AccountDo">
+        <table tableName="t_channel" domainObjectName="ChannelDo">
             <property name="stateAction" value="false"/>
             <property name="boPackage" value="com.spring.simple.development.demo.service"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <ignoreColumn   column="ID" />
-            <ignoreColumn 	 column="GMT_CREATE" />
-            <ignoreColumn 	 column="CREATOR" />
-            <ignoreColumn 	 column="GMT_MODIFIED" />
-            <ignoreColumn   column="MODIFIER" />
-            <ignoreColumn   column="IS_DELETED" />
+            <ignoreColumn 	column="gmt_create" />
+            <ignoreColumn 	column="creator" />
+            <ignoreColumn 	column="gmt_modified" />
+            <ignoreColumn   column="modifier" />
+            <ignoreColumn   column="is_deleted" />
         </table>
     </context>
 </generatorConfiguration>
