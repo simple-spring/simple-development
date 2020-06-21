@@ -15,7 +15,6 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -44,8 +43,10 @@ public class DataSourceConfig {
     public SpringUtil getSpringUtil() {
         return new SpringUtil();
     }
+
     /**
      * lava用户对象
+     *
      * @return
      */
     @Bean(name = "lavaPvgInfo")
@@ -124,8 +125,13 @@ public class DataSourceConfig {
         sqlSessionFactoryBean.setDataSource(dynamicDataSource());
         sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_XML_PATH)));
         sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MODEL_PATH));
-        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
-
+        // 是否打开数据转换工具
+        boolean isEnableDataPrecess = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_DATA_PROCESS));
+        if (isEnableDataPrecess) {
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper(), new ResultTypeInterceptor()});
+        } else {
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
+        }
         Properties properties = new Properties();
         properties.setProperty("Oracle", "oracle");
         properties.setProperty("MySQL", "mysql");

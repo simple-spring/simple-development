@@ -1,0 +1,2 @@
+adaptive=com.spring.simple.development.core.component.data.process.extension.factory.AdaptiveExtensionFactory
+spi=com.spring.simple.development.core.component.data.process.extension.factory.SpiExtensionFactory

@@ -3,9 +3,6 @@ package com.spring.simple.development.demo;
 
 import com.spring.simple.development.core.annotation.config.*;
 import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
-import com.spring.simple.development.demo.service.TestDemoBo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.annotations.Test;
 
 /**
  * @author liko.wang
@@ -16,19 +13,14 @@ import org.testng.annotations.Test;
 //@EnableXxlJob
 @EnableSwagger
 @EnableMybatis
-@EnableRedis
+//@EnableRedis
 @EnableWebMvc
 //@EnableDubbo
 //@EnableCassandra
 //@EnableShiroCas
 @SpringSimpleApplication
 public class App {
-    @Autowired
-    private TestDemoBo testDemoBo;
-
-    @Test
-    public void test() {
-        SimpleApplication.runTest(App.class);
-        testDemoBo.getData("1");
+    public static void main(String[] args) {
+        SimpleApplication.run(App.class);
     }
 }

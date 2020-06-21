@@ -54,6 +54,11 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
             // 添加DataSourceConfig MapperScan扫描包的路径
             List<String> mapperPackageNames = new ArrayList<>();
             mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_PATH));
+            // 是否打开数据转换工具
+            boolean isEnableDataPrecess = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_DATA_PROCESS));
+            if (isEnableDataPrecess) {
+                mapperPackageNames.add("com.spring.simple.development.core.component.data.process.executor.mapper");
+            }
             Class<?> targetClass = Class.forName("com.spring.simple.development.core.component.jdbc.DataSourceConfig");
             Class dataSourceConfigClass = ClassLoadUtil.javassistCompile(targetClass, "org.mybatis.spring.annotation.MapperScan", mapperPackageNames, "basePackages");
             return dataSourceConfigClass;

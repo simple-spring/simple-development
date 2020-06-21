@@ -48,6 +48,7 @@ public class SystemProperties {
     public static final String APPLICATION_MYBATIS_CONFIG_MODEL_PATH = "spring.simple.mybatis.modelPath";
     public static final String APPLICATION_MYBATIS_CONFIG_MAPPER_XML_PATH = "spring.simple.mybatis.mapperXmlPath";
     public static final String APPLICATION_MYBATIS_CONFIG_EXPRESSION = "spring.simple.mybatis.expression";
+    public static final String APPLICATION_MYBATIS_CONFIG_DATA_PROCESS = "spring.simple.mybatis.data.process";
 
     /**
      * dubbo组件
