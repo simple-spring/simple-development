@@ -22,6 +22,10 @@ public class SimpleDataProcessExecutor implements DataProcessExecutor {
 
     @Override
     public Object invoke(Class dpaClass, SimpleDpo simpleDpo) {
+        // 场景收集
+        //1，包装dpo 自定义sql
+        //2,拿到数据源
+        //3.数据处理()
 
         try {
             String sql = "";

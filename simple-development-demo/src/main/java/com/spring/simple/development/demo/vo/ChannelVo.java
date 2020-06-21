@@ -1,6 +1,8 @@
 package com.spring.simple.development.demo.vo;
 
+import com.spring.simple.development.core.component.data.process.annotation.external.Condition;
 import com.spring.simple.development.core.component.data.process.annotation.external.SimpleDpo;
+import com.spring.simple.development.core.component.data.process.enums.ConditionTypeEnum;
 import com.spring.simple.development.core.component.data.process.enums.OperateTypeEnum;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -20,7 +22,7 @@ public class ChannelVo {
     /**
      * 用户名称
      */
-    //@Condition(ConditionType = ConditionTypeEnum.AND)
+    @Condition(ConditionType = ConditionTypeEnum.AND)
     private String channelname;
 
     /**

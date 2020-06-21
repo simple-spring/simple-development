@@ -36,6 +36,10 @@ public class ChannelBoImpl extends AbstractLavaBoImpl<ChannelDo, ChannelDoMapper
 
     @Override
     public ChannelVo getOneData() {
+        ChannelDoExample channelDoExample = new ChannelDoExample();
+        ChannelDo channelDo = this.mapper.selectByPrimaryKey(1L);
+        this.delete(1L);
+        this.update(channelDo);
         return baseSupport.objectCopy(this.mapper.selectByPrimaryKey(1L), ChannelVo.class);
     }
 }
