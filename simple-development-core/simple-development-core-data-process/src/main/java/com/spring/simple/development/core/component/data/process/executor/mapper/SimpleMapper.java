@@ -10,15 +10,16 @@ import java.util.List;
 /**
  * @author Administrator
  */
-public interface SimpleMapper {
+public interface SimpleMapper<T> {
     /**
      * 执行查询sql
      *
      * @param sql
+     * @param resultType
      * @return
      */
     @Select("${sql}")
-    List<Object> executorSql(@Param("sql") String sql, @Param("resultType") Class resultType);
+    List<T> executorSql(@Param("sql") String sql, @Param("resultType") T resultType);
 
     /**
      * 执行更新and删除sql

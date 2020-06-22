@@ -18,6 +18,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 //@EnableDubbo
 //@EnableCassandra
 //@EnableShiroCas
+@EnableDataProcess
 @SpringSimpleApplication
 public class App {
     public static void main(String[] args) {

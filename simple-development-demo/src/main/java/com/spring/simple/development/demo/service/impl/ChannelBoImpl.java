@@ -27,10 +27,12 @@ public class ChannelBoImpl extends AbstractLavaBoImpl<ChannelDo, ChannelDoMapper
 
     @Autowired
     private BaseSupport baseSupport;
+    @Autowired
+    private DataProcessHelper dataProcessHelper;
 
     @Override
     public List<ChannelVo> getData(ChannelVo channelVo) {
-        List<ChannelDo> executor = (List<ChannelDo>) DataProcessHelper.executor(channelVo.getClass());
+        List<ChannelDo> executor = dataProcessHelper.executor(channelVo, ChannelDo.class);
         return baseSupport.listCopy(executor, ChannelVo.class);
     }
 

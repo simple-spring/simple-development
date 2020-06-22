@@ -1,7 +1,6 @@
 package com.spring.simple.development.core.component.data.process.executor.impl;
 
 import com.spring.simple.development.core.component.data.process.annotation.external.Condition;
-import com.spring.simple.development.core.component.data.process.annotation.external.SimpleDpo;
 import com.spring.simple.development.core.component.data.process.annotation.internal.SimpleActivate;
 import com.spring.simple.development.core.component.data.process.executor.DataProcessExecutor;
 import com.spring.simple.development.core.component.data.process.executor.mapper.SimpleMapper;
@@ -20,20 +19,21 @@ public class SimpleDataProcessExecutor implements DataProcessExecutor {
 
     private SimpleMapper simpleMapper = AppInitializer.rootContext.getBean(SimpleMapper.class);
 
+
     @Override
-    public Object invoke(Class dpaClass, SimpleDpo simpleDpo) {
+    public List invoke(Object dpoClass, Object returnClass) {
         // 场景收集
         //1，包装dpo 自定义sql
         //2,拿到数据源
         //3.数据处理()
-
+        Class<?> dpaClass = dpoClass.getClass();
         try {
             String sql = "";
             Field[] fields = dpaClass.getDeclaredFields();
             if (fields == null) {
-                sql = "select channelname,channelcode,channeltype,creditcode,legalname from " + simpleDpo.tableName();
+                sql = "select channelname,channelcode,channeltype,creditcode,legalname from t_channel";
             } else {
-                sql = "select channelname,channelcode,channeltype,creditcode,legalname from " + simpleDpo.tableName() + " where 1=1 ";
+                sql = "select channelname,channelcode,channeltype,creditcode,legalname from t_channel where 1=1 ";
                 for (Field field : fields) {
                     Condition annotation = field.getAnnotation(Condition.class);
                     if (annotation != null) {
@@ -49,7 +49,7 @@ public class SimpleDataProcessExecutor implements DataProcessExecutor {
                     }
                 }
             }
-            List<Object> objects = simpleMapper.executorSql(sql, simpleDpo.returnClass());
+            List objects = simpleMapper.executorSql(sql, returnClass);
             return objects;
         } catch (Exception e) {
             throw new RuntimeException(e);
