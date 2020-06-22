@@ -4,9 +4,10 @@ import com.spring.simple.development.core.component.data.process.annotation.exte
 import com.spring.simple.development.core.component.data.process.annotation.internal.SimpleActivate;
 import com.spring.simple.development.core.component.data.process.executor.DataProcessExecutor;
 import com.spring.simple.development.core.component.data.process.executor.mapper.SimpleMapper;
-import com.spring.simple.development.core.component.data.process.extension.common.utils.StringUtils;
 import com.spring.simple.development.core.init.AppInitializer;
-import com.spring.simple.development.support.utils.DeclaredFieldsUtil;
+import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.ResponseCode;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -21,15 +22,15 @@ public class SimpleDataProcessExecutor implements DataProcessExecutor {
 
 
     @Override
-    public List invoke(Object dpoClass, Object returnClass) {
+    public List invoke(Object dpoObject, Object returnClass) {
         // 场景收集
-        //1，包装dpo 自定义sql
-        //2,拿到数据源
+        //1，包装dpo
+        //2,拿到数据源自定义sql
         //3.数据处理()
-        Class<?> dpaClass = dpoClass.getClass();
+        Class<?> dpoClass = dpoObject.getClass();
         try {
             String sql = "";
-            Field[] fields = dpaClass.getDeclaredFields();
+            Field[] fields = dpoClass.getDeclaredFields();
             if (fields == null) {
                 sql = "select channelname,channelcode,channeltype,creditcode,legalname from t_channel";
             } else {
@@ -37,11 +38,12 @@ public class SimpleDataProcessExecutor implements DataProcessExecutor {
                 for (Field field : fields) {
                     Condition annotation = field.getAnnotation(Condition.class);
                     if (annotation != null) {
-                        Object fieldValue = DeclaredFieldsUtil.getObjByMethodName(DeclaredFieldsUtil.parGetName(field.getName()), dpaClass, null);
-                        if (fieldValue == null) {
-                            throw new RuntimeException(field.getName() + "参数为空");
+                        field.setAccessible(true);
+                        Object fieldValue = field.get(dpoObject);
+                        if (StringUtils.isEmpty(fieldValue)) {
+                            throw new GlobalException(ResponseCode.RES_PARAM_IS_EMPTY, field.getName() + "参数为空");
                         }
-                        if (StringUtils.isBlank(annotation.field())) {
+                        if (StringUtils.isEmpty(annotation.field())) {
                             sql += "and" + field.getName() + "=" + fieldValue;
                         } else {
                             sql += "and" + annotation.field() + "=" + fieldValue;

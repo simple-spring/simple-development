@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Home {
     @RequestMapping("/")
     public String home() {
-        return "forward:/doc.html";
+        return "forward:/simpleDoc/index.html";
     }
 }

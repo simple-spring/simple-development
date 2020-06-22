@@ -27,16 +27,12 @@ public class DemoController {
     private TestDemoBo testDemoBo;
     @Autowired
     PrivilegeInfo privilegeInfo;
-    @RequestMapping("/")
-    public String home(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return "hello world";
-    }
-    @NoAuth
-    @RequestMapping("/index")
-    public String index(HttpServletRequest request,HttpServletResponse response) {
-       AccountUtils.getCurrentAccount();
-        return AccountUtils.getCurrentAccount().toString();
-    }
+//    @NoAuth
+//    @RequestMapping("/index")
+//    public String index(HttpServletRequest request,HttpServletResponse response) {
+//       AccountUtils.getCurrentAccount();
+//        return AccountUtils.getCurrentAccount().toString();
+//    }
     @NoAuth
     @RequestMapping("/noPermission")
     public String noPermission() {

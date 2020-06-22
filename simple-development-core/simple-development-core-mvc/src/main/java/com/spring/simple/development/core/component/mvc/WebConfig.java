@@ -10,7 +10,6 @@ import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +23,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
-import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
@@ -55,7 +53,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resourceViewResolver = new InternalResourceViewResolver();
         resourceViewResolver.setPrefix("/WEB-INF/views/");
-        resourceViewResolver.setSuffix(".jsp");
+        resourceViewResolver.setSuffix(".html");
         resourceViewResolver.setExposeContextBeansAsAttributes(true);
         return resourceViewResolver;
     }
@@ -83,12 +81,13 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         AnnotationConfigWebApplicationContext rootContext = AppInitializer.rootContext;
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) rootContext.getAutowireCapableBeanFactory();
         // 默认拦截器
-        String[] excludes = new String[5];
+        String[] excludes = new String[6];
         excludes[0] = "/swagger-ui.html";
         excludes[1] = "/webjars/**";
         excludes[2] = "/swagger-resources";
         excludes[3] = "/swagger-resources/configuration/ui";
         excludes[4] = "/swagger-resources/configuration/security";
+        excludes[5] = "/simpleDoc/index.html";
 
         // 启动shiro
         try {
@@ -150,6 +149,18 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         if (!isEnableBoolean) {
             return;
         }
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/simpleDoc/index.html")
+                .addResourceLocations("classpath:/META-INF/");
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/assets/**")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/assets/");
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/simple-spring.png")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/simple-spring.png");
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/simpleDoc/**")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/simpleDoc/");
         // 解决swagger无法访问
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");

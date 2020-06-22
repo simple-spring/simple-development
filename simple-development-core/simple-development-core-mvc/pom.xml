@@ -88,6 +88,16 @@
             <version>3.2.3</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>simple-development-core-mvc</finalName>
+        <resources>
+            <resource>
+                <targetPath>${project.build.directory}/classes</targetPath>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
     <distributionManagement>
         <repository>
             <id>manila.releases</id>
