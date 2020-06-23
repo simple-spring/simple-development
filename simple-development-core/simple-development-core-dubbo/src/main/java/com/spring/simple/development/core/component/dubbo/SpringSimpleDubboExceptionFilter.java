@@ -59,7 +59,10 @@ public class SpringSimpleDubboExceptionFilter implements Filter {
             if (result.hasException() && GenericService.class != invoker.getInterface()) {
                 try {
                     Throwable exception = result.getException();
-                    collectionLog(exception, invocation);
+                    // 告警接入
+                    if (exception instanceof GlobalException == false) {
+                        collectionLog(exception, invocation);
+                    }
                     // 如果是checked异常，直接抛出
                     if (!(exception instanceof RuntimeException) && (exception instanceof Exception)) {
                         return result;
