@@ -175,89 +175,88 @@ public class SwaggerConfig {
             List<CodeGenerationMethodParams> codeGenerationMethodParamsList = new ArrayList<>();
             for (Method method : declaredMethods) {
                 NoApiMethod noApiMethod = method.getAnnotation(NoApiMethod.class);
-                if (noApiMethod != null) {
-                    continue;
-                }
-                CodeGenerationMethodParams codeGenerationMethodParams = new CodeGenerationMethodParams();
+                if (noApiMethod == null) {
+                    CodeGenerationMethodParams codeGenerationMethodParams = new CodeGenerationMethodParams();
 
-                String methodName = method.getName();
-                // lamda表达式兼容
-                if (methodName.contains("$")) {
-                    int start = methodName.indexOf("$");
-                    int end = methodName.lastIndexOf("$");
-                    methodName = methodName.substring(start + 1, end);
-                }
-                IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
-                if (isApiMethodService != null) {
-                    String defaultMethodValue = isApiMethodService.value();
-                    if (!StringUtils.isEmpty(defaultMethodValue)) {
-                        methodName = defaultMethodValue;
+                    String methodName = method.getName();
+                    // lamda表达式兼容
+                    if (methodName.contains("$") || methodName.contains("lamda")) {
+                        int start = methodName.indexOf("$");
+                        int end = methodName.lastIndexOf("$");
+                        methodName = methodName.substring(start + 1, end);
                     }
-                }
-                // 类上面的地址默认
-                String baseUrl = "/data/api/v1";
-                boolean login = isApiService.isLogin();
-                if (login) {
-                    codeGenerationMethodParams.setIsLogin("");
-                    codeGenerationMethodParams.setInvokeMethodName("invokeService");
-                } else {
-                    baseUrl = "/data/config/v1";
-                    codeGenerationMethodParams.setIsLogin("@NoLogin");
-                    codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
-                }
-                codeGenerationMethodParams.setMethodName(methodName);
-                codeGenerationMethodParams.setMappingUrl(baseUrl + "/" + className + "/" + methodName);
-
-                Class<?>[] parameterTypes = method.getParameterTypes();
-                if (parameterTypes != null) {
-                    String[] paramsKey = new String[parameterTypes.length];
-                    Class<?>[] methodClass = new Class[parameterTypes.length];
-
-                    for (int i = 0; i < parameterTypes.length; i++) {
-                        String simpleName = parameterTypes[i].getSimpleName();
-                        String paramKey = toLowerCaseFirstOne(simpleName);
-                        paramsKey[i] = paramKey;
-                        methodClass[i] = parameterTypes[i];
+                    IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
+                    if (isApiMethodService != null) {
+                        String defaultMethodValue = isApiMethodService.value();
+                        if (!StringUtils.isEmpty(defaultMethodValue)) {
+                            methodName = defaultMethodValue;
+                        }
                     }
-                    MethodParams methodParams = new MethodParams();
-                    methodParams.setKey(paramsKey);
-                    methodParams.setMethodClass(methodClass);
-                    ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
-                    if (apiOperation != null) {
-                        codeGenerationMethodParams.setApiOperationValue(apiOperation.value());
-                        codeGenerationMethodParams.setApiOperationValueNotes(apiOperation.notes());
-                    }
-                    ApiImplicitParam apiImplicitParam = method.getAnnotation(ApiImplicitParam.class);
-                    if (apiImplicitParam != null) {
-                        codeGenerationMethodParams.setApiImplicitParamName(apiImplicitParam.name());
-                        codeGenerationMethodParams.setApiImplicitParamValue(apiImplicitParam.description());
-                        codeGenerationMethodParams.setApiImplicitParamDataType(apiImplicitParam.dataType());
-                        Class aClass = apiImplicitParam.resultDataType();
-                        Class pageClass = apiImplicitParam.pageResultDataType();
-                        codeGenerationMethodParams.setResultDataType(aClass.getSimpleName());
-                        codeGenerationMethodParams.setPageResultDataType(pageClass.getSimpleName());
-                        String resultPackagePath = aClass.getPackage().getName() + "." + aClass.getSimpleName() + ";";
-                        String pageResultPackagePath = pageClass.getPackage().getName() + "." + pageClass.getSimpleName() + ";";
-                        codeGenerationMethodParams.setResultDataTypePackagePath(resultPackagePath);
-                        codeGenerationMethodParams.setResultDataTypePackagePath(pageResultPackagePath);
-                        codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + resultPackagePath);
-                    }
-                    if (parameterTypes.length > 0) {
-                        codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " ");
-                        codeGenerationMethodParams.setRequestBodyName(toLowerCaseFirstOne(parameterTypes[0].getSimpleName()));
-                        Package aPackage = parameterTypes[0].getPackage();
-                        String name = aPackage.getName() + "." + parameterTypes[0].getSimpleName() + ";";
-                        codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + name);
+                    // 类上面的地址默认
+                    String baseUrl = "/data/api/v1";
+                    boolean login = isApiService.isLogin();
+                    if (login) {
+                        codeGenerationMethodParams.setIsLogin("");
+                        codeGenerationMethodParams.setInvokeMethodName("invokeService");
                     } else {
-                        codeGenerationMethodParams.setRequestBodyType(" ");
-                        codeGenerationMethodParams.setRequestBodyName(" ");
+                        baseUrl = "/data/config/v1";
+                        codeGenerationMethodParams.setIsLogin("@NoLogin");
+                        codeGenerationMethodParams.setInvokeMethodName("invokeConfigService");
                     }
-                    codeGenerationMethodParamsList.add(codeGenerationMethodParams);
+                    codeGenerationMethodParams.setMethodName(methodName);
+                    codeGenerationMethodParams.setMappingUrl(baseUrl + "/" + className + "/" + methodName);
+
+                    Class<?>[] parameterTypes = method.getParameterTypes();
+                    if (parameterTypes != null) {
+                        String[] paramsKey = new String[parameterTypes.length];
+                        Class<?>[] methodClass = new Class[parameterTypes.length];
+
+                        for (int i = 0; i < parameterTypes.length; i++) {
+                            String simpleName = parameterTypes[i].getSimpleName();
+                            String paramKey = toLowerCaseFirstOne(simpleName);
+                            paramsKey[i] = paramKey;
+                            methodClass[i] = parameterTypes[i];
+                        }
+                        MethodParams methodParams = new MethodParams();
+                        methodParams.setKey(paramsKey);
+                        methodParams.setMethodClass(methodClass);
+                        ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
+                        if (apiOperation != null) {
+                            codeGenerationMethodParams.setApiOperationValue(apiOperation.value());
+                            codeGenerationMethodParams.setApiOperationValueNotes(apiOperation.notes());
+                        }
+                        ApiImplicitParam apiImplicitParam = method.getAnnotation(ApiImplicitParam.class);
+                        if (apiImplicitParam != null) {
+                            codeGenerationMethodParams.setApiImplicitParamName(apiImplicitParam.name());
+                            codeGenerationMethodParams.setApiImplicitParamValue(apiImplicitParam.description());
+                            codeGenerationMethodParams.setApiImplicitParamDataType(apiImplicitParam.dataType());
+                            Class aClass = apiImplicitParam.resultDataType();
+                            Class pageClass = apiImplicitParam.pageResultDataType();
+                            codeGenerationMethodParams.setResultDataType(aClass.getSimpleName());
+                            codeGenerationMethodParams.setPageResultDataType(pageClass.getSimpleName());
+                            String resultPackagePath = aClass.getPackage().getName() + "." + aClass.getSimpleName() + ";";
+                            String pageResultPackagePath = pageClass.getPackage().getName() + "." + pageClass.getSimpleName() + ";";
+                            codeGenerationMethodParams.setResultDataTypePackagePath(resultPackagePath);
+                            codeGenerationMethodParams.setResultDataTypePackagePath(pageResultPackagePath);
+                            codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + resultPackagePath);
+                        }
+                        if (parameterTypes.length > 0) {
+                            codeGenerationMethodParams.setRequestBodyType(parameterTypes[0].getSimpleName() + " ");
+                            codeGenerationMethodParams.setRequestBodyName(toLowerCaseFirstOne(parameterTypes[0].getSimpleName()));
+                            Package aPackage = parameterTypes[0].getPackage();
+                            String name = aPackage.getName() + "." + parameterTypes[0].getSimpleName() + ";";
+                            codeGenerationParams.setParamTypePackagePath(codeGenerationParams.getParamTypePackagePath() + "\n" + "import " + name);
+                        } else {
+                            codeGenerationMethodParams.setRequestBodyType(" ");
+                            codeGenerationMethodParams.setRequestBodyName(" ");
+                        }
+                        codeGenerationMethodParamsList.add(codeGenerationMethodParams);
+                    }
+                    codeGenerationParams.setCodeGenerationMethodParams(codeGenerationMethodParamsList);
+                    String baseCode = CodeGenerationHandler.getBaseCode(codeGenerationParams);
+                    codes.add(baseCode);
                 }
             }
-            codeGenerationParams.setCodeGenerationMethodParams(codeGenerationMethodParamsList);
-            String baseCode = CodeGenerationHandler.getBaseCode(codeGenerationParams);
-            codes.add(baseCode);
         }
         return codes;
     }
