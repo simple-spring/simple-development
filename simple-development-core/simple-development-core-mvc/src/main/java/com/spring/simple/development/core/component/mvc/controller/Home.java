@@ -1,5 +1,7 @@
 package com.spring.simple.development.core.component.mvc.controller;
 
+import com.acl.xauth.anno.authc.NoAuth;
+import com.spring.simple.development.core.annotation.base.NoLogin;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class Home {
+    @NoLogin
+    @NoAuth
     @RequestMapping("/")
     public String home() {
         return "forward:/simpleDoc/index.html";
