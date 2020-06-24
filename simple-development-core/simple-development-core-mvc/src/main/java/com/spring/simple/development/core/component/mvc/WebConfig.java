@@ -81,13 +81,16 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         AnnotationConfigWebApplicationContext rootContext = AppInitializer.rootContext;
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) rootContext.getAutowireCapableBeanFactory();
         // 默认拦截器
-        String[] excludes = new String[6];
+        String[] excludes = new String[9];
         excludes[0] = "/swagger-ui.html";
         excludes[1] = "/webjars/**";
         excludes[2] = "/swagger-resources";
         excludes[3] = "/swagger-resources/configuration/ui";
         excludes[4] = "/swagger-resources/configuration/security";
         excludes[5] = "/simpleDoc/index.html";
+        excludes[6] = "/assets/**";
+        excludes[7] = "/simpleDoc/**";
+        excludes[8] = "/simple-spring.png";
 
         // 启动shiro
         try {
