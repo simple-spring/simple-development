@@ -5,7 +5,7 @@
     <parent>
         <artifactId>simple-development</artifactId>
         <groupId>com.spring</groupId>
-        <version>2.4</version>
+        <version>3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>simple-development-core</artifactId>
