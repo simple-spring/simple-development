@@ -2,13 +2,13 @@ package com.spring.simple.development.core.baseconfig.tomcat;
 
 import com.spring.simple.development.core.annotation.config.EnableDubbo;
 import com.spring.simple.development.core.annotation.config.EnableMybatis;
-import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
 import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.support.DataSourceSpiConfig;
 import com.spring.simple.development.core.spiconfig.support.DubboSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -49,18 +49,12 @@ public class SimpleBootApplication {
         Boolean isBaseConfig = false;
         for (Annotation annotation : annotations) {
             SpringBootAppInitializer.annotationSet.add(annotation);
-            if (annotation instanceof SpringSimpleApplication) {
-                SpringSimpleApplication springSimpleApplication = (SpringSimpleApplication) annotation;
+            if (annotation instanceof SpringBootApplication) {
+                SpringBootApplication springSimpleApplication = (SpringBootApplication) annotation;
                 // 启动类名
                 System.setProperty(SystemProperties.SPRING_APPLICATION_CLASS_NAME, appClass.getName());
-                // 应用名
-                System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME, springSimpleApplication.applicationName());
                 // 系统包名
-                if (StringUtils.isEmpty(springSimpleApplication.appPackagePathName())) {
-                    System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME, appClass.getPackage().getName());
-                } else {
-                    System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME, springSimpleApplication.appPackagePathName());
-                }
+                System.setProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME, appClass.getPackage().getName());
                 isBaseConfig = true;
             }
         }
@@ -70,6 +64,8 @@ public class SimpleBootApplication {
         }
         // 找到启动的组件
         List<String> components = SpringBootAppInitializer.getComponents();
+        components.add(appClass.getPackage().getName());
+        components.add("com.spring.simple.development.core.baseconfig");
         // 设置默认端口
         String port = System.getProperties().getProperty("server.port");
         if (StringUtils.isEmpty(port)) {

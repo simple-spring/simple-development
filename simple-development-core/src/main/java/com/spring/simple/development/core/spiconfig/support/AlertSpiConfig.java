@@ -2,13 +2,10 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableAlert;
-import com.spring.simple.development.core.annotation.config.EnableCassandra;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
-import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
-import com.spring.simple.development.support.utils.ClassLoadUtil;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -35,6 +32,7 @@ public class AlertSpiConfig implements SimpleSpiConfig<EnableAlert> {
             List<String> cassandraPackageNames = new ArrayList<>();
             cassandraPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_CASSANDRA_CONFIG_CASSANDRA_PACKAGE));
             Class<?> targetClass = Class.forName("com.spring.simple.development.core.component.alertsdk.handler.SimpleAlertConfig");
+            SpringBootAppInitializer.packageNames.add(targetClass.getPackage().getName());
             return targetClass;
         } catch (Exception ex) {
             throw new RuntimeException("AlertSpiConfig initialization failed", ex);

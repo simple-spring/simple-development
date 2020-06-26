@@ -2,6 +2,7 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableKafka;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -28,6 +29,7 @@ public class KafkaSpiConfig implements SimpleSpiConfig<EnableKafka> {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_KAFKA_CONFIG_PACKAGE, enableKafka.packagePath());
             }
             Class<?> aClass = Class.forName("com.spring.simple.development.core.component.kafka.config.KafkaConfig");
+            SpringBootAppInitializer.packageNames.add(aClass.getPackage().getName());
             return aClass;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

@@ -56,7 +56,7 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
             Class<?> targetWebConfigClass = Class.forName("com.spring.simple.development.core.component.mvc.WebConfig");
             Class webConfigClass = ClassLoadUtil.javassistCompile(targetWebConfigClass, "org.springframework.context.annotation.ComponentScan", mvcPackageNames, "basePackages");
 
-            mvcPackageNames.add(webConfigClass.getPackage().getName());
+            mvcPackageNames.add(targetWebConfigClass.getPackage().getName());
             SpringBootAppInitializer.packageNames.addAll(mvcPackageNames);
             return webConfigClass;
         } catch (Exception ex) {

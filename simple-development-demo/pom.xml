@@ -50,11 +50,6 @@
             <groupId>com.spring</groupId>
             <version>3.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <artifactId>simple-development-core-mongodb</artifactId>-->
-<!--            <groupId>com.spring</groupId>-->
-<!--            <version>1.0</version>-->
-<!--        </dependency>-->
         <dependency>
         <groupId>com.spring</groupId>
         <artifactId>simple-development-core-kafka</artifactId>

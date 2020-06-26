@@ -1,17 +1,17 @@
 package com.spring.simple.development.core.spiconfig.support;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableXxlJob;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -40,6 +40,7 @@ public class XxlJobSpiConfig implements SimpleSpiConfig<EnableXxlJob> {
             mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_XXLJOB_CONFIG_JOBPACKAGE));
             Class<?> jobClass = Class.forName("com.spring.simple.development.core.component.job.XxlJobConfig");
             Class jobConfig = ClassLoadUtil.javassistCompile(jobClass, "org.springframework.context.annotation.ComponentScan", mapperPackageNames, "basePackages");
+            SpringBootAppInitializer.packageNames.add(jobClass.getPackage().getName());
             return jobConfig;
         } catch (Exception ex) {
             throw new RuntimeException("XxlJob Config initialization failed", ex);

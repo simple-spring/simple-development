@@ -34,6 +34,16 @@
             <groupId>com.acl</groupId>
             <artifactId>acl-auth-support-web</artifactId>
             <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.spring</groupId>
+                    <artifactId>simple-development-support</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.spring</groupId>
+                    <artifactId>simple-development-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

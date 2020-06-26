@@ -2,6 +2,7 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableSwagger;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
@@ -63,6 +64,7 @@ public class SwaggerSpiConfig implements SimpleSpiConfig<EnableSwagger> {
             if (isEnableBoolean == false) {
                 return null;
             }
+            SpringBootAppInitializer.packageNames.add(swaggerConfigClass.getPackage().getName());
             return swaggerConfig;
         } catch (Exception ex) {
             throw new RuntimeException("swagger Config initialization failed", ex);

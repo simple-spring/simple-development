@@ -63,7 +63,7 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
             Class<?> targetClass = Class.forName("com.spring.simple.development.core.component.jdbc.DataSourceConfig");
             Class dataSourceConfigClass = ClassLoadUtil.javassistCompile(targetClass, "org.mybatis.spring.annotation.MapperScan", mapperPackageNames, "basePackages");
 
-            mapperPackageNames.add(dataSourceConfigClass.getPackage().getName());
+            mapperPackageNames.add(targetClass.getPackage().getName());
             SpringBootAppInitializer.packageNames.addAll(mapperPackageNames);
             return dataSourceConfigClass;
         } catch (Exception ex) {

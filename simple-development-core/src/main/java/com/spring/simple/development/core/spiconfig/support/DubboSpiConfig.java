@@ -54,7 +54,7 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
             Class<?> dubboClass = Class.forName("com.spring.simple.development.core.component.dubbo.DubboConfig");
             Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", dubboPackageNames, "basePackages");
 
-            dubboPackageNames.add(dubboConfig.getPackage().getName());
+            dubboPackageNames.add(dubboClass.getPackage().getName());
             SpringBootAppInitializer.packageNames.addAll(dubboPackageNames);
             return dubboConfig;
         } catch (Exception ex) {

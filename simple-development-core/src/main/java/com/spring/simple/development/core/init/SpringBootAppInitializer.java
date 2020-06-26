@@ -84,7 +84,7 @@ public class SpringBootAppInitializer {
                 if (annotationMap.containsKey(configName)) {
                     Object configObject = configClass.newInstance();
                     Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME, annotationMap.get(configName).annotationType());
-                    Class resultClass = (Class) method.invoke(configObject, annotationMap.get(configName));
+                    Object resultClass =  method.invoke(configObject, annotationMap.get(configName));
                     if (resultClass == null) {
                         continue;
                     }
