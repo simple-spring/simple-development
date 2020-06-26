@@ -1,5 +1,6 @@
 package com.spring.simple.development.core.baseconfig.context;
 
+import com.spring.simple.development.core.init.AppInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
@@ -17,12 +18,13 @@ public class SimpleContentApplication implements ApplicationContextAware {
 
     private static Logger logger = LogManager.getLogger(SimpleContentApplication.class);
 
-    private static ApplicationContext applicationContext;
+    public static ApplicationContext applicationContext;
 
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SimpleContentApplication.applicationContext = applicationContext;
+        AppInitializer.rootContext = applicationContext;
     }
 
     /**

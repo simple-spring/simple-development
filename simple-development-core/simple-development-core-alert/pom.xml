@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>simple-development-core-alert</artifactId>
-    <version>1.0</version>
+    <version>3.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>simple-development-core-alert-sdk</module>

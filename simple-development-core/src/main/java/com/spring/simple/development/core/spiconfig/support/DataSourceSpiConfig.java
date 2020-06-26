@@ -2,6 +2,7 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableMybatis;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Spi(configName = "EnableMybatis")
 public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
+    public static List<String> mapperPackageNames = new ArrayList<>();
     @Override
     public Class getConfigClass(EnableMybatis enableMybatis) {
         try {
@@ -52,7 +54,6 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_PATH, enableMybatis.mapperPath());
             }
             // 添加DataSourceConfig MapperScan扫描包的路径
-            List<String> mapperPackageNames = new ArrayList<>();
             mapperPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_PATH));
             // 是否打开数据转换工具
             boolean isEnableDataPrecess = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_DATA_PROCESS));
@@ -61,6 +62,9 @@ public class DataSourceSpiConfig implements SimpleSpiConfig<EnableMybatis> {
             }
             Class<?> targetClass = Class.forName("com.spring.simple.development.core.component.jdbc.DataSourceConfig");
             Class dataSourceConfigClass = ClassLoadUtil.javassistCompile(targetClass, "org.mybatis.spring.annotation.MapperScan", mapperPackageNames, "basePackages");
+
+            mapperPackageNames.add(dataSourceConfigClass.getPackage().getName());
+            SpringBootAppInitializer.packageNames.addAll(mapperPackageNames);
             return dataSourceConfigClass;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

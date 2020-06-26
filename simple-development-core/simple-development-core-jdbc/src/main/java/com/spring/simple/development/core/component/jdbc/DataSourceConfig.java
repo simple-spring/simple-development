@@ -12,6 +12,7 @@ import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -39,6 +40,9 @@ import java.util.Properties;
 @Configuration
 public class DataSourceConfig {
 
+    public DataSourceConfig() throws IOException {
+    }
+
     @Bean
     public SpringUtil getSpringUtil() {
         return new SpringUtil();
@@ -51,8 +55,6 @@ public class DataSourceConfig {
      */
     @Bean(name = "lavaPvgInfo")
     public PrivilegeInfo privilegeInfo() {
-        PrivilegeInfo privilegeInfo = new PrivilegeInfo();
-        privilegeInfo.setAesKey("acl-auth-support-dubbo-service");
         return new PrivilegeInfo();
     }
 

@@ -2,6 +2,7 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableWebMvc;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -54,6 +55,9 @@ public class WebMvcSpiConfig implements SimpleSpiConfig<EnableWebMvc> {
             }
             Class<?> targetWebConfigClass = Class.forName("com.spring.simple.development.core.component.mvc.WebConfig");
             Class webConfigClass = ClassLoadUtil.javassistCompile(targetWebConfigClass, "org.springframework.context.annotation.ComponentScan", mvcPackageNames, "basePackages");
+
+            mvcPackageNames.add(webConfigClass.getPackage().getName());
+            SpringBootAppInitializer.packageNames.addAll(mvcPackageNames);
             return webConfigClass;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

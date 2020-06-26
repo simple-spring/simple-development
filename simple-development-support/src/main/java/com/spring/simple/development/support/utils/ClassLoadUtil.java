@@ -2,9 +2,9 @@ package com.spring.simple.development.support.utils;
 
 import javassist.*;
 import javassist.bytecode.*;
-import javassist.bytecode.annotation.Annotation;
-import javassist.bytecode.annotation.ArrayMemberValue;
-import javassist.bytecode.annotation.StringMemberValue;
+import javassist.bytecode.annotation.*;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,31 +50,68 @@ public class ClassLoadUtil extends ClassLoader {
      * @Date 2019/12/20/020 17:51
      * @Description 类添加注解 有参数
      **/
-    public static Class javassistCompile(Class aclass, String annotationName, List<String> packageNames, String simpleAnnotationName) throws NotFoundException, CannotCompileException, ClassNotFoundException {
-        ClassPool classPool = ClassPool.getDefault();
-        classPool.appendClassPath(new ClassClassPath(aclass));
-        // 如果CtClass通过writeFile(),toClass(),toBytecode()转换了类文件，javassist冻结了CtClass对象。
-        CtClass clazz = classPool.get(aclass.getName());
-        clazz.stopPruning(true);
-        // Defrost()执行后，CtClass对象将可以再次修改。
-        clazz.defrost();
-        ClassFile classFile = clazz.getClassFile();
+    public static Class javassistCompile(Class aclass, String annotationName, List<String> packageNames, String simpleAnnotationName) {
+        try {
+            ClassPool classPool = ClassPool.getDefault();
+            classPool.appendClassPath(new ClassClassPath(aclass));
+            // 如果CtClass通过writeFile(),toClass(),toBytecode()转换了类文件，javassist冻结了CtClass对象。
+            CtClass clazz = classPool.get(aclass.getName());
+            clazz.stopPruning(true);
+            // Defrost()执行后，CtClass对象将可以再次修改。
+            clazz.defrost();
+            ClassFile classFile = clazz.getClassFile();
 
-        ConstPool constPool = classFile.getConstPool();
-        Annotation tableAnnotation = new Annotation(annotationName, constPool);
-        if (packageNames != null && simpleAnnotationName != null) {
-            ArrayMemberValue arrayMemberValue = getArrayMemberValue(packageNames, constPool);
-            tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
+            ConstPool constPool = classFile.getConstPool();
+            Annotation tableAnnotation = new Annotation(annotationName, constPool);
+            if (!CollectionUtils.isEmpty(packageNames) && !StringUtils.isEmpty(simpleAnnotationName)) {
+                ArrayMemberValue arrayMemberValue = getArrayMemberValue(packageNames, constPool);
+                tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
+            }
+            // 获取运行时注解属性
+            AnnotationsAttribute attribute = (AnnotationsAttribute) classFile.getAttribute(AnnotationsAttribute.visibleTag);
+            attribute.addAnnotation(tableAnnotation);
+            classFile.addAttribute(attribute);
+            classFile.setVersionToJava5();
+            // 当前ClassLoader中必须尚未加载该实体。（同一个ClassLoader加载同一个类只会加载一次）
+            ClassLoadUtil loader = new ClassLoadUtil(ClassLoadUtil.class.getClassLoader());
+            Class aClass = clazz.toClass(loader, null);
+            return aClass;
+        } catch (Exception e) {
+            throw new RuntimeException("simple init fail", e);
         }
-        // 获取运行时注解属性
-        AnnotationsAttribute attribute = (AnnotationsAttribute) classFile.getAttribute(AnnotationsAttribute.visibleTag);
-        attribute.addAnnotation(tableAnnotation);
-        classFile.addAttribute(attribute);
-        classFile.setVersionToJava5();
-        // 当前ClassLoader中必须尚未加载该实体。（同一个ClassLoader加载同一个类只会加载一次）
-        ClassLoadUtil loader = new ClassLoadUtil(ClassLoadUtil.class.getClassLoader());
-        Class aClass = clazz.toClass(loader, null);
-        return aClass;
+    }
+
+    public static Class javassistCompileClass(Class aclass, String annotationName, List<Class> componentListClass, String simpleAnnotationName) {
+        try {
+            ClassPool classPool = ClassPool.getDefault();
+            classPool.appendClassPath(new ClassClassPath(aclass));
+            // 如果CtClass通过writeFile(),toClass(),toBytecode()转换了类文件，javassist冻结了CtClass对象。
+            CtClass clazz = classPool.get(aclass.getName());
+            clazz.stopPruning(true);
+            // Defrost()执行后，CtClass对象将可以再次修改。
+            clazz.defrost();
+            ClassFile classFile = clazz.getClassFile();
+
+            ConstPool constPool = classFile.getConstPool();
+            Annotation tableAnnotation = new Annotation(annotationName, constPool);
+            if (!CollectionUtils.isEmpty(componentListClass) && !StringUtils.isEmpty(simpleAnnotationName)) {
+                ArrayMemberValue arrayMemberValue = getArrayClassMemberValue(componentListClass, constPool);
+                tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
+                tableAnnotation.addMemberValue(simpleAnnotationName, arrayMemberValue);
+            }
+            // 获取运行时注解属性
+            AnnotationsAttribute attribute = (AnnotationsAttribute) classFile.getAttribute(AnnotationsAttribute.visibleTag);
+            attribute.addAnnotation(tableAnnotation);
+            classFile.addAttribute(attribute);
+            classFile.setVersionToJava5();
+            // 当前ClassLoader中必须尚未加载该实体。（同一个ClassLoader加载同一个类只会加载一次）
+            ClassLoadUtil loader = new ClassLoadUtil(ClassLoadUtil.class.getClassLoader());
+            Class aClass = clazz.toClass(loader, null);
+            return aClass;
+        } catch (Exception e) {
+            throw new RuntimeException("simple init fail", e);
+        }
+
     }
 
     /**
@@ -116,6 +153,17 @@ public class ClassLoadUtil extends ClassLoader {
             stringMemberValueList.add(stringMemberValue);
         }
         arrayMemberValue.setValue(stringMemberValueList.toArray(new StringMemberValue[stringMemberValueList.size()]));
+        return arrayMemberValue;
+    }
+
+    private static ArrayMemberValue getArrayClassMemberValue(List<Class> componentListClass, ConstPool constPool) {
+        ArrayMemberValue arrayMemberValue = new ArrayMemberValue(constPool);
+        List<ClassMemberValue> classMemberValues = new ArrayList<>();
+        for (Class aclass : componentListClass) {
+            ClassMemberValue classMemberValue = new ClassMemberValue(aclass.getName(), constPool);
+            classMemberValues.add(classMemberValue);
+        }
+        arrayMemberValue.setValue(classMemberValues.toArray(new ClassMemberValue[classMemberValues.size()]));
         return arrayMemberValue;
     }
 

@@ -12,7 +12,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -28,7 +27,6 @@ import static com.spring.simple.development.support.exception.ResponseCode.RES_P
  * @Date 2020/1/9/009 12:32
  * @Description 基础支持
  **/
-@Component
 public class BaseSupport {
 
     private static final Logger logger = LogManager.getLogger(BaseSupport.class);

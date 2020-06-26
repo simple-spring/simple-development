@@ -2,25 +2,22 @@ package com.spring.simple.development.demo;
 
 
 import com.spring.simple.development.core.annotation.config.*;
-import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
+import com.spring.simple.development.core.baseconfig.tomcat.SimpleBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author liko.wang
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
-//@EnableAlert
-//@EnableXxlJob
+@EnableDubbo
 @EnableSwagger
 @EnableMybatis
-//@EnableRedis
 @EnableWebMvc
-//@EnableDubbo
-//@EnableCassandra
-//@EnableShiroCas
 @SpringSimpleApplication
+@SpringBootApplication
 public class App {
     public static void main(String[] args) {
-        SimpleApplication.run(App.class);
+        SimpleBootApplication.run(App.class, args);
     }
 }

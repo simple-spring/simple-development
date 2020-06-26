@@ -5,6 +5,6 @@ package com.chexin.simple.development.dubbo.api;
  * @Date 2019/12/25/025 15:54
  * @Description //TODO
  **/
-public class DubboDemoServiceImpl{
-
+public interface DubboDemoService{
+    String sayHello();
 }

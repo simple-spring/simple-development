@@ -2,7 +2,8 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
-import com.spring.simple.development.core.component.root.RootConfig;
+import com.spring.simple.development.core.baseconfig.RootConfig;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
@@ -29,6 +30,9 @@ public class RootSpiConfig implements SimpleSpiConfig<SpringSimpleApplication> {
             }
             packageNames.add(SystemProperties.SPRING_SIMPLE_BASE_COMPONENT_PACKAGE_PATH);
             Class rootConfig = ClassLoadUtil.javassistCompile(RootConfig.class, "org.springframework.context.annotation.ComponentScan", packageNames, "basePackages");
+
+            packageNames.add(rootConfig.getPackage().getName());
+            SpringBootAppInitializer.packageNames.addAll(packageNames);
             return rootConfig;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

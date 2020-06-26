@@ -2,111 +2,69 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <artifactId>simple-development-demo</artifactId>
     <groupId>com.spring</groupId>
     <version>1.0</version>
-    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-valid</artifactId>
-            <version>1.1</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-redis</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-core-swagger</artifactId>
-            <version>1.1</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-mvc</artifactId>
-            <version>1.1</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-jdbc</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-core</artifactId>
             <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-core-job</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-core-dubbo</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <artifactId>simple-development-core-cassandra</artifactId>
-            <groupId>com.spring</groupId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>simple-development-core-alert-sdk</artifactId>
-            <groupId>com.spring</groupId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>simple-development-core-shiro-cas</artifactId>
-            <groupId>com.spring</groupId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>simple-development-core-mongodb</artifactId>
-            <groupId>com.spring</groupId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>simple-development-core</artifactId>
             <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
-            <artifactId>simple-development-core-kafka</artifactId>
-            <version>1.1</version>
-            <scope>compile</scope>
+            <artifactId>simple-development-core-dubbo</artifactId>
+            <version>3.0</version>
         </dependency>
         <dependency>
-            <artifactId>simple-development-core-data-process</artifactId>
+            <artifactId>simple-development-core-cassandra</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
+            <artifactId>simple-development-core-alert-sdk</artifactId>
+            <groupId>com.spring</groupId>
+            <version>3.0</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <artifactId>simple-development-core-mongodb</artifactId>-->
+<!--            <groupId>com.spring</groupId>-->
+<!--            <version>1.0</version>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+        <groupId>com.spring</groupId>
+        <artifactId>simple-development-core-kafka</artifactId>
+        <version>3.0</version>
+        <scope>compile</scope>
+    </dependency>
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>compile</scope>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core</artifactId>
+            <version>3.0</version>
         </dependency>
     </dependencies>
     <profiles>
@@ -177,67 +135,21 @@
                         <dependency>
                             <groupId>com.spring</groupId>
                             <artifactId>simple-development-generator</artifactId>
-                            <version>1.0</version>
+                            <version>3.0</version>
                         </dependency>
                     </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
-            <!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <classesDirectory>target/classes/</classesDirectory>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.spring.simple.development.demo.App</mainClass>
-                            <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
-                            <useUniqueVersions>false</useUniqueVersions>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>.</Class-Path>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.1.RELEASE</version>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <type>jar</type>
-                            <includeTypes>jar</includeTypes>
-                            <outputDirectory>
-                                ${project.build.directory}/lib
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/resources/assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>

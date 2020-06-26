@@ -2,38 +2,26 @@ package com.spring.simple.development.core.init;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.component.ComponentContainer;
-import com.spring.simple.development.core.handler.event.SimpleApplicationEventSubject;
-import com.spring.simple.development.core.handler.event.support.SimpleComponentEventSubject;
-import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
-import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author liko.wang
  * @Date 2019/12/19/019 12:48
  * @Description 服务初始化
  **/
-public class AppInitializer implements WebApplicationInitializer {
-    public static ServletContext servletContext;
-    public static ApplicationContext rootContext;
+public class SpringBootAppInitializer {
 
+    public transient static List<String> packageNames = new CopyOnWriteArrayList<>();
     /**
      * 组件寄存器
      */
@@ -44,10 +32,8 @@ public class AppInitializer implements WebApplicationInitializer {
      */
     public static Map<String, Annotation> annotationMap = new HashMap<>();
 
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public static List<String> getComponents() {
 
-        AppInitializer.servletContext = servletContext;
         try {
             System.out.println("spring simple start");
             System.out.println("spring simple config init ...");
@@ -59,11 +45,11 @@ public class AppInitializer implements WebApplicationInitializer {
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME);
             if (StringUtils.isEmpty(basePackageName)) {
                 System.out.println("spring simple base package is empty");
-                return;
+                return null;
             }
             if (CollectionUtils.isEmpty(annotationSet)) {
                 System.out.println("not enabled spring simple component");
-                return;
+                return null;
             }
             // 组件容器初始化
             ComponentContainer.initComponentContainer();
@@ -78,10 +64,9 @@ public class AppInitializer implements WebApplicationInitializer {
             // 是否有启动的组件
             if (CollectionUtils.isEmpty(annotationMap)) {
                 System.out.println("not enabled spring simple component");
-                return;
+                return null;
             }
 
-            List<Object> configClassList = new ArrayList<>();
 
             // 获取所有的组件注解实现
             System.out.println("Reflections SimpleSpi start");
@@ -99,65 +84,20 @@ public class AppInitializer implements WebApplicationInitializer {
                 if (annotationMap.containsKey(configName)) {
                     Object configObject = configClass.newInstance();
                     Method method = configClass.getDeclaredMethod(SystemProperties.CONFIG_METHOD_NAME, annotationMap.get(configName).annotationType());
-                    Object resultClass = method.invoke(configObject, annotationMap.get(configName));
+                    Class resultClass = (Class) method.invoke(configObject, annotationMap.get(configName));
                     if (resultClass == null) {
                         continue;
                     }
-                    configClassList.add(resultClass);
                 }
             }
-            if (CollectionUtils.isEmpty(configClassList)) {
+            if (CollectionUtils.isEmpty(packageNames)) {
                 System.out.println("not enabled spring simple");
-                return;
+                return null;
             }
-
-            // 配置字符集过滤器
-            FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("characterEncoding", CharacterEncodingFilter.class);
-            characterEncoding.setInitParameter("forceEncoding", "true");
-            characterEncoding.setInitParameter("encoding", "UTF-8");
-            characterEncoding.addMappingForUrlPatterns(null, true, "/*");
-            servletContext.addListener(RequestContextListener.class);
-
-            // 创建Spring的root配置环境
-            AnnotationConfigWebApplicationContext annotationConfigWebApplicationContext = new AnnotationConfigWebApplicationContext();
-            AppInitializer.rootContext = annotationConfigWebApplicationContext;
-            annotationConfigWebApplicationContext.setBeanName("spring simple " + System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_NAME));
-            // 注册并启动
-            Class[] configClass = new Class[configClassList.size()];
-            annotationConfigWebApplicationContext.register(configClassList.toArray(configClass));
-            // 将Spring的配置添加为listener
-            servletContext.addListener(new ContextLoaderListener(annotationConfigWebApplicationContext));
-
-            // 组件扫描事件
-            scanEven();
-            System.out.println("spring simple initialized successful");
-
+            return packageNames;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("spring simple initialized fail", e);
         }
     }
-
-    /**
-     * scan event
-     *
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     */
-    private void scanEven() throws IllegalAccessException, InstantiationException {
-        // 主题
-        System.out.println("reflections scanEven start");
-        SimpleApplicationEventSubject simpleApplicationEventSubject = new SimpleComponentEventSubject(AppInitializer.servletContext, (AnnotationConfigWebApplicationContext) AppInitializer.rootContext);
-        Reflections reflections = new Reflections("com.spring.simple.development.core");
-        Set<Class<? extends SimpleComponentListener>> subTypes = reflections.getSubTypesOf(SimpleComponentListener.class);
-        System.out.println("reflections scanEven end");
-
-        if (!CollectionUtils.isEmpty(subTypes)) {
-            for (Class aclass : subTypes) {
-                simpleApplicationEventSubject.addObserver(aclass.newInstance());
-            }
-        }
-        simpleApplicationEventSubject.notifyObserver();
-    }
-
 }

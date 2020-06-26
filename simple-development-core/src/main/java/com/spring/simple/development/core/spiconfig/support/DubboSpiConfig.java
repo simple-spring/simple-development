@@ -2,6 +2,7 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableDubbo;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -22,6 +23,9 @@ import java.util.List;
  */
 @Spi(configName = "EnableDubbo")
 public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
+
+    public static List<String> dubboPackageNames = new ArrayList<>();
+
     @Override
     public Class getConfigClass(EnableDubbo enableDubbo) {
         try {
@@ -38,7 +42,6 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
             } else {
                 PropertyConfigurer.setProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE, enableDubbo.dubboPackage());
             }
-            List<String> dubboPackageNames = new ArrayList<>();
             // 启动shiro
             boolean isEnableBoolean = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_SHIRO_ISOPEN));
             if (isEnableBoolean) {
@@ -47,9 +50,12 @@ public class DubboSpiConfig implements SimpleSpiConfig<EnableDubbo> {
             }
             dubboPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_DUBBO_CONFIG_DUBBO_PACKAGE));
             // 添加自定义拦截器spi文件
-            createDubboFilter();
+            //createDubboFilter();
             Class<?> dubboClass = Class.forName("com.spring.simple.development.core.component.dubbo.DubboConfig");
             Class dubboConfig = ClassLoadUtil.javassistCompile(dubboClass, "com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan", dubboPackageNames, "basePackages");
+
+            dubboPackageNames.add(dubboConfig.getPackage().getName());
+            SpringBootAppInitializer.packageNames.addAll(dubboPackageNames);
             return dubboConfig;
         } catch (Exception ex) {
             throw new RuntimeException("RootConfig initialization failed", ex);

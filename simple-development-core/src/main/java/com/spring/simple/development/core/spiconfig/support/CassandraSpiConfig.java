@@ -2,8 +2,7 @@ package com.spring.simple.development.core.spiconfig.support;
 
 import com.spring.simple.development.core.annotation.base.Spi;
 import com.spring.simple.development.core.annotation.config.EnableCassandra;
-import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
-import com.spring.simple.development.core.component.root.RootConfig;
+import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.PackageNameConstant;
 import com.spring.simple.development.support.constant.SystemProperties;
@@ -43,6 +42,8 @@ public class CassandraSpiConfig implements SimpleSpiConfig<EnableCassandra> {
             cassandraPackageNames.add(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_CASSANDRA_CONFIG_CASSANDRA_PACKAGE));
             Class<?> targetClass = Class.forName("com.spring.simple.development.core.component.cassandra.CassandraConfig");
             Class rootConfig = ClassLoadUtil.javassistCompile(targetClass, "org.springframework.data.cassandra.repository.config.EnableCassandraRepositories", cassandraPackageNames, "basePackages");
+            cassandraPackageNames.add(targetClass.getPackage().getName());
+            SpringBootAppInitializer.packageNames.addAll(cassandraPackageNames);
             return rootConfig;
         } catch (Exception ex) {
             throw new RuntimeException("CassandraConfig initialization failed", ex);

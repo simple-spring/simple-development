@@ -1,7 +1,7 @@
-package com.spring.simple.development.core.component.root;
+package com.spring.simple.development.core.baseconfig;
 
 /**
- * @author liko.wang  todo 动态选配
+ * @author liko.wang
  * @Date 2019/12/19/019 15:24
  * @Description 启动spring入口
  **/

@@ -1,0 +1,1 @@
+springDubboExceptionFilter=com.spring.simple.development.core.component.dubbo.SpringSimpleDubboExceptionFilter

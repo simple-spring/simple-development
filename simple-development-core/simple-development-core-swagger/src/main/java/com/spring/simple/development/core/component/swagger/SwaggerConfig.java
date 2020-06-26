@@ -18,6 +18,7 @@ import org.reflections.util.ConfigurationBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,7 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -44,6 +46,8 @@ import java.util.Set;
  * @Date 2020/1/15/015 10:11
  * @Description SwaggerConfig
  **/
+@Configuration
+@EnableSwagger2
 public class SwaggerConfig {
     public SwaggerConfig() {
 

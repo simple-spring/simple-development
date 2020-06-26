@@ -1,30 +1,25 @@
 package com.spring.simple.development.core.component.mvc;
 
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
+import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
 import com.spring.simple.development.core.component.mvc.interceptor.ApiSupportInterceptor;
 import com.spring.simple.development.core.component.shiro.cas.ShiroCasInterceptor;
 import com.spring.simple.development.core.component.shiro.cas.ShiroLavaSupportInterceptor;
-import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
-import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
@@ -32,11 +27,11 @@ import java.util.Set;
  * @Date 2019/12/19/019 12:49
  * @Description //TODO
  **/
-@Configurable
+@Configuration
 @EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponentListener {
+public class WebConfig implements WebMvcConfigurer {
     public WebConfig() {
-
+        System.out.println("mvc init");
     }
 
     @Bean
@@ -62,7 +57,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        super.configureDefaultServletHandling(configurer);
         configurer.enable();
     }
 
@@ -80,8 +74,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
      **/
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        AnnotationConfigWebApplicationContext rootContext = AppInitializer.rootContext;
-        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) rootContext.getAutowireCapableBeanFactory();
+        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SimpleContentApplication.applicationContext.getAutowireCapableBeanFactory();
         // 默认拦截器
         String[] excludes = new String[5];
         excludes[0] = "/swagger-ui.html";
@@ -125,7 +118,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
                 defaultListableBeanFactory.registerBeanDefinition(clazz.getSimpleName(), beanDefinitionBuilder.getBeanDefinition());
                 System.out.println("SimpleInterceptor class: " + clazz.getName());
                 // 获取bean
-                Object bean = rootContext.getBean(clazz.getSimpleName());
+                Object bean = SimpleContentApplication.applicationContext.getBean(clazz.getSimpleName());
                 registry.addInterceptor((HandlerInterceptor) bean).excludePathPatterns(excludes);
             }
 
@@ -134,12 +127,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         }
     }
 
-    @Override
-    public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
-        // 注册请求分发器
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
+    @Bean
+    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
+        return new ServletRegistrationBean(dispatcherServlet, PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
     }
 
     @Override

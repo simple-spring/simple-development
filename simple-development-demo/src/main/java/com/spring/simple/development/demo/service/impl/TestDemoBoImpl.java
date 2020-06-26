@@ -2,30 +2,22 @@ package com.spring.simple.development.demo.service.impl;
 
 import com.alibaba.lava.base.AbstractLavaBoImpl;
 import com.alibaba.lava.privilege.PrivilegeInfo;
-import com.spring.simple.development.core.annotation.base.HasPermissions;
 import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.annotation.base.NoApiMethod;
 import com.spring.simple.development.core.annotation.base.ValidHandler;
 import com.spring.simple.development.core.annotation.base.swagger.Api;
 import com.spring.simple.development.core.annotation.base.swagger.ApiImplicitParam;
 import com.spring.simple.development.core.annotation.base.swagger.ApiOperation;
-import com.spring.simple.development.core.component.alertsdk.SimpleAlertExecutor;
 import com.spring.simple.development.core.component.mvc.BaseSupport;
 import com.spring.simple.development.demo.mapper.DemoDoMapperExt;
 import com.spring.simple.development.demo.model.DemoDo;
 import com.spring.simple.development.demo.model.DemoDoExample;
 import com.spring.simple.development.demo.service.TestDemoBo;
 import com.spring.simple.development.demo.vo.DemoVo;
-import com.spring.simple.development.support.exception.GlobalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
-import static com.spring.simple.development.support.exception.ResponseCode.RES_PARAM_IS_EMPTY;
-
-@Service
 @IsApiService(isLogin = false)
 @Api(tags = "用户相关11111")
 public class TestDemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, DemoDoExample> implements TestDemoBo {
