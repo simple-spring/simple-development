@@ -76,12 +76,16 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SimpleContentApplication.applicationContext.getAutowireCapableBeanFactory();
         // 默认拦截器
-        String[] excludes = new String[5];
+        String[] excludes = new String[9];
         excludes[0] = "/swagger-ui.html";
         excludes[1] = "/webjars/**";
         excludes[2] = "/swagger-resources";
         excludes[3] = "/swagger-resources/configuration/ui";
         excludes[4] = "/swagger-resources/configuration/security";
+        excludes[5] = "/simpleDoc/index.html";
+        excludes[6] = "/assets/**";
+        excludes[7] = "/simpleDoc/**";
+        excludes[8] = "/simple-spring.png";
 
         // 启动shiro
         try {
@@ -140,6 +144,19 @@ public class WebConfig implements WebMvcConfigurer {
         if (!isEnableBoolean) {
             return;
         }
+
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/simpleDoc/index.html")
+                .addResourceLocations("classpath:/META-INF/");
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/assets/**")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/assets/");
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/simple-spring.png")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/simple-spring.png");
+        // 解决simple文档无法访问
+        registry.addResourceHandler("/simpleDoc/**")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/simpleDoc/");
         // 解决swagger无法访问
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");

@@ -25,11 +25,11 @@ public class DemoController {
     private TestDemoBo testDemoBo;
     @Autowired
     PrivilegeInfo privilegeInfo;
-    @RequestMapping("/")
-    @ResponseBody
-    public String home(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return "hello world";
-    }
+//    @RequestMapping("/")
+//    @ResponseBody
+//    public String home(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        return "hello world";
+//    }
     @NoAuth
     @RequestMapping("/index")
     public String index(HttpServletRequest request,HttpServletResponse response) {
