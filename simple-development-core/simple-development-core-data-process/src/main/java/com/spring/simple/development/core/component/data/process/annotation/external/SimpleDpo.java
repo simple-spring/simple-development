@@ -48,12 +48,4 @@ public @interface SimpleDpo{
      * @return
      */
     String dataModelType();
-    /**
-     * 返回类型
-     *
-     * @return
-     */
-    Class returnClass();
-
-
 }
