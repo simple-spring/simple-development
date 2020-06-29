@@ -74,6 +74,11 @@ public class SimpleBootApplication {
         }else{
             System.getProperties().setProperty("server.port", port);
         }
+        // 设置默认路徑
+        String path = PropertyConfigurer.getProperty("server.path");
+        if (!StringUtils.isEmpty(path)) {
+            System.getProperties().setProperty("server.servlet.context-path", path.contains("/")?path:"/"+path);
+        }
         if (CollectionUtils.isEmpty(components)) {
             SpringApplication.run(appClass, args);
         } else {
