@@ -6,6 +6,7 @@ import com.spring.simple.development.core.init.SpringBootAppInitializer;
 import com.spring.simple.development.core.spiconfig.support.DataSourceSpiConfig;
 import com.spring.simple.development.core.spiconfig.support.DubboSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
+import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.ClassLoadUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -67,7 +68,7 @@ public class SimpleBootApplication {
         components.add(appClass.getPackage().getName());
         components.add("com.spring.simple.development.core.baseconfig");
         // 设置默认端口
-        String port = System.getProperties().getProperty("server.port");
+        String port = PropertyConfigurer.getProperty("server.port");
         if (StringUtils.isEmpty(port)) {
             System.getProperties().setProperty("server.port", "8000");
         }
