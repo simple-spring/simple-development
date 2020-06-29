@@ -12,13 +12,13 @@ import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.GroovyClassLoaderUtils;
+import com.spring.simple.development.support.utils.RandomUtil;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,22 +32,16 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author liko.wang
  * @Date 2020/1/15/015 10:11
  * @Description SwaggerConfig
  **/
-@Configuration
-@EnableSwagger2
 public class SwaggerConfig {
     public SwaggerConfig() {
 
@@ -177,20 +171,26 @@ public class SwaggerConfig {
             }
 
             List<CodeGenerationMethodParams> codeGenerationMethodParamsList = new ArrayList<>();
+            Set<String> setMethodName = new HashSet<>();
             for (Method method : declaredMethods) {
                 NoApiMethod noApiMethod = method.getAnnotation(NoApiMethod.class);
-                if (noApiMethod != null) {
+                // lamda表达式兼容
+                if (noApiMethod != null || method.getName().contains("$")) {
                     continue;
                 }
                 CodeGenerationMethodParams codeGenerationMethodParams = new CodeGenerationMethodParams();
 
                 String methodName = method.getName();
-                // lamda表达式兼容
-                if (methodName.contains("$")) {
-                    int start = methodName.indexOf("$");
-                    int end = methodName.lastIndexOf("$");
-                    methodName = methodName.substring(start + 1, end);
+                boolean add = setMethodName.add(methodName);
+                if (add == false) {
+                    methodName = methodName + RandomUtil.randomStr(5);
                 }
+//                // lamda表达式兼容
+//                if (methodName.contains("$")) {
+//                    int start = methodName.indexOf("$");
+//                    int end = methodName.lastIndexOf("$");
+//                    methodName = methodName.substring(start + 1, end);
+//                }
                 IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
                 if (isApiMethodService != null) {
                     String defaultMethodValue = isApiMethodService.value();
