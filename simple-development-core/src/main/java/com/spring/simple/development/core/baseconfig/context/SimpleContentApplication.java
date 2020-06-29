@@ -1,8 +1,7 @@
 package com.spring.simple.development.core.baseconfig.context;
 
 import com.spring.simple.development.core.init.AppInitializer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SimpleContentApplication implements ApplicationContextAware {
 
-    private static Logger logger = LogManager.getLogger(SimpleContentApplication.class);
 
     public static ApplicationContext applicationContext;
 
