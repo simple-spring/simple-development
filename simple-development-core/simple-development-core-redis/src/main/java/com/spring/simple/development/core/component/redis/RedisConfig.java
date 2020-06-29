@@ -3,6 +3,7 @@ package com.spring.simple.development.core.component.redis;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.JedisPoolUtils;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -14,6 +15,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author liko wang
  */
 //@EnableCaching
+@Configuration
 public class RedisConfig {
     private String host = PropertyConfigurer.getProperty("spring.simple.redisHost");
     private String port = PropertyConfigurer.getProperty("spring.simple.redisPort");
