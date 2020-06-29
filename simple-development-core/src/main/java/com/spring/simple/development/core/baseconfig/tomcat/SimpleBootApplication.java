@@ -71,6 +71,8 @@ public class SimpleBootApplication {
         String port = PropertyConfigurer.getProperty("server.port");
         if (StringUtils.isEmpty(port)) {
             System.getProperties().setProperty("server.port", "8000");
+        }else{
+            System.getProperties().setProperty("server.port", port);
         }
         if (CollectionUtils.isEmpty(components)) {
             SpringApplication.run(appClass, args);
