@@ -4,6 +4,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -19,10 +20,7 @@ public class PropertyConfigurer {
         try {
             // 读取系统配置文件
             Properties properties = new Properties();
-            InputStream in = PropertyConfigurer.class.getClassLoader().getResourceAsStream(path);
-
-            properties.load(in);
-
+            properties.load(new InputStreamReader(PropertyConfigurer.class.getClassLoader().getResourceAsStream(path), "UTF-8"));
             for (Object key : properties.keySet()) {
                 configMap.put(key.toString(), properties.getProperty(key.toString()));
             }
