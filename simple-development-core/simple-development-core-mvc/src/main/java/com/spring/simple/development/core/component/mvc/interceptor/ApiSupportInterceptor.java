@@ -8,6 +8,7 @@ import com.spring.simple.development.core.component.mvc.BaseSupport;
 import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.exception.GlobalException;
+import com.spring.simple.development.support.exception.GlobalResponseCode;
 import com.spring.simple.development.support.exception.ResponseCode;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.springframework.web.method.HandlerMethod;
@@ -67,7 +68,7 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
         PrivilegeInfo privilegeInfo = simpleSessionProfile.getPrivilegeInfo(httpServletRequest, httpServletResponse, handler);
         if (privilegeInfo == null) {
             // 用户为空
-            throw new GlobalException(ResponseCode.RES_DATA_EXIST, "用戶不存在");
+            throw new GlobalException(GlobalResponseCode.SYS_NO_LOGIN, "用戶不存在或未登录");
         }
         // 获取基础工具
         BaseSupport baseSupport = SimpleContentApplication.getBeanByType(BaseSupport.class);
