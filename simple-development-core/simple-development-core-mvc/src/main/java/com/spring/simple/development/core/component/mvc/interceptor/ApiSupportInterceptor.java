@@ -70,12 +70,11 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
             // 用户为空
             throw new GlobalException(GlobalResponseCode.SYS_NO_LOGIN, "用戶不存在或未登录");
         }
-        // 获取基础工具
-        BaseSupport baseSupport = SimpleContentApplication.getBeanByType(BaseSupport.class);
         // 获取用户对象
         PrivilegeInfo sessionPrivilegeInfo = SimpleContentApplication.getBeanByType(PrivilegeInfo.class);
         // 赋值
-        baseSupport.copyObject(privilegeInfo, sessionPrivilegeInfo);
+        sessionPrivilegeInfo.setOpenAccount(privilegeInfo.getOpenAccount());
+        sessionPrivilegeInfo.setToken(privilegeInfo.getToken());
         // 通过
         return true;
     }
