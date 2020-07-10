@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>simple-development-core-alert-sdk</artifactId>
     <groupId>com.spring</groupId>
-    <version>1.0</version>
+    <version>1.2</version>
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <simple.version>2.4</simple.version>
+        <simple.version>2.5</simple.version>
     </properties>
     <dependencies>
         <dependency>
