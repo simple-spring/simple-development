@@ -39,7 +39,7 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
-        IdempotentHandler.fastSetIdempotentModel(httpServletRequest.getRemoteHost(), httpServletRequest.getRequestURI());
+        IdempotentHandler.fastSetIdempotentModel(httpServletRequest.getRemoteHost(), httpServletRequest.getRequestURI(),httpServletRequest.getSession().getId());
 
         String isEnable = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_USER_LOGIN_IS_OPEN);
         boolean isEnableBoolean = Boolean.parseBoolean(isEnable);

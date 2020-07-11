@@ -1,5 +1,6 @@
 package com.spring.simple.development.core.baseconfig.idempotent;
 
+import com.spring.simple.development.support.exception.GlobalException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+import static com.spring.simple.development.support.exception.ResponseCode.RES_IDEMPOTENT_INVALID;
 
 
 /**
@@ -32,10 +34,14 @@ public class IdempotentAspect {
      * @throws Exception
      */
     @Before("annotationPointcut()")
-    public void before(JoinPoint point) throws Exception {
-        Class<?> aClass = Class.forName("com.spring.simple.development.core.component.idempotent.IdempotentHandlerUtil");
-        Method before = aClass.getMethod("before", JoinPoint.class);
-        before.invoke(aClass.newInstance(), point);
+    public void before(JoinPoint point) {
+        try {
+            Class<?> aClass = Class.forName("com.spring.simple.development.core.component.idempotent.IdempotentHandlerUtil");
+            Method before = aClass.getMethod("before", JoinPoint.class);
+            before.invoke(aClass.newInstance(), point);
+        }catch (Exception e){
+            throw new GlobalException(RES_IDEMPOTENT_INVALID, "点击太快了,请稍后重试");
+        }
     }
 
     /**
