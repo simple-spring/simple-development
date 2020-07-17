@@ -3,7 +3,6 @@ package com.spring.simple.development.support.properties;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +10,8 @@ import java.util.Properties;
 
 /**
  * 项目配置文件
+ *
+ * @author luke
  */
 public class PropertyConfigurer {
 
@@ -26,6 +27,13 @@ public class PropertyConfigurer {
             }
         } catch (IOException e) {
             throw new RuntimeException("load Properties  application.properties  fail");
+        }
+    }
+
+    public static void loadApplicationProperties(Map map) {
+        // 读取系统配置文件
+        for (Object key : map.entrySet()) {
+            configMap.put(key.toString(), key.toString());
         }
     }
 

@@ -18,6 +18,7 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 //@EnableDubbo
 //@EnableCassandra
 //@EnableShiroCas
+@EnableFastGoConfig(branch = "dev", projectCode = "123", fastGoServer = "http://www.baidu.com")
 @EnableDataProcess
 @SpringSimpleApplication
 public class App {
