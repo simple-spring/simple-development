@@ -1,8 +1,12 @@
 package com.spring.simple.development.core.baseconfig.tomcat;
 
-import com.spring.simple.development.support.constant.SystemProperties;
+import com.alibaba.fastjson.JSONObject;
+import com.spring.simple.development.core.annotation.config.EnableFastGoConfig;
+import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
 import com.spring.simple.development.core.init.AppInitializer;
+import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
+import com.spring.simple.development.support.utils.HttpUtils;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
@@ -11,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * @author liko.wang
@@ -95,6 +100,7 @@ public class SimpleApplication {
         }
 
     }
+
     public void startTest() {
         try {
             long begin = System.currentTimeMillis();
@@ -141,7 +147,7 @@ public class SimpleApplication {
 
     private void log(long time) {
         System.out.println("********************************************************");
-        System.out.println("启动成功: http://127.0.0.1:" + port +(StringUtils.isEmpty(projectName) ? "" : "/" + projectName)+ "   in:" + time + "ms");
+        System.out.println("启动成功: http://127.0.0.1:" + port + (StringUtils.isEmpty(projectName) ? "" : "/" + projectName) + "   in:" + time + "ms");
         System.out.println("********************************************************");
     }
 
@@ -175,10 +181,11 @@ public class SimpleApplication {
             return;
         }
         Boolean isBaseConfig = false;
+        Boolean isEnableFastGoConfig = false;
         for (Annotation annotation : annotations) {
             AppInitializer.annotationSet.add(annotation);
-            if (annotation instanceof com.spring.simple.development.core.annotation.config.SpringSimpleApplication) {
-                com.spring.simple.development.core.annotation.config.SpringSimpleApplication springSimpleApplication = (com.spring.simple.development.core.annotation.config.SpringSimpleApplication) annotation;
+            if (annotation instanceof SpringSimpleApplication) {
+                SpringSimpleApplication springSimpleApplication = (SpringSimpleApplication) annotation;
                 // 启动类名
                 System.setProperty(SystemProperties.SPRING_APPLICATION_CLASS_NAME, appClass.getName());
                 // 应用名
@@ -191,13 +198,27 @@ public class SimpleApplication {
                 }
                 isBaseConfig = true;
             }
+            if (annotation instanceof EnableFastGoConfig) {
+                isEnableFastGoConfig = true;
+                EnableFastGoConfig enableFastGoConfig = (EnableFastGoConfig) annotation;
+                String url = enableFastGoConfig.fastGoServer();
+                String branch = enableFastGoConfig.branch();
+                String projectCode = enableFastGoConfig.projectCode();
+                String configUrl = url + "?projectCode=" + projectCode + "&branch=" + branch;
+                String json = HttpUtils.doGet(configUrl);
+                Map map = JSONObject.parseObject(json, Map.class);
+                PropertyConfigurer.loadApplicationProperties(map);
+            }
         }
         // 是否有基础组件
         if (!isBaseConfig) {
             throw new RuntimeException(" no SpringSimpleApplication Component");
         }
         // 读取项目配置文件
-        PropertyConfigurer.loadApplicationProperties("application.properties");
+        if (isEnableFastGoConfig == false) {
+            PropertyConfigurer.loadApplicationProperties("application.properties");
+        }
+
         String port = PropertyConfigurer.getProperty("server.port");
         SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
         tomcatTest.setProjectName(PropertyConfigurer.getProperty("server.path"));
@@ -220,6 +241,7 @@ public class SimpleApplication {
             return;
         }
         Boolean isBaseConfig = false;
+        Boolean isEnableFastGoConfig = false;
         for (Annotation annotation : annotations) {
             AppInitializer.annotationSet.add(annotation);
             if (annotation instanceof com.spring.simple.development.core.annotation.config.SpringSimpleApplication) {
@@ -236,13 +258,26 @@ public class SimpleApplication {
                 }
                 isBaseConfig = true;
             }
+            if (annotation instanceof EnableFastGoConfig) {
+                isEnableFastGoConfig = true;
+                EnableFastGoConfig enableFastGoConfig = (EnableFastGoConfig) annotation;
+                String url = enableFastGoConfig.fastGoServer();
+                String branch = enableFastGoConfig.branch();
+                String projectCode = enableFastGoConfig.projectCode();
+                String configUrl = url + "?projectCode=" + projectCode + "&branch=" + branch;
+                String json = HttpUtils.doGet(configUrl);
+                Map map = JSONObject.parseObject(json, Map.class);
+                PropertyConfigurer.loadApplicationProperties(map);
+            }
         }
         // 是否有基础组件
         if (!isBaseConfig) {
             throw new RuntimeException(" no SpringSimpleApplication Component");
         }
         // 读取项目配置文件
-        PropertyConfigurer.loadApplicationProperties("application.properties");
+        if (isEnableFastGoConfig == false) {
+            PropertyConfigurer.loadApplicationProperties("application.properties");
+        }
         String port = PropertyConfigurer.getProperty("server.port");
         SimpleApplication tomcatTest = new SimpleApplication(StringUtils.isEmpty(port) ? DEFAULT_PORT : Long.valueOf(port).intValue(), true);
         tomcatTest.setProjectName(PropertyConfigurer.getProperty("server.path"));
