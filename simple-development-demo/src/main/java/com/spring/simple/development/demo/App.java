@@ -12,13 +12,16 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
 //@EnableAlert
 //@EnableXxlJob
 @EnableSwagger
+@EnableMongoDB
+@EnableElasticSearch
 @EnableMybatis
 //@EnableRedis
+@EnableKafka
 @EnableWebMvc
 //@EnableDubbo
 //@EnableCassandra
 //@EnableShiroCas
-@EnableFastGoConfig(branch = "dev", projectCode = "123", fastGoServer = "http://www.baidu.com")
+//@EnableFastGoConfig(branch = "dev", projectCode = "123", fastGoServer = "http://www.baidu.com")
 @EnableDataProcess
 @SpringSimpleApplication
 public class App {

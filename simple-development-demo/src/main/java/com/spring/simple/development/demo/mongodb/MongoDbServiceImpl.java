@@ -9,9 +9,9 @@ import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 /**
+ * @author hjs
  * @desc: 测试mongodb
- * @auth: hjs
- * @date: 2020/6/16 0016
+ * @date: 2020/6/16
  */
 @Service
 public class MongoDbServiceImpl implements MongoDbService {
@@ -21,9 +21,9 @@ public class MongoDbServiceImpl implements MongoDbService {
         // 获取客户端
         MongoClient mongoClient = MongoDBClient.getMongoClient();
         // 指定库
-        MongoDatabase sfs = mongoClient.getDatabase("runoob");
+        MongoDatabase sfs = mongoClient.getDatabase("demo");
         // 集合
-        MongoCollection<Document> coll = sfs.getCollection("sfsdb");
+        MongoCollection<Document> coll = sfs.getCollection("demo");
         //查询所有
         try (MongoCursor<Document> cursor = coll.find().iterator()) {
             while (cursor.hasNext()) {

@@ -8,13 +8,13 @@ import com.xxl.job.core.handler.annotation.JobHandler;
 import com.xxl.job.core.log.XxlJobLogger;
 
 /**
- * @author ys
+ * @author luke
  * @Date 2019年12月30日
- * @Description TODO
+ * @Description demo job
  */
 @JobHandler("demoTask")
 @Service
-public class DemoTask extends IJobHandler{
+public class DemoTask extends IJobHandler {
 
     @Override
     public ReturnT<String> execute(String param) throws Exception {
