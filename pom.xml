@@ -29,6 +29,7 @@
         <module>simple-development-build</module>
         <module>simple-development-exception</module>
         <module>simple-development-annotation</module>
+        <module>simple-development-code-generate</module>
 
     </modules>
     <url>https://github.com/likowong/spring-simple.git</url>
