@@ -46,7 +46,7 @@
         <dependency>
             <artifactId>simple-development-core-shiro-cas</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
         <!--servlet-->
         <dependency>
