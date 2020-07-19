@@ -3,7 +3,7 @@ package com.spring.simple.development.core.component.shiro.cas;
 import com.acl.support.auth.web.authc.Account;
 import com.acl.support.auth.web.util.AccountUtils;
 import com.alibaba.lava.privilege.PrivilegeInfo;
-import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
+import com.spring.simple.development.support.LavaThreadLocal;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -44,10 +44,11 @@ public class ShiroLavaSupportInterceptor implements HandlerInterceptor {
             return true;
         }
         // 获取用户对象
-        PrivilegeInfo sessionPrivilegeInfo = SimpleContentApplication.getBeanByType(PrivilegeInfo.class);
+        PrivilegeInfo sessionPrivilegeInfo = new PrivilegeInfo();
         // 通过
         sessionPrivilegeInfo.setUserId(currentAccount.getAccountCode());
         sessionPrivilegeInfo.setOpenAccount(currentAccount.getAccountCode());
+        LavaThreadLocal.addLava(sessionPrivilegeInfo);
         return true;
     }
 
@@ -75,10 +76,6 @@ public class ShiroLavaSupportInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
-        // 获取用户对象
-        PrivilegeInfo sessionPrivilegeInfo = SimpleContentApplication.getBeanByType(PrivilegeInfo.class);
-        // 通过
-        sessionPrivilegeInfo.setUserId(null);
-        sessionPrivilegeInfo.setOpenAccount(null);
+        LavaThreadLocal.remove();
     }
 }

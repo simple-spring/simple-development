@@ -1,12 +1,10 @@
 package com.spring.simple.development.core.component.idempotent;
 
-import com.alibaba.fastjson.JSON;
 import com.spring.simple.development.core.annotation.base.Idempotent;
 import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandler;
 import com.spring.simple.development.core.baseconfig.idempotent.IdempotentModel;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.utils.JedisPoolUtils;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.util.StringUtils;
@@ -43,18 +41,12 @@ public class IdempotentHandlerUtil {
                 Idempotent idempotent = method.getAnnotation(Idempotent.class);
                 String value = idempotent.value();
                 IdempotentModel idempotentModel = IdempotentHandler.getIdempotentModel();
-                String data;
-                if (point.getArgs().length == 0) {
-                    data = idempotentModel.getRandomData();
-                } else {
-                    Object paramData = point.getArgs()[0];
-                    data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
-                }
+
                 // 加入分布式锁
                 jedis = JedisPoolUtils.getJedis();
-                String idempotentValue = jedis.get(idempotentModel.getUrl() + idempotentModel.getIp() + value + data);
+                String idempotentValue = jedis.get(idempotentModel.getUrl() + idempotentModel.getIp() + value + idempotentModel.getSessionId());
                 if (StringUtils.isEmpty(idempotentValue)) {
-                    jedis.setex(idempotentModel.getUrl() + idempotentModel.getIp() + value + data, 10, idempotentModel.getUrl() + idempotentModel.getIp() + value);
+                    jedis.setex(idempotentModel.getUrl() + idempotentModel.getIp() + value + idempotentModel.getSessionId(), 15, idempotentModel.getUrl() + idempotentModel.getIp() + idempotentModel.getSessionId());
                     return;
                 }
                 throw new GlobalException(RES_IDEMPOTENT_INVALID, "点击太快了,请稍后重试");
@@ -81,16 +73,10 @@ public class IdempotentHandlerUtil {
                 IdempotentModel idempotentModel = IdempotentHandler.getIdempotentModel();
                 Idempotent idempotent = method.getAnnotation(Idempotent.class);
                 String value = idempotent.value();
-                String data;
-                if (point.getArgs().length == 0) {
-                    data = idempotentModel.getRandomData();
-                } else {
-                    Object paramData = point.getArgs()[0];
-                    data = DigestUtils.md5Hex(JSON.toJSONString(paramData));
-                }
+
                 // 删除缓存
                 jedis = JedisPoolUtils.getJedis();
-                jedis.del(idempotentModel.getUrl() + idempotentModel.getIp() + value + data);
+                jedis.del(idempotentModel.getUrl() + idempotentModel.getIp() + value + idempotentModel.getSessionId());
             }
         } finally {
             JedisPoolUtils.returnRes(jedis);

@@ -16,9 +16,9 @@ public class IdempotentModel {
     private String ip;
 
     /**
-     * 随机数
+     * sessionId
      */
-    private String randomData;
+    private String sessionId;
 
     public String getUrl() {
         return url;
@@ -36,11 +36,11 @@ public class IdempotentModel {
         this.ip = ip;
     }
 
-    public String getRandomData() {
-        return randomData;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setRandomData(String randomData) {
-        this.randomData = randomData;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

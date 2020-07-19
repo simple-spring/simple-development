@@ -7,7 +7,6 @@ import com.spring.simple.development.core.handler.event.support.SimpleComponentE
 import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
-import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
@@ -50,10 +49,6 @@ public class AppInitializer implements WebApplicationInitializer {
         AppInitializer.servletContext = servletContext;
         try {
             System.out.println("spring simple start");
-            System.out.println("spring simple config init ...");
-            // 读取项目配置文件
-            PropertyConfigurer.loadApplicationProperties("application.properties");
-            System.out.println("spring simple config end");
 
             // 获取main类的包路径
             String basePackageName = System.getProperty(SystemProperties.APPLICATION_ROOT_CONFIG_APP_PACKAGE_PATH_NAME);

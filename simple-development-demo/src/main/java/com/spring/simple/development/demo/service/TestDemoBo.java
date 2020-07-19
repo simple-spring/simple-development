@@ -5,23 +5,37 @@ import com.spring.simple.development.demo.model.DemoDo;
 import com.spring.simple.development.demo.model.DemoDoExample;
 import com.spring.simple.development.demo.vo.DemoVo;
 
+/**
+ * @author luke
+ */
 public interface TestDemoBo extends LavaBo<DemoDo, DemoDoExample> {
 
     /**
-     * 插入
+     * 增
+     *
      * @param demoVo
      */
-    int insertData(DemoVo demoVo);
+    void insertData(DemoVo demoVo);
 
     /**
-     * 插入
+     * 删
+     *
      * @param id
      */
-    int deleteData(String id);
+    void deleteData(Long id);
 
     /**
-     * 查询
-     * @param id
+     * 改
+     *
+     * @param demoVo
      */
-    DemoVo getData(String id);
+    void modifyData(DemoVo demoVo);
+
+    /**
+     * 查
+     *
+     * @param id
+     * @return
+     */
+    DemoVo getData(Long id);
 }
