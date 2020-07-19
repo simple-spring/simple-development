@@ -6,7 +6,7 @@
 
     <groupId>com.spring</groupId>
     <artifactId>simple-development-code-generate</artifactId>
-    <version>1.0</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
     <build>
         <finalName>simple-development-code-generate</finalName>

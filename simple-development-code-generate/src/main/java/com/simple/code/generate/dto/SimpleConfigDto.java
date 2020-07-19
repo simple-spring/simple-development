@@ -19,7 +19,7 @@ public class SimpleConfigDto {
     private String fastGoServer;
 
     /**
-     * 项目配置地址
+     * 是否自动生成代码
      */
     private Boolean mybatisIsAutoGenerate;
 
