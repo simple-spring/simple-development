@@ -37,26 +37,31 @@ public class TestDemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, 
     @CacheEvict(value = "test", key = "#demoVo.id", condition = "#demoVo != null")
     @ApiOperation(value = "插入", notes = "插入一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo")
-    public int insertData(DemoVo demoVo) {
+    public void insertData(DemoVo demoVo) {
         DemoDo demoDo = baseSupport.objectCopy(demoVo, DemoDo.class);
-        return insert(demoDo);
+        insert(demoDo);
     }
 
     @Override
     @CacheEvict(value = "test", key = "#id", condition = "#id != null")
     @ApiOperation(value = "删除", notes = "删除一亿个订单")
     @ValidHandler(key = "demoVo", value = DemoVo.class, isReqBody = false)
-    public int deleteData(String id) {
-        return delete(Long.valueOf(id));
+    public void deleteData(Long id) {
+        delete(id);
+    }
+
+    @Override
+    public void modifyData(DemoVo demoVo) {
+
     }
 
     @Override
     @Cacheable(value = "test", key = "#id", condition = "#id != null",unless="#result == null")
     @ApiOperation(value = "查询", notes = "查询一亿个订单")
     @ApiImplicitParam(name = "demoVo", description = "用户vo", resultDataType = DemoVo.class)
-    public DemoVo getData(String id) {
+    public DemoVo getData(Long id) {
         System.out.println(privilegeInfo);
-        DemoDo demoDo = selectByPrimaryKey(Long.valueOf(id));
+        DemoDo demoDo = selectByPrimaryKey(id);
         return baseSupport.objectCopy(demoDo, DemoVo.class);
     }
 }

@@ -28,8 +28,6 @@ public class DemoController {
 
     @Autowired
     private TestDemoBo testDemoBo;
-    @Autowired
-    PrivilegeInfo privilegeInfo;
 
     //    @RequestMapping("/")
 //    @ResponseBody
@@ -54,7 +52,7 @@ public class DemoController {
 
     @RequestMapping("/testPermission")
     public String testPermission(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        testDemoBo.getData("1");
+        testDemoBo.getData(1L);
         return "testPermission";
     }
 }
