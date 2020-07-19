@@ -29,7 +29,7 @@ public class AutoGenerateCode extends Thread {
                 if (projectPathFile.exists()) {
                     System.out.println("项目地址已存在："+projectPath);
                     if (isWindows()) {
-                        String command = "cd " + System.getProperties().getProperty("user.dir").substring(0, 2) + projectPath + "\n  mvn mybatis-generator:generate";
+                        String command = "cd " + System.getProperties().getProperty("user.dir").substring(0, 2) + projectPath + "\n set MAVEN_OPTS=\"-Dfile.encoding=UTF-8\" \n mvn mybatis-generator:generate";
                         System.out.println("执行window命令：" + command);
                         String scriptFileName = System.getProperties().getProperty("user.dir").substring(0, 2)+SimpleConfig.projectGenerateBasePath + "/" + UUID.randomUUID().toString() + ".bat";
                         File scriptFile = new File(scriptFileName);
@@ -47,7 +47,7 @@ public class AutoGenerateCode extends Thread {
                         System.out.println("执行结果：" + process.waitFor());
                         in.close();
                     } else {
-                        String command = "cd " + projectPath + "\n  mvn mybatis-generator:generate";
+                        String command = "cd " + projectPath + "\n set MAVEN_OPTS=\"-Dfile.encoding=UTF-8\" \n  mvn mybatis-generator:generate";
                         System.out.println("执行Linux命令：" + command);
 
                         String scriptFileName = SimpleConfig.projectGenerateBasePath + "/" + UUID.randomUUID().toString() + ".sh";
@@ -57,7 +57,15 @@ public class AutoGenerateCode extends Thread {
                         }
                         Runtime.getRuntime().exec("chmod +=x "+scriptFileName);
                         Process process = Runtime.getRuntime().exec(scriptFileName);
+                        InputStream in = process.getInputStream();
+                        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
+                        String line;
+                        while((line=bufferedReader.readLine())!=null)
+                        {
+                            System.out.println(line + "\n");
+                        }
                         System.out.println("执行结果：" + process.waitFor());
+                        in.close();
                     }
                     break;
                 }

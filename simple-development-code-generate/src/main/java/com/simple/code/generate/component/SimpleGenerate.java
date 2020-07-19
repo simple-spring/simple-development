@@ -81,6 +81,8 @@ public abstract class SimpleGenerate {
         generatePom();
         // 生成log4j2.xml
         generateLog4j2();
+        // 生成log4J.xml
+        generateLog4j();
         // assembly.xml
         generateAssembly();
         // generatorConfig.xml
@@ -206,6 +208,20 @@ public abstract class SimpleGenerate {
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("projectName", projectName);
         FreeMarkerTemplate.generateFileByTemplate("log4j2.ftl", file, dataMap);
+    }
+    /**
+     * 生成log4j.properties
+     */
+    private void generateLog4j() throws Exception {
+        // log4j2.xml
+        String suffix = "log4j.properties";
+        String path = projectResourcesPath + "/" + suffix;
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
+        Map<String, Object> dataMap = new HashMap<>();
+        FreeMarkerTemplate.generateFileByTemplate("log4j.properties.ftl", file, dataMap);
     }
 
     /**
@@ -369,13 +385,5 @@ public abstract class SimpleGenerate {
             }
         }
         return true;
-    }
-
-    public String upperFirstLatter(String letter) {
-        char[] chars = letter.toCharArray();
-        if (chars[0] >= 'a' && chars[0] <= 'z') {
-            chars[0] = (char) (chars[0] - 32);
-        }
-        return new String(chars);
     }
 }

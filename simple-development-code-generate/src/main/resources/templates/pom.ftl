@@ -134,6 +134,7 @@
                 </includes>
                 <excludes>
                     <exclude>generatorConfig.xml</exclude>
+                    <exclude>log4j.properties</exclude>
                     <exclude>assembly.xml</exclude>
                     <exclude>config/*/*.properties</exclude>
                 </excludes>
