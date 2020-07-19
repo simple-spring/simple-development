@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.spring</groupId>
     <artifactId>simple-development-core-valid</artifactId>
-    <version>1.2</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <properties>
         <tomcat-version>9.0.33</tomcat-version>
@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <simple.version>2.5</simple.version>
+        <simple.version>2.4</simple.version>
     </properties>
     <dependencies>
         <dependency>
