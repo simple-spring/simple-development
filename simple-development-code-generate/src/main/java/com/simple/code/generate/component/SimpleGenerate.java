@@ -386,12 +386,4 @@ public abstract class SimpleGenerate {
         }
         return true;
     }
-
-    public String upperFirstLatter(String letter) {
-        char[] chars = letter.toCharArray();
-        if (chars[0] >= 'a' && chars[0] <= 'z') {
-            chars[0] = (char) (chars[0] - 32);
-        }
-        return new String(chars);
-    }
 }
