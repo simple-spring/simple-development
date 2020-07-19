@@ -56,22 +56,22 @@
         <dependency>
             <artifactId>simple-development-core-cassandra</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <artifactId>simple-development-core-alert-sdk</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <artifactId>simple-development-core-shiro-cas</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <artifactId>simple-development-core-mongodb</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
@@ -87,31 +87,13 @@
         <dependency>
             <artifactId>simple-development-core-data-process</artifactId>
             <groupId>com.spring</groupId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <profiles>

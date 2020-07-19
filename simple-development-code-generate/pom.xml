@@ -6,7 +6,7 @@
 
     <groupId>com.spring</groupId>
     <artifactId>simple-development-code-generate</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
     <build>
         <finalName>simple-development-code-generate</finalName>
@@ -86,12 +86,12 @@
     </dependencies>
     <distributionManagement>
         <repository>
-            <id>manila.releases</id>
+            <id>simple.releases</id>
             <name>Internal Releases</name>
             <url>http://47.115.89.120:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>manila.Snapshots</id>
+            <id>simple.Snapshots</id>
             <name>Internal Snapshots</name>
             <url>http://47.115.89.120:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>

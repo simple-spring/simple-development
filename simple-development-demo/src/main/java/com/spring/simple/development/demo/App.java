@@ -9,20 +9,10 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
-//@EnableAlert
-//@EnableXxlJob
+
 @EnableSwagger
-@EnableMongoDB
-@EnableElasticSearch
 @EnableMybatis
-//@EnableRedis
-@EnableKafka
 @EnableWebMvc
-//@EnableDubbo
-//@EnableCassandra
-//@EnableShiroCas
-//@EnableFastGoConfig(branch = "dev", projectCode = "123", fastGoServer = "http://www.baidu.com")
-@EnableDataProcess
 @SpringSimpleApplication
 public class App {
     public static void main(String[] args) {
