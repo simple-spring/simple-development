@@ -1,8 +1,8 @@
-### simple-development2.0 介绍
+### simple-development2.4 介绍
     基于ssm javaconfig 零xml配置，常用的三层结构dao，service简化开发,controller层零开发
 
 ### 使用的技术
-    主体框架基于spring4.3.3开发，基于javassist,cglib,Reflections技术实现
+    主体框架基于5.2.4.RELEASE开发，基于javassist,cglib,Reflections技术实现
 
 ### 使用
 ##### 1.maven项目配置(加入之前先配置settings.xml[下载](http://file.diangc.cn/settings.xml))
@@ -10,7 +10,7 @@
             <dependency>
                 <groupId>com.spring</groupId>
                 <artifactId>simple-development-core</artifactId>
-                <version>2.1</version>
+                <version>2.4</version>
                 <scope>compile</scope>
             </dependency>
         (2)配置环境隔离
@@ -129,12 +129,25 @@
                     </pluginManagement>
             
                 </build>
-### 开发中
- 功能清单 | 作用 |
-| --- | --- |
-| 集成dubbo | 分布式服务 |
-| 集成es | 全文检索|
-| 集成redis | 缓存数据库 |
-| 自动生成代码2.0 | mybatis generator插件自定义开发 |
-| 集成job| 任务调度中心|
-| 自由选配 | 服务自由搭配|
+                
+               
+### 启动
+```java
+package com.spring.simple.development.demo;
+
+
+import com.spring.simple.development.core.annotation.config.*;
+import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
+
+/**
+ * @author liko.wang
+ * @Date 2019/12/24/024 14:20
+ * @Description 程序启动
+ **/
+@SpringSimpleApplication
+public class App {
+    public static void main(String[] args) {
+        SimpleApplication.run(App.class);
+    }
+}
+```

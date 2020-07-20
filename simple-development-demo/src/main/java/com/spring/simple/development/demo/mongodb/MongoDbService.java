@@ -1,12 +1,14 @@
 package com.spring.simple.development.demo.mongodb;
 
 /**
- * @desc: TODO
+ * @desc: demo
  * @auth: hjs
- * @date: 2020/6/16 0016
+ * @date: 2020/6/16
  */
 public interface MongoDbService {
-
+    /**
+     * demo
+     */
     void testMongoDb();
 
 }
