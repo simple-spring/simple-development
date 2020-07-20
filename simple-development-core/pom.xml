@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.spring</groupId>
             <artifactId>simple-development-annotation</artifactId>
-            <version>1.1</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>com.spring</groupId>
