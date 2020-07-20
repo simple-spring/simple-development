@@ -6,6 +6,7 @@ import com.spring.simple.development.core.baseconfig.idempotent.IdempotentHandle
 import com.spring.simple.development.core.baseconfig.user.SimpleSessionProfile;
 import com.spring.simple.development.core.component.mvc.BaseSupport;
 import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
+import com.spring.simple.development.support.LavaThreadLocal;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.exception.GlobalResponseCode;
@@ -70,11 +71,8 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
             // 用户为空
             throw new GlobalException(GlobalResponseCode.SYS_NO_LOGIN, "用戶不存在或未登录");
         }
-        // 获取用户对象
-        PrivilegeInfo sessionPrivilegeInfo = SimpleContentApplication.getBeanByType(PrivilegeInfo.class);
         // 赋值
-        sessionPrivilegeInfo.setOpenAccount(privilegeInfo.getOpenAccount());
-        sessionPrivilegeInfo.setToken(privilegeInfo.getToken());
+        LavaThreadLocal.addLava(privilegeInfo);
         // 通过
         return true;
     }
@@ -104,5 +102,6 @@ public class ApiSupportInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
         IdempotentHandler.clearIdempotentModel();
+        LavaThreadLocal.remove();
     }
 }
