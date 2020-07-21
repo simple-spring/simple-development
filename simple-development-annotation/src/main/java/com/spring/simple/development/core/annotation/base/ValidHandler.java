@@ -40,5 +40,5 @@ public @interface ValidHandler {
      *
      * @return
      */
-    boolean isReqBody() default true;
+    boolean isReqBody() default false;
 }
