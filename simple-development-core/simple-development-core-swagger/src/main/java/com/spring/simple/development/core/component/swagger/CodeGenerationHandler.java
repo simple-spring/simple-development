@@ -75,7 +75,7 @@ public class CodeGenerationHandler {
             "\n";
     private static String methodTemplate = "" +
             "    %s\n" +
-            "    @RequestMapping(value = \"%s\", method = RequestMethod.POST)\n" +
+                "    @RequestMapping(value = \"%s\", method = RequestMethod.POST)\n" +
             "    @ApiOperation(value=\"%s\", notes=\"%s\")\n" +
             //"    @ApiImplicitParam(name = \"%s\", value = \"%s\", paramType = \"body\", allowMultiple = true, dataType = \"%s\")\n" +
             "    public ResBody%s %s( %s) throws Throwable {\n" +
