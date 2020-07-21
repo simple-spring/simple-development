@@ -23,10 +23,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +42,7 @@ import static com.spring.simple.development.support.exception.ResponseCode.RES_P
  * @author liko
  */
 @Api(tags = "统一入口")
-@RestController
+@Controller
 @RequestMapping("/data")
 public class ApiController {
     private static final Logger logger = LogManager.getLogger(ApiController.class);
@@ -62,6 +60,7 @@ public class ApiController {
      */
     @ApiOperation(value = "HttpServletRequest", notes = "登录后接口服务")
     @RequestMapping(value = {"/api/{version}/{serviceName}/{methodName}", "/api", "/api/{version}"}, method = RequestMethod.POST)
+    @ResponseBody
     public ResBody api(@ApiParam("登录后接口服务请求参数") HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
 
         if (StringUtils.isEmpty(version)) {
@@ -114,6 +113,7 @@ public class ApiController {
     @ApiOperation(value = "HttpServletRequest", notes = "非登录接口服务")
     @ApiParam(name = "请求参数")
     @NoLogin
+    @ResponseBody
     @RequestMapping(value = {"/config/{version}/{serviceName}/{methodName}", "/config", "/config/{version}"}, method = RequestMethod.POST)
     public ResBody config(@ApiParam("非登录接口服务请求参数") HttpServletRequest request, @PathVariable(name = "version", required = false) String version, @PathVariable(name = "serviceName", required = false) String serviceName, @PathVariable(name = "methodName", required = false) String methodName) throws Throwable {
         if (StringUtils.isEmpty(version)) {
@@ -166,6 +166,7 @@ public class ApiController {
     @ApiOperation(value = "HttpServletRequest", notes = "用户登录接口")
     @ApiParam(name = "请求参数")
     @NoLogin
+    @ResponseBody
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
     public ResBody privilegeInfoLogin(@ApiParam("用户登录接口请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
@@ -190,6 +191,7 @@ public class ApiController {
      */
     @ApiOperation(value = "HttpServletRequest", notes = "用户注销接口")
     @ApiParam(name = "请求参数")
+    @ResponseBody
     @RequestMapping(value = {"/logout"}, method = RequestMethod.POST)
     public ResBody privilegeInfoLogout(@ApiParam("用户注销接口请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
@@ -214,6 +216,7 @@ public class ApiController {
      */
     @ApiOperation(value = "HttpServletRequest", notes = "获取用户信息")
     @ApiParam(name = "请求参数")
+    @ResponseBody
     @RequestMapping(value = {"/getUser"}, method = RequestMethod.POST)
     public ResBody privilegeInfoGetUser(@ApiParam("获取用户信息请求参数") HttpServletRequest request, HttpServletResponse response) throws Throwable {
         // 获取已实现的接口
