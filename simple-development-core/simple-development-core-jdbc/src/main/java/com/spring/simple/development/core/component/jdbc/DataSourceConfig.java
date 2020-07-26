@@ -3,7 +3,13 @@ package com.spring.simple.development.core.component.jdbc;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.lava.privilege.PrivilegeInfo;
 import com.alibaba.lava.util.SpringUtil;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.github.pagehelper.PageHelper;
+import com.spring.simple.development.core.annotation.base.IsApiService;
 import com.spring.simple.development.core.baseconfig.datasource.DynamicDataSource;
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.constant.ValueConstant;
@@ -11,7 +17,7 @@ import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.apache.ibatis.plugin.Interceptor;
-import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -54,6 +60,23 @@ public class DataSourceConfig {
         PrivilegeInfo privilegeInfo = new PrivilegeInfo();
         privilegeInfo.setAesKey("acl-auth-support-dubbo-service");
         return new PrivilegeInfo();
+    }
+
+    /**
+     * 创建全局配置
+     *
+     * @return
+     */
+    @Bean
+    public GlobalConfig globalConfig() {
+        GlobalConfig globalConfig = new GlobalConfig();
+        GlobalConfig.DbConfig dbConfig = new GlobalConfig.DbConfig();
+        // 默认为自增
+        dbConfig.setIdType(IdType.AUTO);
+        // 全局的表前缀策略配置
+        dbConfig.setTablePrefix("t_");
+        globalConfig.setDbConfig(dbConfig);
+        return globalConfig;
     }
 
     @Bean(value = "masterDataSource")
@@ -115,22 +138,34 @@ public class DataSourceConfig {
         targetDataSources.put("slaveDataSource", slaveDataSource());
         dynamicDataSource.setTargetDataSources(targetDataSources);
         dynamicDataSource.setDefaultTargetDataSource(masterDataSource());
+        dynamicDataSource.afterPropertiesSet();
         return dynamicDataSource;
     }
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean() throws IOException {
+    @IsApiService
+    public MapperScannerConfigurer getMapperScannerConfigurer() {
+        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+        mapperScannerConfigurer.setBasePackage(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_PATH));
+        return mapperScannerConfigurer;
+    }
+
+    @Bean(value = "sqlSessionFactory")
+    public MybatisSqlSessionFactoryBean getMybatisSqlSessionFactoryBean() throws IOException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+
+        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+
         sqlSessionFactoryBean.setDataSource(dynamicDataSource());
         sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MAPPER_XML_PATH)));
         sqlSessionFactoryBean.setTypeAliasesPackage(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_MODEL_PATH));
+
         // 是否打开数据转换工具
         boolean isEnableDataPrecess = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MYBATIS_CONFIG_DATA_PROCESS));
         if (isEnableDataPrecess) {
-            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper(), new ResultTypeInterceptor()});
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper(), paginationInterceptor(), new ResultTypeInterceptor()});
         } else {
-            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper(), paginationInterceptor()});
         }
         Properties properties = new Properties();
         properties.setProperty("Oracle", "oracle");
@@ -138,6 +173,8 @@ public class DataSourceConfig {
         DatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
         databaseIdProvider.setProperties(properties);
         sqlSessionFactoryBean.setDatabaseIdProvider(databaseIdProvider);
+        // 全局配置
+        sqlSessionFactoryBean.setGlobalConfig(globalConfig());
         return sqlSessionFactoryBean;
     }
 
@@ -146,6 +183,18 @@ public class DataSourceConfig {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dynamicDataSource());
         return transactionManager;
+    }
+
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+        // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
+        // paginationInterceptor.setOverflow(false);
+        // 设置最大单页限制数量，默认 500 条，-1 不受限制
+        // paginationInterceptor.setLimit(500);
+        // 开启 count 的 join 优化,只针对部分 left join
+        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
+        return paginationInterceptor;
     }
 
     @Bean

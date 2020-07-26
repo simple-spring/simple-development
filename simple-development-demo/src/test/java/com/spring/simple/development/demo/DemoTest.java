@@ -5,7 +5,6 @@ import com.spring.simple.development.core.annotation.config.EnableWebMvc;
 import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
 import com.spring.simple.development.core.baseconfig.context.SimpleContentApplication;
 import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
-import com.spring.simple.development.demo.service.TestDemoBo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class DemoTest {
 
     @Test
     public void test() {
-        TestDemoBo testDemoBo = SimpleContentApplication.getBeanByType(TestDemoBo.class);
-        testDemoBo.getData(1L);
+//        TestDemoBo testDemoBo = SimpleContentApplication.getBeanByType(TestDemoBo.class);
+//        testDemoBo.getData(1L);
     }
 }

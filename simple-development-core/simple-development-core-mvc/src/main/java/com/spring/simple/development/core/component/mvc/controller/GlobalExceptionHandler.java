@@ -11,7 +11,6 @@ import com.spring.simple.development.support.exception.GlobalResponseCode;
 import com.spring.simple.development.support.exception.NoPermissionException;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.DateUtils;
-import com.spring.simple.development.support.utils.GzipUtil;
 import com.spring.simple.development.support.utils.IpUtil;
 import com.spring.simple.development.support.utils.PrimaryKeyGenerator;
 import com.spring.simple.development.support.utils.log.ErrorMessage;

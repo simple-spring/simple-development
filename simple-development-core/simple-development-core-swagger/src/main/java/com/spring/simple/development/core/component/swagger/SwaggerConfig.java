@@ -1,9 +1,7 @@
 package com.spring.simple.development.core.component.swagger;
 
 import com.google.common.collect.Lists;
-import com.spring.simple.development.core.annotation.base.IsApiMethodService;
 import com.spring.simple.development.core.annotation.base.IsApiService;
-import com.spring.simple.development.core.annotation.base.NoApiMethod;
 import com.spring.simple.development.core.annotation.base.swagger.Api;
 import com.spring.simple.development.core.annotation.base.swagger.ApiImplicitParam;
 import com.spring.simple.development.core.annotation.base.swagger.ApiOperation;
@@ -13,14 +11,15 @@ import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.GroovyClassLoaderUtils;
 import com.spring.simple.development.support.utils.RandomUtil;
+import org.apache.commons.lang.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -33,7 +32,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -139,7 +137,7 @@ public class SwaggerConfig {
                 // 添加 方法注解扫描工具
                 .addScanners(new MethodAnnotationsScanner())
         );
-        Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(IsApiService.class);
+        Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(Service.class);
         System.out.println("reflections IsApiService end");
 
         if (CollectionUtils.isEmpty(typesAnnotatedWith)) {
@@ -152,20 +150,26 @@ public class SwaggerConfig {
             if (declaredMethods == null || declaredMethods.length == 0) {
                 continue;
             }
+            Boolean isApiBoolean = false;
+            for (Method method : declaredMethods) {
+                IsApiService isApiService = method.getAnnotation(IsApiService.class);
+                if (isApiService != null) {
+                    isApiBoolean = true;
+                }
+            }
+            if (isApiBoolean == false) {
+                continue;
+            }
             // 方法上面的地址
             CodeGenerationParams codeGenerationParams = new CodeGenerationParams();
             String className;
-            Annotation annotation = isApiClass.getAnnotation(IsApiService.class);
-            IsApiService isApiService = (IsApiService) annotation;
-            String defaultMethodRequestMappingPath = isApiService.value();
-            if (!StringUtils.isEmpty(defaultMethodRequestMappingPath)) {
-                className = defaultMethodRequestMappingPath;
+            if (isApiClass.getInterfaces().length == 0) {
+                className = isApiClass.getSimpleName();
             } else {
                 className = isApiClass.getInterfaces()[0].getSimpleName();
             }
             Api api = (Api) isApiClass.getAnnotation(Api.class);
-            codeGenerationParams.setServiceName(className);
-            codeGenerationParams.setServiceNameLog(className);
+
             if (api != null) {
                 codeGenerationParams.setClassTags(api.tags());
             }
@@ -173,31 +177,31 @@ public class SwaggerConfig {
             List<CodeGenerationMethodParams> codeGenerationMethodParamsList = new ArrayList<>();
             Set<String> setMethodName = new HashSet<>();
             for (Method method : declaredMethods) {
-                NoApiMethod noApiMethod = method.getAnnotation(NoApiMethod.class);
+                IsApiService isApiService = method.getAnnotation(IsApiService.class);
+                if (isApiService == null) {
+                    continue;
+                }
                 // lamda表达式兼容
-                if (noApiMethod != null || method.getName().contains("$")) {
+                if (method.getName().contains("$")) {
                     continue;
                 }
                 CodeGenerationMethodParams codeGenerationMethodParams = new CodeGenerationMethodParams();
 
+                if (StringUtils.isNotEmpty(isApiService.serviceName())) {
+                    className = isApiService.serviceName();
+                }
+                codeGenerationParams.setServiceName(className);
+                codeGenerationParams.setServiceNameLog(className);
+
                 String methodName = method.getName();
+                if (StringUtils.isNotEmpty(isApiService.methodName())) {
+                    methodName = isApiService.methodName();
+                }
                 boolean add = setMethodName.add(methodName);
                 if (add == false) {
                     methodName = methodName + RandomUtil.randomStr(5);
                 }
-//                // lamda表达式兼容
-//                if (methodName.contains("$")) {
-//                    int start = methodName.indexOf("$");
-//                    int end = methodName.lastIndexOf("$");
-//                    methodName = methodName.substring(start + 1, end);
-//                }
-                IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
-                if (isApiMethodService != null) {
-                    String defaultMethodValue = isApiMethodService.value();
-                    if (!StringUtils.isEmpty(defaultMethodValue)) {
-                        methodName = defaultMethodValue;
-                    }
-                }
+
                 // 类上面的地址默认
                 String baseUrl = "/data/api/v1";
                 boolean login = isApiService.isLogin();

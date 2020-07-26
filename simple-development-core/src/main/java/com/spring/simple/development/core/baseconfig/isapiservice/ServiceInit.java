@@ -1,13 +1,9 @@
 package com.spring.simple.development.core.baseconfig.isapiservice;
 
-import com.spring.simple.development.core.annotation.base.IsApiService;
-import com.spring.simple.development.support.utils.AopTargetUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -27,7 +23,7 @@ public class ServiceInit implements ApplicationListener<ContextRefreshedEvent>{
         // 根容器为Spring容器  
         System.err.println("=====ServiceInit=====" + event.getSource().getClass().getName());
         if (event.getApplicationContext().getParent() == null) {
-            Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(IsApiService.class);
+            Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(Service.class);
             for (Object bean : beans.values()) {
                 if (bean != null) {
                     try {

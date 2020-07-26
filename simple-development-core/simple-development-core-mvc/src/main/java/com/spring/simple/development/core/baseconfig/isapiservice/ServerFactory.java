@@ -1,8 +1,6 @@
 package com.spring.simple.development.core.baseconfig.isapiservice;
 
-import com.spring.simple.development.core.annotation.base.IsApiMethodService;
 import com.spring.simple.development.core.annotation.base.IsApiService;
-import com.spring.simple.development.core.annotation.base.NoApiMethod;
 import com.spring.simple.development.support.utils.AopTargetUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -37,25 +35,30 @@ public class ServerFactory {
     public static Map<String, MethodParams> serviceMethodMap = new HashMap<>();
 
     public static void putService(Object serviceBean) throws Exception {
-        IsApiService isApiService = AopTargetUtils.getTarget(serviceBean).getClass().getAnnotation(IsApiService.class);
-        String serviceName = isApiService.value();
-        if (StringUtils.isEmpty(serviceName)) {
+        String serviceName;
+        if(AopTargetUtils.getTarget(serviceBean).getClass().getInterfaces().length == 0){
+            serviceName = AopTargetUtils.getTarget(serviceBean).getClass().getSimpleName();
+        }else{
             serviceName = AopTargetUtils.getTarget(serviceBean).getClass().getInterfaces()[0].getSimpleName();
         }
         System.err.println("服务:" + serviceName + "已加载");
 
         Method[] methods = AopTargetUtils.getTarget(serviceBean).getClass().getDeclaredMethods();
         if (methods.length == 0) {
-            throw new RuntimeException(AopTargetUtils.getTarget(serviceBean).getClass() + "接口实现方法为空");
+            return;
         }
         for (Method method : methods) {
-            if (method.isAnnotationPresent(NoApiMethod.class) == false) {
+            if (method.isAnnotationPresent(IsApiService.class)) {
                 String methodName = "";
-                IsApiMethodService isApiMethodService = method.getAnnotation(IsApiMethodService.class);
-                if (isApiMethodService == null || StringUtils.isEmpty(isApiMethodService.value())) {
+                IsApiService isApiService = method.getAnnotation(IsApiService.class);
+
+                if (StringUtils.isNotEmpty(isApiService.serviceName())) {
+                    serviceName = isApiService.serviceName();
+                }
+                if (StringUtils.isEmpty(isApiService.methodName())) {
                     methodName = method.getName();
                 } else {
-                    methodName = isApiMethodService.value();
+                    methodName = isApiService.methodName();
                 }
                 if (isApiService.isLogin()) {
                     serviceMap.put(serviceName + "-" + methodName, serviceBean);
