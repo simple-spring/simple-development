@@ -16,12 +16,11 @@ import com.spring.simple.development.demo.vo.DemoVo;
 import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.exception.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
 @IsApiService
 @Api(tags = "用户相关")
 public class TestDemoBoImpl extends AbstractLavaBoImpl<DemoDo, DemoDoMapperExt, DemoDoExample> implements TestDemoBo {
+
 
     @Autowired
     private BaseSupport baseSupport;

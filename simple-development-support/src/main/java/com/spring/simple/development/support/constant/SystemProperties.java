@@ -137,4 +137,11 @@ public class SystemProperties {
     public static final String SPRING_SIMPLE_SHIRO_REDIS_PASSWORD = "spring.simple.shiro.redis.password";
 
 
+    /**
+     * i18n
+     */
+    public static final String SPRING_SIMPLE_I18N_PATH = "spring.simple.in18n_path";
+
+
+
 }

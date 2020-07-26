@@ -6,6 +6,7 @@
 package com.spring.simple.development.demo.interceptor;
 
 import com.spring.simple.development.core.annotation.base.SimpleInterceptor;
+import com.spring.simple.development.support.exception.LanguageThreadLocal;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ public class DemoInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
+        LanguageThreadLocal.setLanguage("_EN");
         return true;
     }
 
@@ -34,5 +36,6 @@ public class DemoInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
+        LanguageThreadLocal.removeLanguage();
     }
 }

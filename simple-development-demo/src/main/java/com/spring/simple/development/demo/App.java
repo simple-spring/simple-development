@@ -9,7 +9,8 @@ import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
  * @Date 2019/12/24/024 14:20
  * @Description 程序启动
  **/
-
+@ImportI18n(i18nPath = {"i18n/message_en.properties"})
+@EnableAlert
 @EnableSwagger
 @EnableMybatis
 @EnableWebMvc

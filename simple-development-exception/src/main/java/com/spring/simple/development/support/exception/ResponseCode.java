@@ -83,18 +83,35 @@ public class ResponseCode extends GlobalResponseCode {
     public static final String ILLEGAL_OPERATION_CODE = "ILLEGAL OPERATION";
 
 
-    public static final GlobalResponseCode RES_PARAM_IS_EMPTY = new GlobalResponseCode(PARAM_IS_EMPTY, PARAM_IS_EMPTY_CODE, "%s");
-    public static final GlobalResponseCode RES_DATA_EXIST = new GlobalResponseCode(DATA_EXIST, DATA_EXIST_CODE, "%s");
-    public static final GlobalResponseCode RES_DATA_NOT_EXIST = new GlobalResponseCode(DATA_NOT_EXIST, DATA_NOT_EXIST_CODE, "%s");
-    public static final GlobalResponseCode RES_PARAM_INVALID = new GlobalResponseCode(PARAM_INVALID, PARAM_INVALID_CODE, "%s");
-    public static final GlobalResponseCode RES_USER_ARE_BANNED = new GlobalResponseCode(USER_ARE_BANNED, USER_ARE_BANNED_CODE, "%s");
-    public static final GlobalResponseCode RES_USER_RELOGIN = new GlobalResponseCode(USER_RELOGIN, USER_RELOGIN_CODE, "%s");
-    public static final GlobalResponseCode RES_PWD_OR_CODE_INVALID = new GlobalResponseCode(PWD_OR_CODE_INVALID, PWD_OR_CODE_INVALID_CODE, "%s");
-    public static final GlobalResponseCode RES_SET_BASE_EXCEPTION = new GlobalResponseCode(SET_BASE_EXCEPTION, SET_BASE_EXCEPTION_CODE, "%s");
-    public static final GlobalResponseCode RES_DECRYPT_FAIL = new GlobalResponseCode(DECRYPT_FAIL, DECRYPT_FAIL_CODE, "%s");
-    public static final GlobalResponseCode RES_ENCRYPT_FAIL = new GlobalResponseCode(ENCRYPT_FAIL, ENCRYPT_FAIL_CODE, "%s");
-    public static final GlobalResponseCode RES_IDEMPOTENT_INVALID = new GlobalResponseCode(IDEMPOTENT_INVALID, IDEMPOTENT_INVALID_CODE, "%s");
-    public static final GlobalResponseCode RES_ILLEGAL_OPERATION = new GlobalResponseCode(ILLEGAL_OPERATION, ILLEGAL_OPERATION_CODE, "%s");
+    /**
+     * I18n
+     */
+    public static String I18n_PARAM_IS_EMPTY = I18nConfigurer.getI18nProperty(PARAM_IS_EMPTY_CODE + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(PARAM_IS_EMPTY_CODE + LanguageThreadLocal.getLanguage()) : "参数为空";
+    public static String I18n_RES_DATA_EXIST = I18nConfigurer.getI18nProperty(DATA_EXIST_CODE + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(DATA_EXIST_CODE + LanguageThreadLocal.getLanguage()) : "数据已存在";
+    public static String I18n_RES_DATA_NOT_EXIST = I18nConfigurer.getI18nProperty(DATA_NOT_EXIST_CODE + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(DATA_NOT_EXIST_CODE + LanguageThreadLocal.getLanguage()) : "数据不存在";
+    public static String I18n_RES_PARAM_INVALID = I18nConfigurer.getI18nProperty(PARAM_INVALID_CODE + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(PARAM_INVALID_CODE + LanguageThreadLocal.getLanguage()) : "参数无效";
+    public static String I18n_RES_USER_ARE_BANNED = I18nConfigurer.getI18nProperty(USER_ARE_BANNED_CODE + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(USER_ARE_BANNED_CODE + LanguageThreadLocal.getLanguage()) : "用户被禁止登陆";
+    public static String I18n_RES_USER_RELOGIN = I18nConfigurer.getI18nProperty(USER_RELOGIN_CODE + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(USER_RELOGIN_CODE + LanguageThreadLocal.getLanguage()) : "请重新登陆";
+    public static String I18n_RES_PWD_OR_CODE_INVALID = I18nConfigurer.getI18nProperty(PWD_OR_CODE_INVALID + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(PWD_OR_CODE_INVALID + LanguageThreadLocal.getLanguage()) : "密码无效";
+    public static String I18n_RES_SET_BASE_EXCEPTION = I18nConfigurer.getI18nProperty(SET_BASE_EXCEPTION + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(SET_BASE_EXCEPTION + LanguageThreadLocal.getLanguage()) : "设置基础信息错误";
+    public static String I18n_RES_DECRYPT_FAIL = I18nConfigurer.getI18nProperty(DECRYPT_FAIL + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(DECRYPT_FAIL + LanguageThreadLocal.getLanguage()) : "解密失败";
+    public static String I18n_RES_ENCRYPT_FAIL = I18nConfigurer.getI18nProperty(ENCRYPT_FAIL + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(ENCRYPT_FAIL + LanguageThreadLocal.getLanguage()) : "加密失败";
+    public static String I18n_RES_IDEMPOTENT_INVALID = I18nConfigurer.getI18nProperty(IDEMPOTENT_INVALID + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(IDEMPOTENT_INVALID + LanguageThreadLocal.getLanguage()) : "点击太快了,请稍后重试";
+    public static String I18n_RES_ILLEGAL_OPERATION = I18nConfigurer.getI18nProperty(ILLEGAL_OPERATION + LanguageThreadLocal.getLanguage()) != null ? I18nConfigurer.getI18nProperty(ILLEGAL_OPERATION + LanguageThreadLocal.getLanguage()) : "非法操作";
+
+
+    public static final GlobalResponseCode RES_PARAM_IS_EMPTY = new GlobalResponseCode(PARAM_IS_EMPTY, PARAM_IS_EMPTY_CODE, I18n_PARAM_IS_EMPTY);
+    public static final GlobalResponseCode RES_DATA_EXIST = new GlobalResponseCode(DATA_EXIST, DATA_EXIST_CODE, I18n_RES_DATA_EXIST);
+    public static final GlobalResponseCode RES_DATA_NOT_EXIST = new GlobalResponseCode(DATA_NOT_EXIST, DATA_NOT_EXIST_CODE, I18n_RES_DATA_NOT_EXIST);
+    public static final GlobalResponseCode RES_PARAM_INVALID = new GlobalResponseCode(PARAM_INVALID, PARAM_INVALID_CODE, I18n_RES_PARAM_INVALID);
+    public static final GlobalResponseCode RES_USER_ARE_BANNED = new GlobalResponseCode(USER_ARE_BANNED, USER_ARE_BANNED_CODE, I18n_RES_USER_ARE_BANNED);
+    public static final GlobalResponseCode RES_USER_RELOGIN = new GlobalResponseCode(USER_RELOGIN, USER_RELOGIN_CODE, I18n_RES_USER_RELOGIN);
+    public static final GlobalResponseCode RES_PWD_OR_CODE_INVALID = new GlobalResponseCode(PWD_OR_CODE_INVALID, PWD_OR_CODE_INVALID_CODE, I18n_RES_PWD_OR_CODE_INVALID);
+    public static final GlobalResponseCode RES_SET_BASE_EXCEPTION = new GlobalResponseCode(SET_BASE_EXCEPTION, SET_BASE_EXCEPTION_CODE, I18n_RES_SET_BASE_EXCEPTION);
+    public static final GlobalResponseCode RES_DECRYPT_FAIL = new GlobalResponseCode(DECRYPT_FAIL, DECRYPT_FAIL_CODE, I18n_RES_DECRYPT_FAIL);
+    public static final GlobalResponseCode RES_ENCRYPT_FAIL = new GlobalResponseCode(ENCRYPT_FAIL, ENCRYPT_FAIL_CODE, I18n_RES_ENCRYPT_FAIL);
+    public static final GlobalResponseCode RES_IDEMPOTENT_INVALID = new GlobalResponseCode(IDEMPOTENT_INVALID, IDEMPOTENT_INVALID_CODE, I18n_RES_IDEMPOTENT_INVALID);
+    public static final GlobalResponseCode RES_ILLEGAL_OPERATION = new GlobalResponseCode(ILLEGAL_OPERATION, ILLEGAL_OPERATION_CODE, I18n_RES_ILLEGAL_OPERATION);
 
 
     private ResponseCode(int status, String code, String message) {
