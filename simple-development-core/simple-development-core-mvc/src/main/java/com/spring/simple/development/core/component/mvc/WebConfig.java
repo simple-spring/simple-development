@@ -7,6 +7,7 @@ import com.spring.simple.development.core.component.shiro.cas.ShiroLavaSupportIn
 import com.spring.simple.development.core.handler.listener.SimpleComponentListener;
 import com.spring.simple.development.core.init.AppInitializer;
 import com.spring.simple.development.support.constant.SystemProperties;
+import com.spring.simple.development.support.exception.GlobalException;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -14,16 +15,20 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.*;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
+
+import static com.spring.simple.development.support.exception.GlobalResponseCode.SERVICE_NOT_EXIST;
 
 /**
  * @author liko.wang
@@ -40,6 +45,43 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     @Bean
     public BaseSupport baseSupport() {
         return new BaseSupport();
+    }
+
+    protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+        final DispatcherServlet dispatcherServlet = new DispatcherServlet() {
+            @Override
+            protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
+                if (this.getHandlerMappings() != null) {
+                    for (HandlerMapping hm : this.getHandlerMappings()) {
+                        if (logger.isTraceEnabled()) {
+                            logger.trace(
+                                    "Testing handler map [" + hm + "] in DispatcherServlet with name '" + getServletName() + "'");
+                        }
+                        HandlerExecutionChain handler = hm.getHandler(request);
+                        if (handler != null && !(handler.getHandler() instanceof DefaultServletHttpRequestHandler)) {
+                            return handler;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void noHandlerFound(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+                //如果是ajax请求响应头会有x-requested-with
+                if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){
+                    throw new GlobalException(SERVICE_NOT_EXIST);
+                }else{
+                    response.sendRedirect("/404.html");
+                }
+            }
+            {
+                setApplicationContext(servletAppContext);
+            }
+        };
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+        return dispatcherServlet;
     }
 
     /**
@@ -81,7 +123,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         AnnotationConfigWebApplicationContext rootContext = AppInitializer.rootContext;
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) rootContext.getAutowireCapableBeanFactory();
         // 默认拦截器
-        String[] excludes = new String[9];
+        String[] excludes = new String[11];
         excludes[0] = "/swagger-ui.html";
         excludes[1] = "/webjars/**";
         excludes[2] = "/swagger-resources";
@@ -91,6 +133,8 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         excludes[6] = "/assets/**";
         excludes[7] = "/simpleDoc/**";
         excludes[8] = "/simple-spring.png";
+        excludes[9] = "/doc.html";
+        excludes[10] = "/404.html";
 
         // 启动shiro
         try {
@@ -139,7 +183,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
     @Override
     public void onApplicationEvent(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
         // 注册请求分发器
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", createDispatcherServlet(rootContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_MVC_CONFIG_URL_PATH));
     }
@@ -156,6 +200,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
         registry.addResourceHandler("/simpleDoc/index.html")
                 .addResourceLocations("classpath:/META-INF/");
         // 解决simple文档无法访问
+        registry.addResourceHandler("/404.html")
+                .addResourceLocations("classpath:/META-INF/simpleDoc/404.html");
+        // 解决simple文档无法访问
         registry.addResourceHandler("/assets/**")
                 .addResourceLocations("classpath:/META-INF/simpleDoc/assets/");
         // 解决simple文档无法访问
@@ -166,6 +213,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SimpleComponen
                 .addResourceLocations("classpath:/META-INF/simpleDoc/simpleDoc/");
         // 解决swagger无法访问
         registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        // 解决swagger无法访问
+        registry.addResourceHandler("/doc.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         // 解决swagger的js文件无法访问
         registry.addResourceHandler("/webjars/**")
