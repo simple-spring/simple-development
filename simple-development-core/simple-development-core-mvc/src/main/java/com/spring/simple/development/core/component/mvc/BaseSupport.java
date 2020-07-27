@@ -217,7 +217,7 @@ public class BaseSupport {
      */
     public void checkParam(ReqBody reqBody, Boolean isPage, String... strings) {
         if (reqBody == null) {
-            throw new GlobalException(RES_PARAM_IS_EMPTY, "服务器未收到信息");
+            throw new GlobalException(RES_PARAM_IS_EMPTY);
         }
 
         if (strings != null && strings.length > 0) {
