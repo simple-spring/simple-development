@@ -164,7 +164,7 @@ public class SwaggerConfig {
             CodeGenerationParams codeGenerationParams = new CodeGenerationParams();
             String className;
             if (isApiClass.getInterfaces().length == 0) {
-                className = isApiClass.getSimpleName();
+                className = isApiClass.getSimpleName().toLowerCase();
             } else {
                 className = isApiClass.getInterfaces()[0].getSimpleName();
             }
