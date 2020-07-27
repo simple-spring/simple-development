@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.FileType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -91,7 +90,7 @@ public class CodeGenerator {
                 }
                 if (fileType == FileType.XML) {
                     // 已经生成 XML 文件判断存在，不想重新生成返回 false
-                    return true;
+                    return !new File(filePath).exists();
                 }
                 if (fileType == FileType.ENTITY) {
                     // 已经生成 ENTITY 文件判断存在，不想重新生成返回 false
@@ -106,7 +105,7 @@ public class CodeGenerator {
                     return !new File(filePath).exists();
                 }
                 // 允许生成模板文件
-                return false;
+                return true;
             }
         });
         cfg.setFileOutConfigList(focList);
