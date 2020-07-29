@@ -5,6 +5,7 @@ import com.spring.simple.development.core.annotation.config.ImportI18n;
 import com.spring.simple.development.core.baseconfig.i18n.I18nConfig;
 import com.spring.simple.development.core.spiconfig.SimpleSpiConfig;
 import com.spring.simple.development.support.constant.SystemProperties;
+import com.spring.simple.development.support.exception.I18nConfigurer;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 
 /**
@@ -22,6 +23,11 @@ public class I18nSpiConfig implements SimpleSpiConfig<ImportI18n> {
             }
             stringBuffer.substring(0, stringBuffer.length() - 1);
             PropertyConfigurer.setProperty(SystemProperties.SPRING_SIMPLE_I18N_PATH, stringBuffer.toString());
+            String i18nPath = PropertyConfigurer.getProperty(SystemProperties.SPRING_SIMPLE_I18N_PATH);
+            String[] paths = i18nPath.split(",");
+            for (String path : paths) {
+                I18nConfigurer.loadI18nProperties(path);
+            }
             return I18nConfig.class;
         } catch (Exception ex) {
             throw new RuntimeException("ImportI18n initialization failed", ex);

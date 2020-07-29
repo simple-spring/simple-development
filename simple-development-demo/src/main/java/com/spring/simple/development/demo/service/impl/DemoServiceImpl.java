@@ -4,6 +4,7 @@ import com.spring.simple.development.demo.model.DemoDo;
 import com.spring.simple.development.demo.mapper.DemoMapper;
 import com.spring.simple.development.demo.service.DemoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.spring.simple.development.demo.vo.DemoVo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoServiceImpl extends ServiceImpl<DemoMapper, DemoDo> implements DemoService {
 
+    @Override
+    public void addDemoVo(DemoVo demoVo) {
+
+    }
 }
