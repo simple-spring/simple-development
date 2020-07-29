@@ -54,19 +54,21 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <#list tables?keys as tableName>
-        <table tableName="${tableName}" domainObjectName="${tables["${tableName}"]}">
-            <property name="stateAction" value="false"/>
-            <property name="boPackage" value="${packagePath}.service"/>
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <ignoreColumn   column="ID" />
-            <ignoreColumn 	column="gmt_create" />
-            <ignoreColumn 	column="creator" />
-            <ignoreColumn 	column="gmt_modified" />
-            <ignoreColumn   column="modifier" />
-            <ignoreColumn   column="is_deleted" />
-        </table>
-        </#list>
+        <#if mybatisIsAutoGenerate??>
 
+            <#list tables?keys as tableName>
+                <table tableName="${tableName}" domainObjectName="${tables["${tableName}"]}">
+                    <property name="stateAction" value="false"/>
+                    <property name="boPackage" value="${packagePath}.service"/>
+                    <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+                    <ignoreColumn   column="ID" />
+                    <ignoreColumn 	column="gmt_create" />
+                    <ignoreColumn 	column="creator" />
+                    <ignoreColumn 	column="gmt_modified" />
+                    <ignoreColumn   column="modifier" />
+                    <ignoreColumn   column="is_deleted" />
+                </table>
+            </#list>
+        </#if>
     </context>
 </generatorConfiguration>

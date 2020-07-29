@@ -18,15 +18,16 @@ public class Main {
         simpleConfigDto.setFastGoServer("http://tech20.com");
         // mybatis自动生成代码
         simpleConfigDto.setMybatisIsAutoGenerate(true);
-        simpleConfigDto.setMysqlIp("127.0.0.1");
+        simpleConfigDto.setMysqlIp("172.22.5.248");
         simpleConfigDto.setMysqlPort("3306");
-        simpleConfigDto.setDataBaseName("insurance");
+        simpleConfigDto.setDataBaseName("fastgo");
         simpleConfigDto.setMysqlUser("root");
         simpleConfigDto.setMysqlPassword("123456");
 
         List<ComponentEnum> componentEnums = new ArrayList<>();
         componentEnums.add(ComponentEnum.springMvc);
         componentEnums.add(ComponentEnum.mybatis);
+        componentEnums.add(ComponentEnum.generator);
 //        componentEnums.add(ComponentEnum.dubbo);
 //        componentEnums.add(ComponentEnum.cassandra);
 //        componentEnums.add(ComponentEnum.kafka);

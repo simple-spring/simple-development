@@ -111,6 +111,23 @@
                     <version>1.2</version>
                 </dependency>
             </#if>
+            <#if (component == "generator") >
+                <dependency>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                    <version>3.3.1.tmp</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-generator</artifactId>
+                    <version>3.3.1.tmp</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.ibeetl</groupId>
+                    <artifactId>beetl</artifactId>
+                    <version>2.9.3</version>
+                </dependency>
+              </#if>
         </#list>
         <dependency>
             <groupId>junit</groupId>

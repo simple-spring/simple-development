@@ -19,14 +19,12 @@ import java.util.UUID;
  */
 public class ComponentNameGenerate extends SimpleGenerate {
 
-
     public ComponentNameGenerate(String projectName, String projectPackage, SimpleConfigDto simpleConfigDto, List<ComponentEnum> componentEnumList) {
         super(projectName, projectPackage, simpleConfigDto, componentEnumList);
     }
 
     @Override
     public void generateComponent() throws Exception {
-
         for (ComponentEnum componentEnum : componentEnumList) {
             switch (componentEnum) {
                 case springMvc:
@@ -49,6 +47,9 @@ public class ComponentNameGenerate extends SimpleGenerate {
                     break;
                 case job:
                     generateJobComponent();
+                    break;
+                case generator:
+                    generateGenerator();
                     break;
                 default:
                     break;
@@ -118,6 +119,15 @@ public class ComponentNameGenerate extends SimpleGenerate {
         FreeMarkerTemplate.generateFileByTemplate("DemoTask.ftl", new File(projectPackagePath + "/" + PackageEnum.jobhandler + "/" + "DemoTask.java"), dataMap);
     }
 
+
+    public void generateGenerator() throws Exception {
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("packagePath", projectPackage);
+        dataMap.put("simpleConfigDto", simpleConfigDto);
+        FreeMarkerTemplate.generateFileByTemplate("AutoCodeGenerator.ftl", new File(projectPackagePath + "/" + PackageEnum.generator + "/" + "AutoCodeGenerator.java"), dataMap);
+    }
+
+
     /**
      * 执行生成simple项目
      *
@@ -131,7 +141,7 @@ public class ComponentNameGenerate extends SimpleGenerate {
         generateComponent();
         // 生成代码
         if (simpleConfigDto.getMybatisIsAutoGenerate()) {
-            new AutoGenerateCode(projectPath).start();
+            new AutoGenerateCode(projectPackage,simpleConfigDto,projectName).start();
         }
         System.out.println("返回地址：" + projectPath);
         return projectPath;
