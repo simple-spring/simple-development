@@ -25,8 +25,8 @@ public class MysqlGenerator {
     // 数据库连接信息
     static String dbUrl = "jdbc:mysql://${simpleConfigDto.getMysqlIp()}:3306/${simpleConfigDto.getDataBaseName()}?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8";
     static String dbDriver = "com.mysql.cj.jdbc.Driver";
-    static String uName =  ${simpleConfigDto.getMysqlUser()};
-    static String pwd =  ${simpleConfigDto.getMysqlPassword()};
+    static String uName =  "${simpleConfigDto.getMysqlUser()}";
+    static String pwd =  "${simpleConfigDto.getMysqlPassword()}";
     // 包名
     static String parentPackage = "";
     // 模块名
