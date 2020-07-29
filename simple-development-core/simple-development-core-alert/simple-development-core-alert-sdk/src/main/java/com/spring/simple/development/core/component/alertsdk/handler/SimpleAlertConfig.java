@@ -2,13 +2,16 @@ package com.spring.simple.development.core.component.alertsdk.handler;
 
 import com.spring.simple.development.support.constant.SystemProperties;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author liko.wang
  * @Date 2020/3/31/031 15:25
  * @Description 执行器
  **/
+@Configuration
 public class SimpleAlertConfig {
 
     private static String applicationCode = PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_APPLICATION_CODE);
