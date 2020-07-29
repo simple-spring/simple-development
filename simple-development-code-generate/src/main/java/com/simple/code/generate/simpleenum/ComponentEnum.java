@@ -19,5 +19,6 @@ public enum ComponentEnum {
     es,
     shiroCas,
     swagger,
-    alert
+    alert,
+    generator
 }

@@ -15,6 +15,8 @@ public enum PackageEnum {
     mapper,
     vo,
     interceptor,
+    generator,
+
     /**
      * 组件包名
      */

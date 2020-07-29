@@ -86,7 +86,7 @@ public abstract class SimpleGenerate {
         // assembly.xml
         generateAssembly();
         // generatorConfig.xml
-        generateGeneratorConfig();
+        //generateGeneratorConfig();
         // README.md
         generateREADME();
         // .gitignore
@@ -164,6 +164,8 @@ public abstract class SimpleGenerate {
         mkdirFile(projectPackagePath + "/" + PackageEnum.kafka);
         mkdirFile(projectPackagePath + "/" + PackageEnum.mongodb);
         mkdirFile(projectPackagePath + "/" + PackageEnum.jobhandler);
+        mkdirFile(projectPackagePath + "/" + PackageEnum.generator);
+
 
         // 生成test包名
         String testCurrentPath = projectTestPath;
@@ -237,46 +239,6 @@ public abstract class SimpleGenerate {
         }
         Map<String, Object> dataMap = new HashMap<>();
         FreeMarkerTemplate.generateFileByTemplate("assembly.ftl", file, dataMap);
-    }
-
-    /**
-     * 生成generatorConfig.xml
-     */
-    private void generateGeneratorConfig() throws Exception {
-        // log4j2.xml
-        String suffix = "generatorConfig.xml";
-        String path = projectResourcesPath + "/" + suffix;
-        File file = new File(path);
-        if (file.exists()) {
-            file.delete();
-        }
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("packagePath", projectPackage);
-        dataMap.put("projectName", projectName);
-        dataMap.put("basePath", projectJavaPath);
-        if (simpleConfigDto.getMybatisIsAutoGenerate() == true) {
-            dataMap.put("mybatisIsAutoGenerate", simpleConfigDto.getMybatisIsAutoGenerate());
-            dataMap.put("mysqlIp", simpleConfigDto.getMysqlIp());
-            dataMap.put("mysqlPort", simpleConfigDto.getMysqlPort());
-            dataMap.put("dataBaseName", simpleConfigDto.getDataBaseName());
-            dataMap.put("mysqlUser", simpleConfigDto.getMysqlUser());
-            dataMap.put("mysqlPassword", simpleConfigDto.getMysqlPassword());
-
-            List<String> tableList = ConnectionUtil.getMetaData(simpleConfigDto.getMysqlIp(), simpleConfigDto.getMysqlPort(), simpleConfigDto.getMysqlUser(), simpleConfigDto.getMysqlPassword(), simpleConfigDto.getDataBaseName());
-            Map<String, String> tableMap = new HashMap<>();
-            for (String table : tableList) {
-                String tableName;
-                if (table.substring(0, 2).equals("t_") || table.substring(0, 2).equals("T_")) {
-                    tableName = table.substring(2);
-                } else {
-                    tableName = table;
-                }
-                tableMap.put(table, CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Do");
-            }
-            dataMap.put("tables", tableMap);
-
-        }
-        FreeMarkerTemplate.generateFileByTemplate("generatorConfig.ftl", file, dataMap);
     }
 
     /**

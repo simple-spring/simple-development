@@ -1,5 +1,7 @@
 package com.simple.code.generate.utils;
 
+import com.simple.code.generate.dto.SimpleConfigDto;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
  * @author luke
  */
 public class ConnectionUtil {
-    private final static String DRIVER = "com.mysql.jdbc.Driver";
+    public final static String DRIVER = "com.mysql.jdbc.Driver";
 
 
     /**
@@ -36,18 +38,19 @@ public class ConnectionUtil {
     /**
      * 获取表结构数据
      *
-     * @param dataBaseName 库名
+     * @param simpleConfigDto 库名
      * @return 包含表结构数据的列表
      */
-    public static List<String> getMetaData(String ip, String port, String username, String password, String dataBaseName) throws SQLException {
+    public static List<String> getMetaData(SimpleConfigDto simpleConfigDto) throws SQLException {
 
-        Connection connection = initConnection(ip, port, dataBaseName, username, password);
+        Connection connection = initConnection(simpleConfigDto.getMysqlIp(), simpleConfigDto.getMysqlPort(), simpleConfigDto.getDataBaseName(),
+                simpleConfigDto.getMysqlUser(), simpleConfigDto.getMysqlPassword());
         List<String> tables = new ArrayList<>();
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             String[] types = { "TABLE" };
-            resultSet = connection.getMetaData().getTables(dataBaseName, null, "%", types);;
+            resultSet = connection.getMetaData().getTables(simpleConfigDto.getDataBaseName(), null, "%", types);;
             while (resultSet.next()) {
                 tables.add(resultSet.getString(3));
             }
