@@ -7,22 +7,14 @@ import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.FileType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.BeetlTemplateEngine;
-import com.google.common.base.CaseFormat;
-import com.simple.code.generate.config.SimpleConfig;
 import com.simple.code.generate.dto.SimpleConfigDto;
 import com.simple.code.generate.utils.ConnectionUtil;
-import com.simple.code.generate.utils.ScriptUtil;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author luke
@@ -89,7 +81,7 @@ public class AutoGenerateCode{
                 @Override
                 public String outputFile(TableInfo tableInfo) {
                     // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                    return componentNameGenerate.projectResourcesPath + "/resources/mapper/"
+                    return componentNameGenerate.projectResourcesPath + "/mapper/"+ "/" + componentNameGenerate.projectName
                             + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
                 }
             });
@@ -153,7 +145,7 @@ public class AutoGenerateCode{
             for (int i = 0; i < tableList.size(); i++) {
                 tablesNames[i] = tableList.get(i);
             }
-            strategy.setInclude("t_profile_config_relation");
+            strategy.setInclude(tablesNames);
             strategy.setControllerMappingHyphenStyle(true);
             strategy.setTablePrefix("t_");
             mpg.setStrategy(strategy);
