@@ -30,10 +30,10 @@ public class PropertyConfigurer {
         }
     }
 
-    public static void loadApplicationProperties(Map map) {
+    public static void loadApplicationProperties(Map<String,String> map) {
         // 读取系统配置文件
-        for (Object key : map.entrySet()) {
-            configMap.put(key.toString(), key.toString());
+        for(Map.Entry<String, String> entry : map.entrySet()){
+            configMap.put(entry.getKey(), entry.getValue());
         }
     }
 
