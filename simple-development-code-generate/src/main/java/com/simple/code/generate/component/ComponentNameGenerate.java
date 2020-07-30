@@ -70,15 +70,13 @@ public class ComponentNameGenerate extends SimpleGenerate {
     public void generateMybatisComponent() throws Exception {
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("packagePath", projectPackage);
-        if (!simpleConfigDto.getMybatisIsAutoGenerate()) {
-            FreeMarkerTemplate.generateFileByTemplate("DemoDoMapperExt.ftl", new File(projectPackagePath + "/" + PackageEnum.mapper + "/" + "DemoDoMapperExt.java"), dataMap);
+        //if (!simpleConfigDto.getMybatisIsAutoGenerate()) {
+            FreeMarkerTemplate.generateFileByTemplate("DemoMapper.ftl", new File(projectPackagePath + "/" + PackageEnum.mapper + "/" + "DemoMapper.java"), dataMap);
             FreeMarkerTemplate.generateFileByTemplate("DemoDo.ftl", new File(projectPackagePath + "/" + PackageEnum.model + "/" + "DemoDo.java"), dataMap);
-            FreeMarkerTemplate.generateFileByTemplate("DemoDoExample.ftl", new File(projectPackagePath + "/" + PackageEnum.model + "/" + "DemoDoExample.java"), dataMap);
-            FreeMarkerTemplate.generateFileByTemplate("TestDemoBo.ftl", new File(projectPackagePath + "/" + PackageEnum.service + "/" + "TestDemoBo.java"), dataMap);
-            FreeMarkerTemplate.generateFileByTemplate("TestDemoBoImpl.ftl", new File(projectPackagePath + "/" + PackageEnum.service + "/" + PackageEnum.impl + "/" + "TestDemoBoImpl.java"), dataMap);
-            FreeMarkerTemplate.generateFileByTemplate("DemoDoMapperXml.ftl", new File(projectResourcesPath + "/" + BaseEnum.mybatis + "/" + projectName + "/" + "DemoDoMapper.xml"), dataMap);
-            FreeMarkerTemplate.generateFileByTemplate("DemoDoMapperExtXml.ftl", new File(projectResourcesPath + "/" + BaseEnum.mybatis + "/" + projectName + "/" + "DemoDoMapperExt.xml"), dataMap);
-        }
+            FreeMarkerTemplate.generateFileByTemplate("DemoService.ftl", new File(projectPackagePath + "/" + PackageEnum.service + "/" + "DemoService.java"), dataMap);
+            FreeMarkerTemplate.generateFileByTemplate("DemoServiceImpl.ftl", new File(projectPackagePath + "/" + PackageEnum.service + "/" + PackageEnum.impl + "/" + "DemoServiceImpl.java"), dataMap);
+            FreeMarkerTemplate.generateFileByTemplate("DemoDoMapper.xml.ftl", new File(projectResourcesPath + "/" + BaseEnum.mapper + "/" + projectName + "/" + "DemoDoMapper.xml"), dataMap);
+       // }
     }
 
     public void generateDubboComponent() throws Exception {
@@ -97,7 +95,6 @@ public class ComponentNameGenerate extends SimpleGenerate {
         FreeMarkerTemplate.generateFileByTemplate("CassandraDemo.ftl", new File(projectPackagePath + "/" + PackageEnum.cassandra + "/" + PackageEnum.repository + "/" + "CassandraDemo.java"), dataMap);
         FreeMarkerTemplate.generateFileByTemplate("DemoCassandraDo.ftl", new File(projectPackagePath + "/" + PackageEnum.cassandra + "/" + PackageEnum.table + "/" + "DemoCassandraDo.java"), dataMap);
         FreeMarkerTemplate.generateFileByTemplate("DemoRepository.ftl", new File(projectPackagePath + "/" + PackageEnum.cassandra + "/" + PackageEnum.repository + "/" + "DemoRepository.java"), dataMap);
-
     }
 
     public void generateKafkaComponent() throws Exception {
@@ -141,7 +138,7 @@ public class ComponentNameGenerate extends SimpleGenerate {
         generateComponent();
         // 生成代码
         if (simpleConfigDto.getMybatisIsAutoGenerate()) {
-            new AutoGenerateCode(projectPackage,simpleConfigDto,projectName).start();
+            new AutoGenerateCode(simpleConfigDto,this).run();
         }
         System.out.println("返回地址：" + projectPath);
         return projectPath;

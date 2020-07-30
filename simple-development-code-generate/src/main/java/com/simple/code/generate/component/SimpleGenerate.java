@@ -85,8 +85,6 @@ public abstract class SimpleGenerate {
         generateLog4j();
         // assembly.xml
         generateAssembly();
-        // generatorConfig.xml
-        //generateGeneratorConfig();
         // README.md
         generateREADME();
         // .gitignore
@@ -133,9 +131,9 @@ public abstract class SimpleGenerate {
         mkdirFile(projectResourcesPath);
 
         // 生成存放mybatis的xml文件夹
-        mkdirFile(SimpleConfig.projectGenerateBasePath + projectName + "/" + BaseEnum.src + "/" + BaseEnum.main + "/" + BaseEnum.resources + "/" + BaseEnum.mybatis);
+        mkdirFile(SimpleConfig.projectGenerateBasePath + projectName + "/" + BaseEnum.src + "/" + BaseEnum.main + "/" + BaseEnum.resources + "/" + BaseEnum.mapper);
         // 生成存放mybatis的xml文件夹下的项目文件夹
-        mkdirFile(SimpleConfig.projectGenerateBasePath + projectName + "/" + BaseEnum.src + "/" + BaseEnum.main + "/" + BaseEnum.resources + "/" + BaseEnum.mybatis + "/" + projectName);
+        mkdirFile(SimpleConfig.projectGenerateBasePath + projectName + "/" + BaseEnum.src + "/" + BaseEnum.main + "/" + BaseEnum.resources + "/" + BaseEnum.mapper + "/" + projectName);
 
         // 生成包名
         String[] packages = StringUtil.split(projectPackage, '.');

@@ -1,75 +1,39 @@
 package com.spring.simple.development.demo.model;
 
-import com.alibaba.lava.base.LavaDo;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.EqualsAndHashCode;
 
 /**
- * @description MyBatis Generator 自动创建,对应数据表为：tt_sso_account
+ * <p>
+ * demo
+ * </p>
  *
- * @author liko
- * @date   2020/06/21
+ * @author luke
+ * @since 2020-07-30
  */
 @Data
-public class DemoDo extends LavaDo {
-    /**
-     * 
-     */
-    private Date createTime;
+@EqualsAndHashCode(callSuper = false)
+@TableName("t_demo")
+public class DemoDo implements Serializable {
+
+    private static final long serialVersionUID=1L;
 
     /**
-     * 
+     * 主键Id
      */
-    private String createOwner;
+    private Long id;
 
     /**
-     * 
+     * 账户名
      */
-    private Date updateTime;
+    private String name;
 
     /**
-     * 
+     * 密码
      */
-    private String updateOwner;
+    private String password;
 
-    /**
-     * 
-     */
-    private Long optimistic;
 
-    /**
-     * 
-     */
-    private String accountCode;
-
-    /**
-     * 
-     */
-    private String accountPwd;
-
-    /**
-     * 
-     */
-    private String cellphone;
-
-    /**
-     * 
-     */
-    private String parentAccountId;
-
-    /**
-     * 
-     */
-    private Byte status;
-
-    /**
-     * 
-     */
-    private String appKey;
-
-    @Override
-    public String getBoQualifiedIntfName() {
-        return "com.spring.simple.development.demo.service.DemoBo";
-    }
 }

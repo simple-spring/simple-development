@@ -3,7 +3,7 @@ package ${packagePath};
 import com.spring.simple.development.core.annotation.config.*;
 import com.spring.simple.development.core.annotation.config.SpringSimpleApplication;
 import com.spring.simple.development.core.baseconfig.tomcat.SimpleApplication;
-import ${packagePath}.service.TestDemoBo;
+import ${packagePath}.service.TestDemoService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,9 +61,9 @@ public class TestApp {
 
     @Test
     public void test() {
-        <#if ("1" == "flase") >
-        TestDemoBo testDemoBo = SimpleContentApplication.getBeanByType(TestDemoBo.class);
-        testDemoBo.getData(1L);
+        <#if mybatisIsAutoGenerate??>
+            TestDemoService testDemoService = SimpleContentApplication.getBeanByType(TestDemoService.class);
+            testDemoService.getDemoDo(1L);
         </#if>
     }
 }

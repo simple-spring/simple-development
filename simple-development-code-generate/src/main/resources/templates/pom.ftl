@@ -27,107 +27,107 @@
             <version>1.2</version>
         </dependency>
         <#list components as component>
-            <#if (component == "springMvc") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-mvc</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "mybatis") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-jdbc</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "redis") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-redis</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "dubbo") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-dubbo</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "cassandra") >
-                <dependency>
-                    <artifactId>simple-development-core-cassandra</artifactId>
-                    <groupId>com.spring</groupId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "kafka") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-kafka</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "mongodb") >
-                <dependency>
-                    <artifactId>simple-development-core-mongodb</artifactId>
-                    <groupId>com.spring</groupId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "job") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-job</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "es") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-es</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "shiroCas") >
-                <dependency>
-                    <artifactId>simple-development-core-shiro-cas</artifactId>
-                    <groupId>com.spring</groupId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "swagger") >
-                <dependency>
-                    <groupId>com.spring</groupId>
-                    <artifactId>simple-development-core-swagger</artifactId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "alert") >
-                <dependency>
-                    <artifactId>simple-development-core-alert-sdk</artifactId>
-                    <groupId>com.spring</groupId>
-                    <version>1.2</version>
-                </dependency>
-            </#if>
-            <#if (component == "generator") >
-                <dependency>
-                    <groupId>com.baomidou</groupId>
-                    <artifactId>mybatis-plus-boot-starter</artifactId>
-                    <version>3.3.1.tmp</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.baomidou</groupId>
-                    <artifactId>mybatis-plus-generator</artifactId>
-                    <version>3.3.1.tmp</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.ibeetl</groupId>
-                    <artifactId>beetl</artifactId>
-                    <version>2.9.3</version>
-                </dependency>
-              </#if>
+    <#if (component == "springMvc") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-mvc</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "mybatis") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-jdbc</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "redis") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-redis</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "dubbo") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-dubbo</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "cassandra") >
+        <dependency>
+            <artifactId>simple-development-core-cassandra</artifactId>
+            <groupId>com.spring</groupId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "kafka") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-kafka</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "mongodb") >
+        <dependency>
+            <artifactId>simple-development-core-mongodb</artifactId>
+            <groupId>com.spring</groupId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "job") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-job</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "es") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-es</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "shiroCas") >
+        <dependency>
+            <artifactId>simple-development-core-shiro-cas</artifactId>
+            <groupId>com.spring</groupId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "swagger") >
+        <dependency>
+            <groupId>com.spring</groupId>
+            <artifactId>simple-development-core-swagger</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "alert") >
+        <dependency>
+            <artifactId>simple-development-core-alert-sdk</artifactId>
+            <groupId>com.spring</groupId>
+            <version>1.2</version>
+        </dependency>
+    </#if>
+    <#if (component == "generator") >
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.3.1.tmp</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.3.1.tmp</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl</artifactId>
+            <version>2.9.3</version>
+        </dependency>
+      </#if>
         </#list>
         <dependency>
             <groupId>junit</groupId>

@@ -12,6 +12,6 @@ public enum BaseEnum {
     main,
     java,
     resources,
-    mybatis,
+    mapper,
     test;
 }
