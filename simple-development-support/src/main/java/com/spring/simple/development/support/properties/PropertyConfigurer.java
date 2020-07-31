@@ -44,6 +44,9 @@ public class PropertyConfigurer {
      * @return
      */
     public static String getProperty(String key) {
+        if(configMap.get(key) == null){
+            return null;
+        }
         String value = String.valueOf(configMap.get(key));
         if (StringUtils.hasText(value)) {
             return value;
