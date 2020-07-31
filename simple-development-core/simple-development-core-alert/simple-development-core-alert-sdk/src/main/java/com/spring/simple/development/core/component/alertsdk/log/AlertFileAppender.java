@@ -73,7 +73,7 @@ public class AlertFileAppender {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	// avoid concurrent problem, can not be static
 		File logFilePath = new File(getLogPath(), sdf.format(triggerDate));
 		if (!logFilePath.exists()) {
-			logFilePath.mkdir();
+			logFilePath.mkdirs();
 		}
 
 		// filePath/yyyy-MM-dd/9999.log
