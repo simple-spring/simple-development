@@ -76,7 +76,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SimpleContentApplication.applicationContext.getAutowireCapableBeanFactory();
         // 默认拦截器
-        String[] excludes = new String[9];
+        String[] excludes = new String[10];
         excludes[0] = "/swagger-ui.html";
         excludes[1] = "/webjars/**";
         excludes[2] = "/swagger-resources";
@@ -86,6 +86,7 @@ public class WebConfig implements WebMvcConfigurer {
         excludes[6] = "/assets/**";
         excludes[7] = "/simpleDoc/**";
         excludes[8] = "/simple-spring.png";
+        excludes[9] = "/fastgo/**";
 
         // 启动shiro
         try {
