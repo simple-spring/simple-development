@@ -12,6 +12,7 @@ import com.spring.simple.development.support.exception.NoPermissionException;
 import com.spring.simple.development.support.properties.PropertyConfigurer;
 import com.spring.simple.development.support.utils.DateUtils;
 import com.spring.simple.development.support.utils.IpUtil;
+import com.spring.simple.development.support.utils.NewIpUtil;
 import com.spring.simple.development.support.utils.PrimaryKeyGenerator;
 import com.spring.simple.development.support.utils.log.ErrorMessage;
 import org.apache.logging.log4j.LogManager;
@@ -77,13 +78,13 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setLogId(PrimaryKeyGenerator.getInstance().nextId().toString());
             errorMessage.setProjectType("api");
             errorMessage.setLogType("restful api");
-            errorMessage.setIp(IpUtil.getIp());
+            errorMessage.setIp(NewIpUtil.getIp());
             errorMessage.setLogPath("/data/logs/simple-development-core/error/error.log");
             errorMessage.setDate(DateUtils.getCurrentTime());
             errorMessage.setContent(errorMsg);
             errorMessage.setDescription(e.getMessage());
             errorMessage.setUrl(request.getRequestURI());
-            errorMessage.setRemoteIp(request.getRemoteHost());
+            errorMessage.setRemoteIp(getRemoteIpAddr(request));
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
             boolean isOpen = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_IS_OPEN));
             if (isOpen) {
@@ -93,6 +94,29 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
 
         } catch (Exception ex) {
             logger.error("收集错误日志错误:", e);
+        }
+    }
+    public static String getRemoteIpAddr(final HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        String[] ips = ip.split(",");
+
+        if (ips.length > 1) {
+            return ips[0];
+        } else {
+            return ip;
         }
     }
 }
