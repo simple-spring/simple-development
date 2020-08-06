@@ -81,7 +81,7 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
             errorMessage.setContent(errorMsg);
             errorMessage.setDescription(e.getMessage());
             errorMessage.setUrl(request.getRequestURI());
-            errorMessage.setRemoteIp(request.getRemoteHost());
+            errorMessage.setRemoteIp(getRemoteIpAddr(request));
             errorLogMessageLogger.info(JSON.toJSONString(errorMessage));
             boolean isOpen = Boolean.parseBoolean(PropertyConfigurer.getProperty(SystemProperties.APPLICATION_ALERT_CONFIG_IS_OPEN));
             if (isOpen) {
@@ -91,6 +91,29 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
 
         } catch (Exception ex) {
             logger.error("收集错误日志错误:", e);
+        }
+    }
+    public static String getRemoteIpAddr(final HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        String[] ips = ip.split(",");
+
+        if (ips.length > 1) {
+            return ips[0];
+        } else {
+            return ip;
         }
     }
 }
