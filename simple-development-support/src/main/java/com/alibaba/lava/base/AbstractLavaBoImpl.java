@@ -26,8 +26,6 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
     protected static final String SOURCE_TYPE_INSERT = "insert";
     protected static final String SOURCE_TYPE_UPDATE = "update";
 
-    protected PrivilegeInfo pvgInfo = LavaThreadLocal.getLava();
-
     public AbstractLavaBoImpl() {
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
@@ -45,8 +43,8 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
     public int insert(D dataObject) {
         this.beforeSave(dataObject, "insert");
         if (this.isValidDo(dataObject)) {
-            dataObject.setCreator(this.getOperator(this.pvgInfo));
-            dataObject.setModifier(this.getOperator(this.pvgInfo));
+            dataObject.setCreator(this.getOperator(LavaThreadLocal.getLava()));
+            dataObject.setModifier(this.getOperator(LavaThreadLocal.getLava()));
             dataObject.setGmtCreate(new Date(System.currentTimeMillis()));
             dataObject.setGmtModified(new Date(System.currentTimeMillis()));
             int v = this.mapper.insertSelective(dataObject);
@@ -60,7 +58,7 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
     public int delete(Long id) {
         D record = this.mapper.selectByPrimaryKey(id);
         record.setGmtModified(new Date(System.currentTimeMillis()));
-        record.setModifier(this.getOperator(this.pvgInfo));
+        record.setModifier(this.getOperator(LavaThreadLocal.getLava()));
         return this.mapper.deleteByPrimaryKey(record);
     }
 
@@ -69,7 +67,7 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
         map.put("example", example);
         Map<String, Object> record = new HashMap();
         record.put("gmtModified", new Date(System.currentTimeMillis()));
-        record.put("modifier", this.getOperator(this.pvgInfo));
+        record.put("modifier", this.getOperator(LavaThreadLocal.getLava()));
         record.put("isDeleted", "y");
         map.put("record", record);
         return this.mapper.updateByExampleSelective(map);
@@ -86,7 +84,7 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
     protected DataResult<D> getPageByExample(E example) {
         DataResult<D> dr = new DataResult();
         dr.setData(this.selectByExample(example));
-        example.setPage((Page)null);
+        example.setPage((Page) null);
         dr.setCount(this.countByExample(example));
         return dr;
     }
@@ -99,7 +97,7 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
         this.beforeSave(dataObject, "update");
         if (this.isValidDo(dataObject)) {
             dataObject.setGmtModified(new Date(System.currentTimeMillis()));
-            dataObject.setModifier(this.getOperator(this.pvgInfo));
+            dataObject.setModifier(this.getOperator(LavaThreadLocal.getLava()));
             int v = this.mapper.updateByPrimaryKeySelective(dataObject);
             this.afterSave(dataObject, "update");
             return v;
