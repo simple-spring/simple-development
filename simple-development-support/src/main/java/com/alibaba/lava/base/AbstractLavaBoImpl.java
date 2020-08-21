@@ -25,8 +25,7 @@ public abstract class AbstractLavaBoImpl<D extends LavaDo, K extends LavaMapper<
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     protected static final String SOURCE_TYPE_INSERT = "insert";
     protected static final String SOURCE_TYPE_UPDATE = "update";
-    @Autowired
-    @Qualifier("lavaPvgInfo")
+
     protected PrivilegeInfo pvgInfo = LavaThreadLocal.getLava();
 
     public AbstractLavaBoImpl() {
