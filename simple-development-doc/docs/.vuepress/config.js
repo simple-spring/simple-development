@@ -13,7 +13,7 @@ module.exports = {
         smoothScroll: true,
         nav: [
             {text: 'Home', link: '/'},
-            {text: '途霖科技', link: 'https://tech20.cn'},
+            {text: '菜鸟团队', link: 'https://tech20.cn'},
             {text: 'swagger-原生文档', link: '/swagger-ui.html'},
             {text: 'swagger-doc文档', link: '/doc.html'}
         ],

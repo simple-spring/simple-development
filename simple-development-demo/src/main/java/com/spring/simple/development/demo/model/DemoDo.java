@@ -1,5 +1,6 @@
 package com.spring.simple.development.demo.model;
 
+import com.alibaba.lava.base.LavaDo;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
@@ -16,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_demo")
-public class DemoDo implements Serializable {
+public class DemoDo extends LavaDo implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -36,4 +37,8 @@ public class DemoDo implements Serializable {
     private String password;
 
 
+    @Override
+    public String getBoQualifiedIntfName() {
+        return null;
+    }
 }
