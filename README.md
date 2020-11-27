@@ -1,10 +1,5 @@
-### spring simple2.5
+### spring simple3.0
 
 
 ### 实现
-    基于ssm javaconfig 零xml配置，基于javassist,cglib,Reflections技术实现。
-### 快速开发
-    常用的三层结构无dao，service简化开发,controller层零开发。
-### 丰富场景实现
-    提供基础场景实现和中间件丰富场景实现,如redis,dubbo,kafka,job,elasticsearch
-
+    基于Spring boot 实现,丰富的轮子开箱即用,大大简化开发周期,适合小项目开展，初期快速构建使用
